@@ -35,6 +35,57 @@ Once installed, the tools and environment are ready for immediate use. The scrip
 
 ## Tools Included
 ### Social Media and Username Tools
+- [Sherlock](https://github.com/sherlock-project/sherlock)
+- [Blackbird](https://github.com/p1ngul1n0/blackbird)
+- [Maigret](https://github.com/soxoj/maigret)
+- [WhatsMyName](https://github.com/WebBreacher/WhatsMyName)
+- [SocialScan](https://github.com/iojw/socialscan)
+- [Eyes](https://github.com/N0rz3/Eyes)
+- [GHunt](https://github.com/mxrch/GHunt)
+- [h8mail](https://github.com/khast3x/h8mail)
+- [Holehe](https://github.com/megadose/holehe)
+
+### Domain and Web Tools
+- [EyeWitness](https://github.com/FortyNorthSecurity/EyeWitness)
+- [HTTrack](https://www.httrack.com/)
+- [Amass](https://github.com/OWASP/Amass)
+- [Photon](https://github.com/s0md3v/Photon)
+- [Sublist3r](https://github.com/aboul3la/Sublist3r)
+- [theHarvester](https://github.com/laramies/theHarvester)
+
+### Metadata Tools
+- [ExifTool](https://exiftool.org/)
+- [Carbon14](https://github.com/Lazza/Carbon14)
+- [Metagoofil](https://github.com/opsdisk/metagoofil)
+- [MAT2](https://0xacab.org/jvoisin/mat2)
+- [Sherloq](https://github.com/GuidoBartoli/sherloq)
+
+### Frameworks
+- [Spiderfoot](https://github.com/smicallef/spiderfoot)
+- [Recon-ng](https://github.com/lanmaster53/recon-ng)
+- [Sn0int](https://github.com/kpcyrd/sn0int)
+
+### Browsers
+- Firefox (preconfigured for OSINT)
+- Brave
+- Tor
+
+### Additional Tools
+- [WaybackPy](https://github.com/akamhy/waybackpy)
+- [Waybackpack](https://github.com/jsvine/waybackpack)
+- [Changedetection.io](https://github.com/dgtlmoon/changedetection.io)
+- [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox)
+- [Gallery-dl](https://github.com/mikf/gallery-dl)
+- [Ripme](https://github.com/RipMeApp/ripme)
+- [Instaloader](https://github.com/instaloader/instaloader)
+- [Toutatis](https://github.com/megadose/toutatis)
+- [Osintgram](https://github.com/Datalux/Osintgram)
+- [Internet Archive Command-Line Interface](https://github.com/jjjake/internetarchive)
+- [Search-That-Hash](https://github.com/HashPals/Search-That-Hash)
+- [Name-That-Hash](https://github.com/HashPals/Name-That-Hash)
+- [xeuledoc](https://github.com/AnalystTool/xeuledoc)
+
+### Social Media and Username Tools
 - Sherlock
 - Blackbird
 - Maigret
