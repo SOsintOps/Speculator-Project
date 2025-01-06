@@ -1,6 +1,6 @@
 ################################################################################
 ## OSINT Unified Input Script (English Version + Improvements)
-## Version 1.0.2 - Added proper Maigret virtual environment activation and reports path
+## Version 1.0.1 - Added proper Maigret virtual environment activation and reports path
 ## Previous version: 1.0.0 - Initial script
 ################################################################################
 
@@ -256,7 +256,7 @@ run_all_username_tools() {
 
  # 4) Maigret
  source ~/Downloads/Programs/maigret/maigretEnvironment/bin/activate
- maigret -a -P -T "$inputValue" --folderoutput="$sessionDir"
+ maigret -a -T "$inputValue" --folderoutput="$sessionDir"
  deactivate
 
  # 5) WhatsMyName
@@ -318,7 +318,7 @@ run_username_tools() {
      ;;
    "Username-Maigret")
      source ~/Downloads/Programs/maigret/maigretEnvironment/bin/activate
-     maigret -a -P -T "$inputValue" --folderoutput="$sessionDir"
+     maigret -a -T "$inputValue" --folderoutput="$sessionDir"
      deactivate
      zenity --info --text="Maigret done. Reports saved in $sessionDir."
      ;;
