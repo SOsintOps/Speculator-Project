@@ -512,3 +512,371 @@ if wget "https://github.com/owasp-amass/amass/releases/latest/download/amass_Lin
 else
    log_error "Failed to download Amass"
 fi
+#############################################
+# SECTION 7: OSINT TOOLS - METADATA & FORENSICS
+#############################################
+
+log_section "OSINT TOOLS - METADATA & FORENSICS"
+
+# Carbon14 installation
+log_message "Setting up Carbon14..."
+cd ~/Downloads/Programs || log_error "Failed to change to Programs directory"
+if git clone https://github.com/Lazza/Carbon14; then
+   log_message "Carbon14 repository cloned successfully"
+   cd Carbon14 || log_error "Failed to change to Carbon14 directory"
+   if python3 -m venv Carbon14Environment; then
+       log_message "Carbon14 virtual environment created successfully"
+       source Carbon14Environment/bin/activate
+       if sudo pip install -r requirements.txt; then
+           log_message "Carbon14 requirements installed successfully"
+       else
+           log_error "Failed to install Carbon14 requirements"
+       fi
+       deactivate
+       log_message "Carbon14 virtual environment deactivated"
+   else
+       log_error "Failed to create Carbon14 virtual environment"
+   fi
+else
+   log_error "Failed to clone Carbon14 repository"
+fi
+
+# Change detection and archiving tools
+log_message "Installing change detection and archiving tools..."
+if pipx install changedetection.io; then
+   log_message "changedetection.io installed successfully"
+else
+   log_error "Failed to install changedetection.io"
+fi
+
+if pipx install archivebox; then
+   log_message "archivebox installed successfully"
+else
+   log_error "Failed to install archivebox"
+fi
+
+# Metadata tools installation
+log_message "Installing metadata tools..."
+if sudo apt install libimage-exiftool-perl -y; then
+   log_message "ExifTool installed successfully"
+else
+   log_error "Failed to install ExifTool"
+fi
+
+log_message "Setting up metagoofil..."
+cd ~/Downloads/Programs || log_error "Failed to change to Programs directory"
+if git clone https://github.com/opsdisk/metagoofil.git; then
+   log_message "metagoofil repository cloned successfully"
+   cd metagoofil || log_error "Failed to change to metagoofil directory"
+   if python3 -m venv metagoofilEnvironment; then
+       log_message "metagoofil virtual environment created successfully"
+       source metagoofilEnvironment/local/bin/activate
+       if sudo pip install -r requirements.txt; then
+           log_message "metagoofil requirements installed successfully"
+       else
+           log_error "Failed to install metagoofil requirements"
+       fi
+       deactivate
+       log_message "metagoofil virtual environment deactivated"
+   else
+       log_error "Failed to create metagoofil virtual environment"
+   fi
+else
+   log_error "Failed to clone metagoofil repository"
+fi
+
+# Additional forensics tools
+log_message "Installing additional forensics tools..."
+if sudo apt install mediainfo-gui -y; then
+   log_message "mediainfo-gui installed successfully"
+else
+   log_error "Failed to install mediainfo-gui"
+fi
+
+if sudo apt install mat2 -y; then
+   log_message "mat2 installed successfully"
+else
+   log_error "Failed to install mat2"
+fi
+
+if pipx install xeuledoc; then
+   log_message "xeuledoc installed successfully"
+else
+   log_error "Failed to install xeuledoc"
+fi
+
+# Sherloq installation
+log_message "Setting up Sherloq..."
+cd ~/Downloads/Programs || log_error "Failed to change to Programs directory"
+if sudo apt install python3-testresources subversion -y; then
+   log_message "Sherloq dependencies installed successfully"
+else
+   log_error "Failed to install Sherloq dependencies"
+fi
+
+if git clone https://github.com/GuidoBartoli/sherloq.git; then
+   log_message "Sherloq repository cloned successfully"
+   cd sherloq/gui || log_error "Failed to change to sherloq gui directory"
+   if python3 -m venv sherloqEnvironment; then
+       log_message "Sherloq virtual environment created successfully"
+       source sherloqEnvironment/bin/activate
+       if sudo pip install -r requirements.txt; then
+           log_message "Sherloq requirements installed successfully"
+       else
+           log_error "Failed to install Sherloq requirements"
+       fi
+       deactivate
+       log_message "Sherloq virtual environment deactivated"
+   else
+       log_error "Failed to create Sherloq virtual environment"
+   fi
+else
+   log_error "Failed to clone Sherloq repository"
+fi
+
+#############################################
+# SECTION 8: FRAMEWORK TOOLS
+#############################################
+
+log_section "FRAMEWORK TOOLS"
+
+# Spiderfoot installation
+log_message "Setting up Spiderfoot..."
+cd ~/Downloads/Programs || log_error "Failed to change to Programs directory"
+if git clone https://github.com/smicallef/spiderfoot.git; then
+   log_message "Spiderfoot repository cloned successfully"
+   cd spiderfoot || log_error "Failed to change to spiderfoot directory"
+   if python3 -m venv spiderfootEnvironment; then
+       log_message "Spiderfoot virtual environment created successfully"
+       source spiderfootEnvironment/bin/activate
+       if sudo pip install -r requirements.txt; then
+           log_message "Spiderfoot requirements installed successfully"
+       else
+           log_error "Failed to install Spiderfoot requirements"
+       fi
+       deactivate
+       log_message "Spiderfoot virtual environment deactivated"
+   else
+       log_error "Failed to create Spiderfoot virtual environment"
+   fi
+else
+   log_error "Failed to clone Spiderfoot repository"
+fi
+
+# Recon-ng installation
+log_message "Setting up Recon-ng..."
+cd ~/Downloads/Programs || log_error "Failed to change to Programs directory"
+if git clone https://github.com/lanmaster53/recon-ng.git; then
+   log_message "Recon-ng repository cloned successfully"
+   cd recon-ng || log_error "Failed to change to recon-ng directory"
+   if python3 -m venv recon-ngEnvironment; then
+       log_message "Recon-ng virtual environment created successfully"
+       source recon-ngEnvironment/bin/activate
+       if sudo pip install -r REQUIREMENTS; then
+           log_message "Recon-ng requirements installed successfully"
+       else
+           log_error "Failed to install Recon-ng requirements"
+       fi
+       deactivate
+       log_message "Recon-ng virtual environment deactivated"
+   else
+       log_error "Failed to create Recon-ng virtual environment"
+   fi
+else
+   log_error "Failed to clone Recon-ng repository"
+fi
+
+# Mr.Holmes installation
+log_message "Setting up Mr.Holmes..."
+cd ~/Downloads/Programs || log_error "Failed to change to Programs directory"
+if git clone https://github.com/Lucksi/Mr.Holmes; then
+   log_message "Mr.Holmes repository cloned successfully"
+else
+   log_error "Failed to clone Mr.Holmes repository"
+fi
+
+# Sn0int installation
+log_message "Installing Sn0int..."
+if sudo apt install sq -y; then
+   log_message "sq installed successfully"
+else
+   log_error "Failed to install sq"
+fi
+
+if curl -sSf https://apt.vulns.sexy/kpcyrd.pgp | sq dearmor | sudo tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg; then
+   log_message "Sn0int repository key added successfully"
+else
+   log_error "Failed to add Sn0int repository key"
+fi
+
+if echo deb http://apt.vulns.sexy stable main | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list; then
+   log_message "Sn0int repository added successfully"
+else
+   log_error "Failed to add Sn0int repository"
+fi
+
+if sudo apt update && sudo apt install sn0int -y; then
+   log_message "Sn0int installed successfully"
+else
+   log_error "Failed to install Sn0int"
+fi
+
+# Additional tools
+log_message "Installing additional framework tools..."
+if pipx install internetarchive; then
+   log_message "internetarchive installed successfully"
+else
+   log_error "Failed to install internetarchive"
+fi
+#############################################
+# SECTION 9: FINAL SETUP
+#############################################
+
+log_section "FINAL SETUP"
+
+# Additional utilities installation
+log_message "Installing additional utilities..."
+if sudo apt install kazam -y; then
+   log_message "Kazam installed successfully"
+else
+   log_error "Failed to install Kazam"
+fi
+
+if sudo apt install bleachbit -y; then
+   log_message "Bleachbit installed successfully"
+else
+   log_error "Failed to install Bleachbit"
+fi
+
+# Google Earth installation
+log_message "Installing Google Earth..."
+if wget http://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb; then
+   log_message "Google Earth package downloaded successfully"
+   if sudo apt install -y ./google-earth-stable_current_amd64.deb; then
+       log_message "Google Earth installed successfully"
+       sudo rm google-earth-stable_current_amd64.deb
+       log_message "Google Earth installation files cleaned up"
+   else
+       log_error "Failed to install Google Earth"
+   fi
+else
+   log_error "Failed to download Google Earth"
+fi
+
+# Final system updates and cleanup
+log_section "SYSTEM UPDATES AND CLEANUP"
+
+log_message "Performing final system updates..."
+if sudo apt update; then
+   log_message "APT update successful"
+else
+   log_error "Failed to update APT"
+fi
+
+if sudo apt upgrade -y; then
+   log_message "System upgrade successful"
+else
+   log_error "Failed to upgrade system"
+fi
+
+if sudo apt update --fix-missing; then
+   log_message "Fixed missing packages"
+else
+   log_error "Failed to fix missing packages"
+fi
+
+if sudo apt --fix-broken install; then
+   log_message "Fixed broken installations"
+else
+   log_error "Failed to fix broken installations"
+fi
+
+if sudo apt autoremove -y; then
+   log_message "Removed unused packages"
+else
+   log_error "Failed to remove unused packages"
+fi
+
+# Script downloads and setup
+log_section "SCRIPT SETUP"
+
+log_message "Setting up scripts directory..."
+mkdir -p ~/Documents/scripts || log_error "Failed to create scripts directory"
+cd ~/Documents/scripts || log_error "Failed to change to scripts directory"
+
+log_message "Downloading OSINT scripts..."
+SCRIPTS=(
+   "api.sh"
+   "domain.sh"
+   "framework.sh"
+   "image.sh"
+   "metadata.sh"
+   "update.sh"
+   "user.sh"
+   "video.sh"
+)
+
+for script in "${SCRIPTS[@]}"; do
+   if curl -O "https://tuvm:311@inteltechniques.com/osintvm/$script"; then
+       log_message "$script downloaded successfully"
+       chmod +x "$script"
+       log_message "Set execute permissions for $script"
+   else
+       log_error "Failed to download $script"
+   fi
+done
+
+# Download desktop files and icons
+log_message "Downloading desktop files and icons..."
+DESKTOP_FILES=(
+   "api.desktop"
+   "domain.desktop"
+   "framework.desktop"
+   "image.desktop"
+   "metadata.desktop"
+   "search.desktop"
+   "update.desktop"
+   "user.desktop"
+   "video.desktop"
+)
+
+ICONS=(
+   "api.png"
+   "domain.png"
+   "framework.png"
+   "image.png"
+   "metadata.png"
+   "search.png"
+   "update.png"
+   "user.png"
+   "video.png"
+)
+
+for file in "${DESKTOP_FILES[@]}" "${ICONS[@]}"; do
+   if curl -O "https://tuvm:311@inteltechniques.com/osintvm/$file"; then
+       log_message "$file downloaded successfully"
+   else
+       log_error "Failed to download $file"
+   fi
+done
+
+# Move desktop files to applications directory
+log_message "Moving desktop files to applications directory..."
+if sudo mv *.desktop /usr/share/applications/; then
+   log_message "Desktop files moved successfully"
+else
+   log_error "Failed to move desktop files"
+fi
+
+# Final desktop configuration
+log_section "FINAL DESKTOP CONFIGURATION"
+
+log_message "Configuring desktop favorites..."
+gsettings set org.gnome.shell favorite-apps []
+gsettings set org.gnome.shell favorite-apps "['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'update.desktop', 'search.desktop', 'video.desktop', 'user.desktop', 'image.desktop', 'domain.desktop', 'metadata.desktop', 'framework.desktop', 'api.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop']"
+gsettings set org.gnome.shell.extensions.dash-to-dock dash-max-icon-size 32
+
+log_message "Installation completed at $(date)"
+echo
+read -rsp $'Installation complete! Please reboot.\nPress any key to continue...\n'
+echo
