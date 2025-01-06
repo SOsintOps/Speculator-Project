@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Speculator Project is inspired by the techniques outlined in the book [OSINT Techniques, 11th Edition](https://inteltechniques.com/book1.html) by Michael Bazzell. It demonstrates how to adapt these methods and tools to meet individual needs. For detailed information, please refer to *OSINT Techniques*. 
+The Speculator Project is inspired by the techniques outlined in the book [OSINT Techniques, 11th Edition](https://inteltechniques.com/book1.html) by Michael Bazzell. It demonstrates how to adapt these methods and tools to meet individual needs.
 
 This project provides a Bash script designed to customize Debian-based virtual machines specifically for Open Source Intelligence (OSINT) activities. Its goal is to create a secure and standardized environment for intelligence gathering.
 
