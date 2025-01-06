@@ -1,10 +1,11 @@
 #!/bin/bash
 
 # Speculator Install Script
-# Version: 0.0.21
+# Version: 0.0.22
 # Last Update: 20250105
 #
 # Version History:
+
 # 0.0.21 (20250105) - fixing rm amass
 # 0.0.2 (20250104) - Reorganized script in sections
 # 0.0.1 (20250103) - Initial version based on OSINT VM install script
@@ -149,7 +150,9 @@ git clone https://github.com/soxoj/maigret
 cd maigret
 python3 -m venv maigretEnvironment
 source maigretEnvironment/bin/activate
-sudo pip3 install .
+pip install --upgrade pip
+pip install urllib3>=1.26
+pip install .
 deactivate
 
 # WhatsMyName installation and setup
