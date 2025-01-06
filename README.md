@@ -108,7 +108,7 @@ Once the setup is complete, begin your OSINT investigations by exploring the pre
 
 ## Contribution
 
-For frequently asked questions, visit our [FAQ page](https://github.com/SOsintOps/Speculator-Project/blob/main/document/FAQ.md).
+
 
 We’d love to hear from you! Your ideas and contributions can make a real difference. Don’t hesitate to open issues or submit pull requests to help us enhance the project together!
 
