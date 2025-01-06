@@ -1,21 +1,30 @@
 # Speculator Project
 
 ## Overview
-The **Speculator Project** is inspired by the methods described in the book *OSINT Techniques, 11th Edition* by Michael Bazzell. It does not aim to replace the virtual machine developed by the author but rather demonstrates how to adapt the techniques and tools described in the book to suit individual needs. For detailed information about the tools and methodologies, please refer to *OSINT Techniques*.
-The **Speculator Project** provides a Bash script to customize Debian-based virtual machines, specifically designed for Open Source Intelligence (OSINT) activities. This project aims to create a secure, standardized environment for intelligence gathering by automating the installation and configuration of OSINT tools.
+
+The Speculator Project is inspired by the techniques outlined in the book [OSINT Techniques, 11th Edition](https://inteltechniques.com/book1.html) by Michael Bazzell. It demonstrates how to adapt these methods and tools to meet individual needs. For detailed information, please refer to *OSINT Techniques*. 
+
+This project provides a Bash script designed to customize Debian-based virtual machines specifically for Open Source Intelligence (OSINT) activities. Its goal is to create a secure and standardized environment for intelligence gathering.
+
+### The Speculatores
+
+The term "Speculatores" refers to Roman scouts and intelligence officers who played a crucial role in gathering important information during military operations. For more information on the historical background of the Speculatores, visit [this page](https://github.com/SOsintOps/Speculator-Project/blob/main/document/speculatores.md).
 
 ## Features
-- **Comprehensive Tool Installation**: Includes a variety of tools for usernames, social media, metadata, domain analysis, and more.
-- **Browser Setup**: Configures Firefox, Brave, and Tor browsers for secure research.
-- **Desktop Customization**: Optimizes the GNOME desktop environment for OSINT workflows.
-- **Modular Configuration**: Tools are grouped into sections for easy understanding and modular customization.
+
+- **Comprehensive Tool Installation**: Offers a variety of tools for analyzing usernames, social media, metadata, domains, and more.
+- **Browser Setup**: Configures Firefox, Brave, and Tor browsers to enhance secure research.
+- **Desktop Customization**: Optimizes the GNOME desktop environment specifically for Open Source Intelligence (OSINT) workflows.
+- **Modular Configuration**: Tools are organized into sections for easier comprehension and customization.
 
 ## System Requirements
+
 - **Operating System**: Debian 12 (stable).
 - **Permissions**: Sudo privileges are required.
-- **Internet Connection**: Needed for downloading and configuring tools.
+- **Internet Connection**: Needed to download and configure tools.
 
 ## Installation
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/your-username/speculator-project.git
@@ -31,70 +40,77 @@ The **Speculator Project** provides a Bash script to customize Debian-based virt
    ```
 
 ## Usage
-Once installed, the tools and environment are ready for immediate use. The script configures browsers, installs essential OSINT tools, and prepares the system for secure investigations.
+
+After installation, the tools and environment are immediately ready for use. The script configures browsers, installs essential OSINT tools, and prepares the system for secure investigations.
 
 ## Tools Included
+
 ### Social Media and Username Tools
-- [Sherlock](https://github.com/sherlock-project/sherlock)
+
 - [Blackbird](https://github.com/p1ngul1n0/blackbird)
-- [Maigret](https://github.com/soxoj/maigret)
-- [WhatsMyName](https://github.com/WebBreacher/WhatsMyName)
-- [SocialScan](https://github.com/iojw/socialscan)
 - [Eyes](https://github.com/N0rz3/Eyes)
 - [GHunt](https://github.com/mxrch/GHunt)
-- [h8mail](https://github.com/khast3x/h8mail)
 - [Holehe](https://github.com/megadose/holehe)
+- [Maigret](https://github.com/soxoj/maigret)
+- [Sherlock](https://github.com/sherlock-project/sherlock)
+- [SocialScan](https://github.com/iojw/socialscan)
+- [WhatsMyName](https://github.com/WebBreacher/WhatsMyName)
+- [h8mail](https://github.com/khast3x/h8mail)
 
 ### Domain and Web Tools
+
+- [Amass](https://github.com/OWASP/Amass)
 - [EyeWitness](https://github.com/FortyNorthSecurity/EyeWitness)
 - [HTTrack](https://www.httrack.com/)
-- [Amass](https://github.com/OWASP/Amass)
 - [Photon](https://github.com/s0md3v/Photon)
 - [Sublist3r](https://github.com/aboul3la/Sublist3r)
 - [theHarvester](https://github.com/laramies/theHarvester)
 
 ### Metadata Tools
-- [ExifTool](https://exiftool.org/)
+
 - [Carbon14](https://github.com/Lazza/Carbon14)
-- [Metagoofil](https://github.com/opsdisk/metagoofil)
+- [ExifTool](https://exiftool.org/)
 - [MAT2](https://0xacab.org/jvoisin/mat2)
+- [Metagoofil](https://github.com/opsdisk/metagoofil)
 - [Sherloq](https://github.com/GuidoBartoli/sherloq)
 
 ### Frameworks
-- [Spiderfoot](https://github.com/smicallef/spiderfoot)
+
 - [Recon-ng](https://github.com/lanmaster53/recon-ng)
 - [Sn0int](https://github.com/kpcyrd/sn0int)
-
-
+- [Spiderfoot](https://github.com/smicallef/spiderfoot)
 
 ### Additional Tools
+
+- [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox)
+- [Changedetection.io](https://github.com/dgtlmoon/changedetection.io)
+- [Gallery-dl](https://github.com/mikf/gallery-dl)
+- [Instaloader](https://github.com/instaloader/instaloader)
+- [Internet Archive Command-Line Interface](https://github.com/jjjake/internetarchive)
+- [Name-That-Hash](https://github.com/HashPals/Name-That-Hash)
+- [Osintgram](https://github.com/Datalux/Osintgram)
+- [Ripme](https://github.com/RipMeApp/ripme)
+- [Search-That-Hash](https://github.com/HashPals/Search-That-Hash)
+- [Toutatis](https://github.com/megadose/toutatis)
 - [WaybackPy](https://github.com/akamhy/waybackpy)
 - [Waybackpack](https://github.com/jsvine/waybackpack)
-- [Changedetection.io](https://github.com/dgtlmoon/changedetection.io)
-- [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox)
-- [Gallery-dl](https://github.com/mikf/gallery-dl)
-- [Ripme](https://github.com/RipMeApp/ripme)
-- [Instaloader](https://github.com/instaloader/instaloader)
-- [Toutatis](https://github.com/megadose/toutatis)
-- [Osintgram](https://github.com/Datalux/Osintgram)
-- [Internet Archive Command-Line Interface](https://github.com/jjjake/internetarchive)
-- [Search-That-Hash](https://github.com/HashPals/Search-That-Hash)
-- [Name-That-Hash](https://github.com/HashPals/Name-That-Hash)
 - [xeuledoc](https://github.com/AnalystTool/xeuledoc)
 
-
-
 ### Browsers
-- Firefox (customised for OSINT)
+
+- Firefox (preconfigured for OSINT)
 - Brave
 - Tor
 
 ## Contribution
-Contributions are welcome! Feel free to open issues or submit pull requests to enhance the project.
+
+We’d love to hear from you! Your ideas and contributions can make a real difference. Don’t hesitate to open issues or submit pull requests to help us enhance the project together!
 
 ## License
-Use it at your own risk.
+
+This project is currently being reviewed for proper licensing. Use it at your own risk.
 
 ## Disclaimer
-This script is provided "as-is" without any warranties. It is a development version intended for testing purposes only. Use it responsibly and at your own risk.
+
+This script is provided "as-is" without any warranties. It is intended solely for development and testing purposes. Please use it responsibly and at your own risk.
 
