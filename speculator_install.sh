@@ -504,7 +504,7 @@ if wget "https://github.com/owasp-amass/amass/releases/latest/download/amass_Lin
        cd Programs/Amass/amass_Linux_"$ver"/ || log_error "Failed to change to Amass directory"
        mv * ~/Downloads/Programs/Amass
        rm -r ~/Downloads/Programs/Amass/amass_Linux_"$ver"/
-       rm "/home/osint/Downloads/amass_Linux_$ver.zip"
+       rm "/home/osint/Downloads/amass_Linux_*.zip"
        log_message "Amass installation completed"
    else
        log_error "Failed to extract Amass"
