@@ -65,10 +65,7 @@ Once installed, the tools and environment are ready for immediate use. The scrip
 - [Recon-ng](https://github.com/lanmaster53/recon-ng)
 - [Sn0int](https://github.com/kpcyrd/sn0int)
 
-### Browsers
-- Firefox (preconfigured for OSINT)
-- Brave
-- Tor
+
 
 ### Additional Tools
 - [WaybackPy](https://github.com/akamhy/waybackpy)
@@ -85,31 +82,10 @@ Once installed, the tools and environment are ready for immediate use. The scrip
 - [Name-That-Hash](https://github.com/HashPals/Name-That-Hash)
 - [xeuledoc](https://github.com/AnalystTool/xeuledoc)
 
-### Social Media and Username Tools
-- Sherlock
-- Blackbird
-- Maigret
-- WhatsMyName
 
-### Domain and Web Tools
-- EyeWitness
-- HTTrack
-- Amass
-- Photon
-
-### Metadata Tools
-- ExifTool
-- Carbon14
-- Metagoofil
-- MAT2
-
-### Frameworks
-- Spiderfoot
-- Recon-ng
-- Sn0int
 
 ### Browsers
-- Firefox (preconfigured for OSINT)
+- Firefox (customised for OSINT)
 - Brave
 - Tor
 
@@ -117,7 +93,7 @@ Once installed, the tools and environment are ready for immediate use. The scrip
 Contributions are welcome! Feel free to open issues or submit pull requests to enhance the project.
 
 ## License
-This project is under investigation for appropriate licensing. Use it at your own risk.
+Use it at your own risk.
 
 ## Disclaimer
 This script is provided "as-is" without any warranties. It is a development version intended for testing purposes only. Use it responsibly and at your own risk.
