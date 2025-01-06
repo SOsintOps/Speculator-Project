@@ -1,86 +1,104 @@
-# Frequently Asked Questions (FAQ)
-
-## General Questions
-
-### Is the Speculator Project affiliated with Michael Bazzell?
-No, the Speculator Project is not affiliated with Michael Bazzell, his books, or his company. While the project is inspired by his work, it is an independent initiative designed to adapt and expand on OSINT techniques for customized use.
-
-
-### What is the Speculator Project?
-The Speculator Project is a Bash script designed to customize Debian-based virtual machines for Open Source Intelligence (OSINT) activities. It automates the installation and configuration of various OSINT tools, providing a secure and standardized environment.
-
-### Who is this project for?
-This project is intended for OSINT practitioners, researchers, and analysts who need a pre-configured environment with essential tools for intelligence gathering.
-
-### Is this project related to digital forensics?
-No, the Speculator Project is solely focused on OSINT. It does not include tools or features related to digital forensic investigations.
+Ecco la versione aggiornata delle FAQ, ricompilata in base al nuovo indice:
 
 ---
 
-## Installation and Configuration
+## Frequently Asked Questions (FAQ)
 
-### What operating system is required?
-The project requires Debian 12 (stable) or a compatible system.
+### **Introduction**
 
-### Do I need administrative privileges to run the script?
-Yes, sudo privileges are required to install and configure the tools included in the project.
+#### **Who is this project for?**
+The Speculator Project is designed for OSINT practitioners, researchers, analysts, and professionals in related fields who need a pre-configured and reliable environment for efficient intelligence gathering.
 
-### How do I install the Speculator Project?
-Refer to the installation instructions in the [README file](https://github.com/SOsintOps/Speculator-Project/blob/main/README.md).
-
----
-
-## Tools and Features
-
-### What tools are included in the Speculator Project?
-The project includes a variety of tools for OSINT, such as:
-- Social media analysis tools: Sherlock, Blackbird, Maigret, and more.
-- Domain and web tools: Amass, EyeWitness, Photon, etc.
-- Metadata tools: ExifTool, Metagoofil, Sherloq, and more.
-
-For a complete list of tools, see the [Tools Included](https://github.com/SOsintOps/Speculator-Project/blob/main/README.md#tools-included) section in the README.
-
-### Are the tools pre-configured?
-Yes, the included tools are pre-configured to ensure they work seamlessly in the provided environment. Additional configuration may be needed depending on your specific use cases.
+#### **What is the Speculator Project?**
+It is a Bash script for customizing Debian-based virtual machines, specifically tailored for OSINT activities. It automates the installation and configuration of various tools, offering a secure and standardized environment for intelligence work.
 
 ---
 
-## Troubleshooting
+### **Getting Started**
 
-### The script failed during installation. What should I do?
-- Ensure you are running the script on Debian 12 or a compatible system.
-- Verify that you have an active internet connection.
-- Check that you have sufficient permissions (sudo privileges).
-- Review the error messages and consult the [issue tracker](https://github.com/SOsintOps/Speculator-Project/issues) on GitHub.
+#### **What operating system is required?**
+The Speculator Project requires Debian 12 (stable) or a compatible Linux distribution to function properly.
 
-### Some tools are not working as expected. How can I fix this?
-- Verify that all dependencies are installed.
-- Refer to the tool-specific documentation linked in the [README](https://github.com/SOsintOps/Speculator-Project/blob/main/README.md).
-- Consult the FAQ or open an issue in the project repository.
+#### **Can the Speculator Project be used for investigations?**
+Yes, it can be used for investigations. However, functionality is not guaranteed, and the tools are provided "as-is." Users assume all responsibility for their use.
+
+#### **Do you provide pre-configured virtual machines?**
+No, we do not provide pre-configured virtual machines.
+
+#### **Where can I prepare a Debian virtual machine?**
+We recommend following the instructions provided in *OSINT Techniques, 11th Edition* by Michael Bazzell, which includes a detailed guide on preparing a Debian-based virtual machine.
+
+
+#### **Is this project designed for digital forensics too?**
+No, this project focuses on OSINT. It does not include tools for digital forensic investigations.
 
 ---
 
-## Contribution
+### **Affiliation and Development**
 
-### How can I contribute to the Speculator Project?
+#### **Is this project affiliated with Michael Bazzell?**
+No, this project is independent, although inspired by Michael Bazzell’s work. It is designed to expand OSINT techniques for customized use.
+
+#### **Are you affiliated with any organizations?**
+Yes, we are affiliated with the OSINT-focused blog [osintops.com](https://osintops.com).
+
+---
+
+### **Tools: Usage and Customisation**
+
+#### **What tools are included in the Speculator Project?**
+The script installs various tools, categorized by use case:
+1. Username and Social Media Investigation: Sherlock, Maigret, WhatsMyName.
+2. Metadata and Forensics: Metagoofil, ExifTool, MAT2.
+3. Domain and Web Investigation: theHarvester, Sublist3r, Waybackpy.
+4. Frameworks: Spiderfoot, Recon-ng.
+
+Refer to the [README](https://github.com/SOsintOps/Speculator-Project/blob/main/README.md) for a complete list.
+
+#### **Can I propose other scripts for OSINT?**
+Yes, contributions are welcome. Please note that not all suggestions can be added immediately.
+
+#### **Where can I learn about customizing Zenity scripts?**
+Customizing Zenity scripts is covered in *OSINT Techniques, 11th Edition* by Michael Bazzell. Start on page 137 for examples on graphical menus and dialog windows.
+
+---
+
+### **Contribution**
+
+#### **How can I contribute to the Speculator Project?**
 You can contribute by:
 - Reporting bugs or issues.
-- Submitting pull requests with improvements or fixes.
+- Submitting pull requests for improvements or fixes.
 - Suggesting new features or tools.
 
-Refer to the [Contribution Guidelines](https://github.com/SOsintOps/Speculator-Project/blob/main/CONTRIBUTING.md) for more details.
 
 ---
 
-## License
+### **Legal and Disclaimer**
 
-### What is the license for this project?
-The project is currently under review for proper licensing. Until finalized, it is provided "as-is" without warranties. Use it at your own risk.
+#### **What is the license for this project?**
+The license is under review. For now, the script is provided "as-is," without warranties. Use at your own risk.
+
 
 ---
 
-## Additional Resources
+### **Additional Resources**
 
-- [Speculator Project README](https://github.com/SOsintOps/Speculator-Project/blob/main/README.md)
-- [Speculatores Historical Background](https://github.com/SOsintOps/Speculator-Project/blob/main/document/speculatores.md)
+#### **I don’t know anything about OSINT. Where should I start?**
+If you're new to OSINT, consider these resources:
+- [Criminal Intelligence: Manual for Analysts](https://www.unodc.org/documents/organized-crime/Law-Enforcement/Criminal_Intelligence_for_Analysts.pdf): A guide from the UNODC.
+- [Deep Dive: Exploring the Real-world Value of OSINT](https://www.raebaker.net/deep-dive): Rae Baker’s comprehensive book.
+- [OSINT Techniques, 11th Edition](https://inteltechniques.com/osintbook11/): Michael Bazzell’s detailed handbook.
 
+#### **Were AI tools used to create these contents?**
+Yes, AI tools were used to assist in creating this project. Rest assured, no AI was overworked during this process.
+
+#### **Speculator Project README**
+Refer to the [Speculator Project README](https://github.com/SOsintOps/Speculator-Project/blob/main/README.md) for an overview of the project.
+
+#### **Speculatores Historical Background**
+For more details on the historical context of the Speculator Project, read the [Speculatores Historical Background](https://github.com/SOsintOps/Speculator-Project/blob/main/document/speculatores.md).
+
+---
+
+Fammi sapere se ci sono altre modifiche da apportare o aggiunte necessarie!
