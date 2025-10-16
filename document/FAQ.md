@@ -1,6 +1,6 @@
 # Frequently Asked Questions (FAQ)
 
-### Indice
+## Indice
 
 1.  [Introduction](https://www.google.com/search?q=%23introduction)
       - [What is the Speculator Project?](https://www.google.com/search?q=%23what-is-the-speculator-project)
@@ -32,7 +32,7 @@
 
 -----
 
-### Introduction
+## Introduction
 
 #### What is the Speculator Project?
 
@@ -44,7 +44,7 @@ The Speculator Project is designed for OSINT practitioners, researchers, analyst
 
 -----
 
-### Legal and Disclaimer
+## Legal and Disclaimer
 
 #### What is the license for this project?
 
@@ -52,7 +52,7 @@ The Speculator Project script itself is currently provided under a license that 
 
 -----
 
-### Getting Started and Resources
+## Getting Started and Resources
 
 #### What operating system is required?
 
@@ -84,7 +84,7 @@ Resources for beginners:
 
 -----
 
-### Affiliation and Development
+## Affiliation and Development
 
 #### Is this project affiliated with Michael Bazzell?
 
@@ -98,7 +98,7 @@ Yes, we are affiliated with the OSINT-focused blog [osintops.com](https://osinto
 
 -----
 
-### Tools: Usage and Customisation
+## Tools: Usage and Customisation
 
 #### What tools are included in the Speculator Project?
 
@@ -122,7 +122,7 @@ Customizing Zenity scripts is covered in *OSINT Techniques, 11th Edition* by Mic
 
 -----
 
-### Contribution
+## Contribution
 
 #### How can I contribute to the Speculator Project?
 
@@ -134,7 +134,7 @@ You can contribute by:
 
 -----
 
-### Additional Information
+## Additional Information
 
 #### Were AI tools used to create these contents?
 
