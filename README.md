@@ -64,7 +64,6 @@ After installation and a system reboot, the tools and environment are ready for 
 ### Domain and Web Tools
 
   - [Amass](https://github.com/OWASP/Amass)
-  - [EyeWitness](https://github.com/RedSiege/EyeWitness)
   - [HTTrack](https://www.httrack.com/) & **WebHTTrack**
   - [Photon](https://github.com/s0md3v/Photon)
   - [Sublist3r](https://github.com/aboul3la/Sublist3r)
@@ -76,8 +75,7 @@ After installation and a system reboot, the tools and environment are ready for 
   - [ExifTool](https://exiftool.org/)
   - [MAT2](https://0xacab.org/jvoisin/mat2)
   - [Metagoofil](https://github.com/opsdisk/metagoofil)
-  - [Sherloq](https://github.com/GuidoBartoli/sherloq) (Docker)
-
+  
 ### Frameworks
 
   - [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes)
