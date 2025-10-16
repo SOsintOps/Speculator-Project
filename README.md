@@ -20,8 +20,7 @@ The term "Speculatores" refers to Roman scouts and intelligence officers who pla
 ## System Requirements
 
   - **Operating System**: **Debian 13 "Trixie" (amd64)**.
-  - **Disk Space**: Minimum **50 GB** recommended to accommodate all tools, including the Docker image for Sherloq.
-  - **Software**: **Docker** is required for Sherloq installation.
+  - **Disk Space**: Minimum **50 GB** recommended.
   - **Permissions**: Sudo privileges are required.
   - **Internet Connection**: Needed to download and configure tools.
 
