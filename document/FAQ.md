@@ -1,4 +1,4 @@
-## Frequently Asked Questions (FAQ)
+# Frequently Asked Questions (FAQ)
 
 ### Indice
 
@@ -88,7 +88,9 @@ Resources for beginners:
 
 #### Is this project affiliated with Michael Bazzell?
 
-No, this project is independent, although inspired by Michael Bazzell's work. While this project is independent, it has greatly benefited from the teachings and methodologies of Michael Bazzell. We have adapted his principles to meet our specific needs and tailored the toolset accordingly. Additional tools will be integrated in the future based on evolving requirements. We highly recommend reading his book *OSINT Techniques, 11th Edition* for comprehensive details on using the individual tools.
+**No. To be perfectly clear, there is no affiliation, partnership, or official endorsement of any kind with Michael Bazzell or IntelTechniques.**
+
+The Speculator Project is a completely independent initiative inspired by the work and methodologies presented in his book, *OSINT Techniques, 11th Edition*. We highly recommend this book as a valuable resource for learning how to use the individual tools included in this script.
 
 #### Are you affiliated with any organizations?
 
