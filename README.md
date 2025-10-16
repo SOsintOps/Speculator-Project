@@ -85,7 +85,7 @@ After installation and a system reboot, the tools and environment are ready for 
 
 ### Browsers
 
-  - Firefox (preconfigured for OSINT)
+  - Firefox (customised for OSINT)
   - Brave
   - Tor
 
