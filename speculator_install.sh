@@ -2,10 +2,9 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 7.0 (Giada - Stable Release)
-# # Description: Final, ultra-resilient version with all fixes
-# #              for Python dependencies, package managers, and
-# #              special installation cases.
+# # Version: 7.1 (Giada - Stable Release)
+# # Description: Stable version with EyeWitness and Sherloq removed
+# #              for improved compatibility and stability.
 # ###############################################################
 
 
@@ -53,75 +52,15 @@ install_py_tool_from_git() {
     deactivate
 }
 
-# Installa Sherloq in un container Docker per risolvere le dipendenze Python
-install_sherloq_with_docker() {
-    echo "--> Installing Sherloq via Docker to solve Python dependencies..."
-
-    if ! command -v docker &> /dev/null; then
-        sudo apt install -y docker.io || true
-        sudo usermod -aG docker "$USER" || true
-        echo "WARNING: Docker has been installed. A system reboot may be required to run Docker commands without sudo."
-    fi
-    
-    # Pulisce Docker per liberare spazio
-    sudo docker system prune -af || true
-
-    cd "$PROGRAMS_DIR"
-    if [ ! -d "sherloq" ]; then
-        git clone https://github.com/GuidoBartoli/sherloq.git || return 1
-    fi
-
-    cat << EOF > "$PROGRAMS_DIR/sherloq/gui/Sherloq.Dockerfile"
-FROM python:3.11-slim
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git \
-    libx11-6 libxcb1 libxext6 libxrender1 libgl1 \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /opt/sherloq
-COPY . .
-
-RUN sed -i 's/pyside6==6.7.\*/pyside6/' requirements.txt
-RUN sed -i 's/rawpy==0.19.\*/rawpy/' requirements.txt
-RUN sed -i 's/tensorflow==2.16.\*/tensorflow<2.16/' requirements.txt
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-ENTRYPOINT ["python3", "sherloq.py"]
-EOF
-
-    (cd "$PROGRAMS_DIR/sherloq/gui" && sudo docker build -t sherloq-osint -f Sherloq.Dockerfile .) || echo "WARNING: Docker build for Sherloq failed. This may be due to insufficient disk space (50GB VM recommended)."
-
-    sudo tee /usr/local/bin/sherloq > /dev/null << 'EOF'
-#!/bin/bash
-echo "--- Launching Sherloq from Docker Container ---"
-xhost +local:docker >/dev/null 2>&1
-sudo docker run --rm -it \
-    --net=host \
-    -e DISPLAY=\$DISPLAY \
-    -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
-    -v "\$HOME/Desktop/evidences:/opt/sherloq/reports" \
-    sherloq-osint
-xhost -local:docker >/dev/null 2>&1
-echo "--- Sherloq session closed ---"
-EOF
-    sudo chmod +x /usr/local/bin/sherloq
-}
-
 # --- MAIN EXECUTION BLOCK ---
 exec > >(tee -a "$LOG_FILE") 2>&1
 
 {
     echo "#################################################################"
     echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT             #"
-    echo "# Version: 7.0 (Giada - Final Release Candidate)                #"
-    echo "#                                                               #"
+    echo "# Version: 7.1 (Giada - Stable Release)                         #"
+    echo "# Full log will be saved to: $LOG_FILE                          #"
     echo "#################################################################"
-	echo "Full log will be saved to:"
-	echo "$LOG_FILE"
-
-    mkdir -p "$PROGRAMS_DIR"
 
     mkdir -p "$PROGRAMS_DIR"
 
@@ -134,7 +73,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     echo "--> Installing packages, one by one for maximum resilience..."
     PACKAGES=(
-        curl git gpg pipx flatpak unzip build-essential pkg-config libsodium-dev golang-go sq
+        gnupg curl git gpg pipx flatpak unzip build-essential pkg-config libsodium-dev golang-go sq
         locales-all fonts-noto-core
         firefox-esr-l10n-it libreoffice-l10n-it manpages-it
         firefox-esr-l10n-ru libreoffice-l10n-ru manpages-ru
@@ -224,20 +163,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     sudo apt update
     sudo apt install -y sn0int || true
 
-    echo "--> Installing EyeWitness..."
-    cd "$PROGRAMS_DIR"
-    if [ ! -d "EyeWitness" ]; then
-        git clone https://github.com/RedSiege/EyeWitness.git
-    fi
-    cd EyeWitness
-    python3 -m venv EyeWitnessEnvironment
-    source EyeWitnessEnvironment/bin/activate
-    cd Python/setup
-    sed -i 's/sudo pip/pip/g' setup.sh
-    sed -i 's/sudo -H pip/pip/g' setup.sh
-    ./setup.sh || true
-    deactivate
-
     echo "--> Installing theHarvester (official method)..."
     if ! command -v uv >/dev/null 2>&1; then
       curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -254,8 +179,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     go install -v github.com/owasp-amass/amass/v4/...@master || echo "WARNING: Failed to install Amass."
     export PATH=$(go env GOPATH)/bin:$PATH
 
-    install_sherloq_with_docker
-
     cd "$PROGRAMS_DIR"
     if [ ! -d "Mr.Holmes" ]; then
         git clone https://github.com/Lucksi/Mr.Holmes
@@ -270,7 +193,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     cd "$HOME/Documents/scripts"
     URLS=(
         "api.sh" "domain.sh" "framework.sh" "image.sh" "metadata.sh" "update.sh" "user.sh" "video.sh"
-        "api.desktop" "domain.desktop" "framework.desktop" "image.desktop" "metadata.desktop" "search.desktop" "update.desktop" "user.desktop" "video.desktop" "sherloq.desktop"
+        "api.desktop" "domain.desktop" "framework.desktop" "image.desktop" "metadata.desktop" "search.desktop" "update.desktop" "user.desktop" "video.desktop"
         "api.png" "domain.png" "framework.png" "image.png" "metadata.png" "search.png" "update.png" "user.png" "video.png"
     )
     for FILE in "${URLS[@]}"; do
@@ -308,7 +231,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     gsettings set $SCHEMA extend-height true || true
 
     echo "--> Configuring favorite applications..."
-    FAVORITES="['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'update.desktop', 'search.desktop', 'video.desktop', 'user.desktop', 'image.desktop', 'domain.desktop', 'metadata.desktop', 'framework.desktop', 'api.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop', 'sherloq.desktop']"
+    FAVORITES="['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'update.desktop', 'search.desktop', 'video.desktop', 'user.desktop', 'image.desktop', 'domain.desktop', 'metadata.desktop', 'framework.desktop', 'api.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop']"
     gsettings set org.gnome.shell favorite-apps "$FAVORITES" || true
 
     # ###############################################################
