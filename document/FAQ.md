@@ -1,6 +1,6 @@
 # Frequently Asked Questions (FAQ)
 
-## Indice
+## Table of Contents
 
 * [Introduction](#introduction)
     * [What is the Speculator Project?](#what-is-the-speculator-project)
