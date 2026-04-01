@@ -1,12 +1,13 @@
 ################################################################################
 ## OSINT Unified Input Script (English Version + Improvements)
+## Version 2.0.0 - Phase E: Bug fixes (recursive main→while loop, maigret path, eyes path, pushd safety, ~ →$HOME, BDFR flag)
 ## Version 1.0.1 - Added proper Maigret virtual environment activation and reports path
 ## Previous version: 1.0.0 - Initial script
 ################################################################################
 
 set -euo pipefail
 
-EVIDENCE_DIR="$HOME/Desktop/evidences"
+EVIDENCE_DIR="$HOME/Desktop/evidence"
 
 ###############################################################################
 # 0. Pre-check: verify that required tools are installed
@@ -22,7 +23,6 @@ REQUIRED_TOOLS=(
  sth
  sherlock
  bdfr
- 
 )
 
 check_required_tools() {
@@ -35,7 +35,7 @@ check_required_tools() {
 }
 
 ###############################################################################
-# 1. Ensure ~/Desktop/evidences directory exists
+# 1. Ensure $HOME/Desktop/evidence directory exists
 ###############################################################################
 ensure_base_dir() {
  if [ ! -d "$EVIDENCE_DIR" ]; then
@@ -119,7 +119,10 @@ run_all_email_tools() {
  socialscan "$inputValue" --json "$sessionDir/$inputValue-socialscan.txt"
 
  # 3) Eyes
- pushd ~/Downloads/Programs/eyes/Eyes >/dev/null 2>&1
+ pushd "$HOME/Downloads/Programs/Eyes" >/dev/null 2>&1 || {
+   zenity --error --text="Eyes directory not found at $HOME/Downloads/Programs/Eyes"
+   return 1
+ }
  python3 eyes.py "$inputValue"
  popd >/dev/null 2>&1
 
@@ -127,7 +130,7 @@ run_all_email_tools() {
  ghunt email "$inputValue" > "$sessionDir/$inputValue-GHunt.txt"
 
  # 5) H8Mail
- h8mail -t "$inputValue" -c ~/Downloads/h8mail_config.ini \
+ h8mail -t "$inputValue" -c "$HOME/Downloads/h8mail_config.ini" \
    -o "$sessionDir/$inputValue-H8Mail.txt"
 
  zenity --info --text="All email tools have finished.\nResults are in: $sessionDir"
@@ -164,7 +167,10 @@ run_email_tools() {
      xdg-open "$sessionDir/$inputValue-socialscan.txt" >/dev/null 2>&1 &
      ;;
    "Email-Eyes")
-     pushd ~/Downloads/Programs/eyes/Eyes >/dev/null 2>&1
+     pushd "$HOME/Downloads/Programs/Eyes" >/dev/null 2>&1 || {
+       zenity --error --text="Eyes directory not found at $HOME/Downloads/Programs/Eyes"
+       return 1
+     }
      python3 eyes.py "$inputValue"
      popd >/dev/null 2>&1
      zenity --info --text="Eyes completed. Check the eyes/Eyes folder for any extra outputs.\nPartial results are not automatically saved here."
@@ -174,7 +180,7 @@ run_email_tools() {
      xdg-open "$sessionDir/$inputValue-GHunt.txt" >/dev/null 2>&1 &
      ;;
    "Email-H8Mail")
-     h8mail -t "$inputValue" -c ~/Downloads/h8mail_config.ini \
+     h8mail -t "$inputValue" -c "$HOME/Downloads/h8mail_config.ini" \
        -o "$sessionDir/$inputValue-H8Mail.txt"
      xdg-open "$sessionDir/$inputValue-H8Mail.txt" >/dev/null 2>&1 &
      ;;
@@ -249,29 +255,33 @@ run_all_username_tools() {
  socialscan "$inputValue" --json "$sessionDir/$inputValue-socialscan.txt"
 
  # 3) Blackbird
- pushd ~/Downloads/Programs/blackbird >/dev/null 2>&1
+ pushd "$HOME/Downloads/Programs/blackbird" >/dev/null 2>&1 || {
+   zenity --error --text="Blackbird directory not found"
+   return 1
+ }
  python3 blackbird.py -u "$inputValue" --pdf
  popd >/dev/null 2>&1
- mv -f ~/Downloads/Programs/blackbird/results/* "$sessionDir" 2>/dev/null || true
+ mv -f "$HOME/Downloads/Programs/blackbird/results"/* "$sessionDir" 2>/dev/null || true
 
  # 4) Maigret
- source ~/Downloads/Programs/maigret/maigretEnvironment/bin/activate
- maigret -a -T "$inputValue" --folderoutput="$sessionDir"
- deactivate
+ maigret -a -P -T "$inputValue" --folderoutput="$sessionDir"
 
  # 5) WhatsMyName
- pushd ~/Downloads/Programs/WhatsMyName-Python >/dev/null 2>&1
+ pushd "$HOME/Downloads/Programs/WhatsMyName-Python" >/dev/null 2>&1 || {
+   zenity --error --text="WhatsMyName-Python directory not found"
+   return 1
+ }
  python3 whatsmyname.py -u "$inputValue" | tee "$sessionDir/$inputValue-WhatsMyName.txt"
  popd >/dev/null 2>&1
 
  # 6) BDFR
  mkdir -p "$sessionDir/BDFR"
  bdfr archive "$sessionDir/BDFR" --user "$inputValue" --submitted
- bdfr archive "$sessionDir/BDFR" --user "$inputValue" --all-comments
+ bdfr archive "$sessionDir/BDFR" --user "$inputValue" --allcomments
 
  # 7) H8Mail
  h8mail -t "$inputValue" -q username \
-   -c ~/Downloads/h8mail_config.ini \
+   -c "$HOME/Downloads/h8mail_config.ini" \
    -o "$sessionDir/$inputValue-H8Mail.txt"
 
  zenity --info --text="All username tools have finished.\nReports are in: $sessionDir"
@@ -310,20 +320,24 @@ run_username_tools() {
      xdg-open "$sessionDir/$inputValue-socialscan.txt" >/dev/null 2>&1 &
      ;;
    "Username-Blackbird")
-     pushd ~/Downloads/Programs/blackbird >/dev/null 2>&1
+     pushd "$HOME/Downloads/Programs/blackbird" >/dev/null 2>&1 || {
+       zenity --error --text="Blackbird directory not found"
+       return 1
+     }
      python3 blackbird.py -u "$inputValue" --pdf
      popd >/dev/null 2>&1
-     mv -f ~/Downloads/Programs/blackbird/results/* "$sessionDir" 2>/dev/null || true
+     mv -f "$HOME/Downloads/Programs/blackbird/results"/* "$sessionDir" 2>/dev/null || true
      zenity --info --text="Blackbird done. Files in 'results' were moved to $sessionDir."
      ;;
    "Username-Maigret")
-     source ~/Downloads/Programs/maigret/maigretEnvironment/bin/activate
-     maigret -a -T "$inputValue" --folderoutput="$sessionDir"
-     deactivate
+     maigret -a -P -T "$inputValue" --folderoutput="$sessionDir"
      zenity --info --text="Maigret done. Reports saved in $sessionDir."
      ;;
    "Username-WhatsMyName")
-     pushd ~/Downloads/Programs/WhatsMyName-Python >/dev/null 2>&1
+     pushd "$HOME/Downloads/Programs/WhatsMyName-Python" >/dev/null 2>&1 || {
+       zenity --error --text="WhatsMyName-Python directory not found"
+       return 1
+     }
      python3 whatsmyname.py -u "$inputValue" | tee "$sessionDir/$inputValue-WhatsMyName.txt"
      popd >/dev/null 2>&1
      xdg-open "$sessionDir/$inputValue-WhatsMyName.txt" >/dev/null 2>&1 &
@@ -331,12 +345,12 @@ run_username_tools() {
    "Username-BDFR")
      mkdir -p "$sessionDir/BDFR"
      bdfr archive "$sessionDir/BDFR" --user "$inputValue" --submitted
-     bdfr archive "$sessionDir/BDFR" --user "$inputValue" --all-comments
+     bdfr archive "$sessionDir/BDFR" --user "$inputValue" --allcomments
      xdg-open "$sessionDir/BDFR" >/dev/null 2>&1 &
      ;;
    "Username-H8Mail")
      h8mail -t "$inputValue" -q username \
-       -c ~/Downloads/h8mail_config.ini \
+       -c "$HOME/Downloads/h8mail_config.ini" \
        -o "$sessionDir/$inputValue-H8Mail.txt"
      xdg-open "$sessionDir/$inputValue-H8Mail.txt" >/dev/null 2>&1 &
      ;;
@@ -350,50 +364,35 @@ run_username_tools() {
 # 10. Main flow
 ###############################################################################
 main() {
- # 10.a) Check that all required tools are installed
- check_required_tools
+  check_required_tools
+  ensure_base_dir
 
- # 10.b) Prompt for input
- local inputValue
- inputValue=$(zenity --entry \
-   --title="OSINT Tool - Single Input" \
-   --text="Enter a username, email, or hash:" \
-   --width=400)
+  while true; do
+    local inputValue
+    inputValue=$(zenity --entry \
+      --title="OSINT Tool - Single Input" \
+      --text="Enter a username, email, or hash:" \
+      --width=400) || break
 
- # If user cancels
- if [ -z "${inputValue:-}" ]; then
-   exit 0
- fi
+    if [ -z "${inputValue:-}" ]; then
+      break
+    fi
 
- # 10.c) Classify
- local category
- category=$(classify_input "$inputValue")
+    local category
+    category=$(classify_input "$inputValue")
 
- # 10.d) Show the menu relevant to the detected category
- case "$category" in
-   "email")
-     run_email_tools "$inputValue"
-     ;;
-   "hash")
-     run_hash_tools "$inputValue"
-     ;;
-   "username")
-     run_username_tools "$inputValue"
-     ;;
- esac
+    case "$category" in
+      "email")    run_email_tools "$inputValue" ;;
+      "hash")     run_hash_tools "$inputValue" ;;
+      "username") run_username_tools "$inputValue" ;;
+    esac
 
- # 10.e) Ask if user wants to repeat
- zenity --question \
-   --title="Repeat?" \
-   --text="Do you want to run another query?" \
-   --ok-label="Yes" \
-   --cancel-label="No"
-
- if [ "$?" -eq 0 ]; then
-   main
- else
-   exit 0
- fi
+    zenity --question \
+      --title="Repeat?" \
+      --text="Do you want to run another query?" \
+      --ok-label="Yes" \
+      --cancel-label="No" || break
+  done
 }
 
 main
