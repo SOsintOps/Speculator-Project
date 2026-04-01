@@ -55,7 +55,7 @@ Yes, it can be used for investigations. However, functionality is not guaranteed
 No, we do not provide pre-configured virtual machines.
 
 ### How can I prepare a Debian virtual machine?
-We recommend following the instructions provided in OSINT Techniques, 11th Edition by Michael Bazzell, specifically in Chapter 8: OSINT VM Operating Systems, which details the preparation of the operating system and virtual machine environment.
+Use VirtualBox. Create a new VM with at least 4 GB of RAM and 50 GB of disk space, then install Debian 13 "Trixie" (amd64). The script installs VirtualBox Guest Additions automatically, which enables shared folders, clipboard sharing and display auto-resize. For detailed VM setup instructions, refer to Chapter 8 of *OSINT Techniques, 11th Edition* by Michael Bazzell.
 
 ### Is this project designed for digital forensics too?
 No, this project focuses on OSINT. It does not include tools for digital forensic investigations.
