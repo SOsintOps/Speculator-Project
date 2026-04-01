@@ -4,14 +4,8 @@ Maintain and update the Speculator Project: a Bash-based installer that configur
 
 ## Modified Files
 
-No files modified in this session.
-
-Unstaged changes present from previous sessions (line-ending normalisation only, no functional changes):
-- README.md
-- document/FAQ.md
-- document/speculatores.md
-- scripts/user.sh
-- LICENSE
+- `tests/test_speculator_install.sh` (new file — automated test suite, 24 tests)
+- `.git/config` (local: `core.eol=lf`, `core.autocrlf=false` — enforces LF checkout on WSL/Windows)
 
 ## Logical State
 
@@ -21,20 +15,18 @@ Unstaged changes present from previous sessions (line-ending normalisation only,
   - README.md reflects Debian 13 "Trixie" as the target OS
   - FAQ and documentation pages updated
   - `scripts/user.sh` v1.0.1 includes Maigret virtual environment fix
+  - `scripts/user.sh` line endings normalised to LF (was CRLF, broke `bash -n` syntax check)
+  - `core.eol=lf` set in local git config to prevent CRLF re-introduction on WSL/Windows checkouts
+  - Automated test suite at `tests/test_speculator_install.sh`: 24 tests, all passing
 
 - Open bugs / incomplete:
-  - Line-ending inconsistency (CRLF vs LF) across README.md, FAQ.md, speculatores.md, user.sh — not committed
-  - No automated tests for the install script
-  - `start.ps1` (Windows launcher) not reviewed this session
+  - `start.ps1` (Windows launcher) not reviewed
+  - No CI pipeline — tests must be run manually
 
 ## Next Action
 
-Review and commit the line-ending changes if intentional:
+Commit the new test file:
 ```bash
-git add README.md document/FAQ.md document/speculatores.md scripts/user.sh LICENSE
-git commit -m "Normalise line endings to LF"
-```
-Or revert them if unintended:
-```bash
-git checkout -- README.md document/FAQ.md document/speculatores.md scripts/user.sh LICENSE
+git add tests/test_speculator_install.sh
+git commit -m "Add automated test suite for install script (24 tests)"
 ```
