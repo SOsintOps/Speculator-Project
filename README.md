@@ -4,7 +4,7 @@
 
 The Speculator Project is inspired by the techniques outlined in the book [OSINT Techniques, 11th Edition](https://inteltechniques.com/book1.html) by Michael Bazzell. It demonstrates how to adapt these methods and tools to meet individual needs.
 
-This project provides a Bash script designed to customize Debian-based virtual machines specifically for Open Source Intelligence (OSINT) activities. Its goal is to create a secure and standardized environment for intelligence gathering.
+This project provides a Bash script designed to customise Debian-based virtual machines specifically for Open Source Intelligence (OSINT) activities. Its goal is to create a secure and standardised environment for intelligence gathering.
 
 ### The Speculatores
 
@@ -14,7 +14,7 @@ The term "Speculatores" refers to Roman scouts and intelligence officers who pla
 
   - **Comprehensive Tool Installation**: Offers a variety of tools for analyzing usernames, social media, metadata, domains, and more.
   - **Browser Setup**: Configures Firefox, Brave, and Tor browsers to enhance secure research.
-  - **Desktop Customization**: Optimizes the GNOME desktop environment specifically for Open Source Intelligence (OSINT) workflows.
+  - **Desktop Customisation**: Configures the GNOME desktop environment for OSINT workflows.
   - **Resilient Installation**: The script is designed to continue even if a single tool fails to install, ensuring the most complete setup possible.
 
 ## System Requirements
@@ -112,7 +112,7 @@ After installation and a system reboot, the tools and environment are ready for 
 
 ## Contribution
 
-We’d love to hear from you\! Your ideas and contributions can make a real difference. Don’t hesitate to open issues or submit pull requests to help us enhance the project together\!
+Open an issue or submit a pull request. All contributions are welcome.
 
 ## License
 

@@ -1,4 +1,4 @@
-# Project Status — Instructions for AI
+# Project Status: Instructions for AI
 
 This document describes the current state of the **Speculator Project** and
 provides operational instructions for an AI continuing the work.
@@ -14,11 +14,11 @@ launcher scripts and customises the GNOME desktop.
 Inspired by *OSINT Techniques, 11th Edition* by Michael Bazzell.
 
 Key files:
-- `speculator_install.sh` — main installation script (v8.0)
-- `scripts/user.sh` — Zenity GUI script for running OSINT tools against a target
-- `document/CHANGELOG.md` — full history of changes
-- `document/FAQ.md` — frequently asked questions
-- `document/speculatores.md` — historical background on the project name
+- `speculator_install.sh`: main installation script (v8.0)
+- `scripts/user.sh`: Zenity GUI script for running OSINT tools against a target
+- `document/CHANGELOG.md`: full history of changes
+- `document/FAQ.md`: frequently asked questions
+- `document/speculatores.md`: historical background on the project name
 
 ---
 
@@ -46,7 +46,7 @@ dry-run mode, and ready for testing on a real VM.
 
 ## Phases still to complete
 
-### PHASE B — Custom launcher scripts (HIGH PRIORITY)
+### PHASE B: Custom launcher scripts (HIGH PRIORITY)
 
 **Problem**: the project currently downloads launcher scripts
 (`api.sh`, `domain.sh`, `user.sh`, etc.) directly from
@@ -60,14 +60,14 @@ has. The original scripts may change or become unavailable.
 **Files to create**:
 ```
 scripts/
-  api.sh        — API tools (Shodan, Censys, etc.)
-  domain.sh     — domain tools (Amass, Sublist3r, theHarvester, etc.)
-  framework.sh  — OSINT frameworks (Recon-ng, SpiderFoot, Sn0int)
-  image.sh      — image tools (ExifTool, MAT2, etc.)
-  metadata.sh   — metadata tools (Carbon14, Metagoofil, etc.)
-  update.sh     — update all tools via pipx / git pull
-  user.sh       — already present, but needs fixes (see Phase E)
-  video.sh      — video tools (yt-dlp, streamlink, gallery-dl)
+  api.sh        - API tools (Shodan, Censys, etc.)
+  domain.sh     - domain tools (Amass, Sublist3r, theHarvester, etc.)
+  framework.sh  - OSINT frameworks (Recon-ng, SpiderFoot, Sn0int)
+  image.sh      - image tools (ExifTool, MAT2, etc.)
+  metadata.sh   - metadata tools (Carbon14, Metagoofil, etc.)
+  update.sh     - update all tools via pipx / git pull
+  user.sh       - already present, but needs fixes (see Phase E)
+  video.sh      - video tools (yt-dlp, streamlink, gallery-dl)
 ```
 
 Each script must:
@@ -77,7 +77,7 @@ Each script must:
 
 ---
 
-### PHASE C — Normalised JSON output (MEDIUM PRIORITY)
+### PHASE C: Normalised JSON output (MEDIUM PRIORITY)
 
 **Goal**: add structured JSON output to every OSINT tool call so results
 can be inserted into a database.
@@ -100,7 +100,7 @@ tool's text output into the above format and writes it to
 
 ---
 
-### PHASE D — Phone number category in `scripts/user.sh` (MEDIUM PRIORITY)
+### PHASE D: Phone number category in `scripts/user.sh` (MEDIUM PRIORITY)
 
 **Goal**: add detection and handling of phone numbers as an input type,
 alongside email / hash / username.
@@ -120,11 +120,11 @@ alongside email / hash / username.
 
 ---
 
-### PHASE E — Bug fixes in `scripts/user.sh` (HIGH PRIORITY)
+### PHASE E: Bug fixes in `scripts/user.sh` (HIGH PRIORITY)
 
 The file `scripts/user.sh` contains three known bugs:
 
-#### Bug 1 — Recursion in `main()` (CRITICAL)
+#### Bug 1: Recursion in `main()` (CRITICAL)
 ```bash
 # CURRENT (causes stack overflow on long sessions):
 if [ "$?" -eq 0 ]; then
@@ -141,9 +141,9 @@ main() {
 }
 ```
 
-#### Bug 2 — Wrong maigret path (CRITICAL)
+#### Bug 2: Wrong maigret path (CRITICAL)
 ```bash
-# CURRENT (venv does not exist — maigret is installed via pipx):
+# CURRENT (venv does not exist; maigret is installed via pipx):
 source ~/Downloads/Programs/maigret/maigretEnvironment/bin/activate
 maigret ...
 deactivate
@@ -153,7 +153,7 @@ deactivate
 "$HOME/.local/bin/maigret" -a -T "$inputValue" --folderoutput="$sessionDir"
 ```
 
-#### Bug 3 — Wrong Eyes path (MINOR)
+#### Bug 3: Wrong Eyes path (MINOR)
 ```bash
 # CURRENT:
 pushd ~/Downloads/Programs/eyes/Eyes
@@ -166,9 +166,9 @@ pushd ~/Downloads/Programs/Eyes
 
 ## Rules to follow during development
 
-1. **Do not edit** `document/CHANGELOG.md` mid-phase — update it only at the
+1. **Do not edit** `document/CHANGELOG.md` mid-phase. Update it only at the
    end of each phase with a new `## [8.x]` block.
-2. **Do not create files in the project root** — use `scripts/` for scripts
+2. **Do not create files in the project root.** Use `scripts/` for scripts
    and `document/` for documentation.
 3. **Keep the `tracked()` / `mark_ok()` / `mark_fail()` pattern** for any new
    tool added to `speculator_install.sh`.
@@ -177,7 +177,7 @@ pushd ~/Downloads/Programs/Eyes
 5. **Zenity** is the UI framework for all scripts in `scripts/`.
 6. **Evidence output** always goes to `~/Desktop/evidences/{target}/`.
 7. **Always read a file in full** before modifying it.
-8. **Never hardcode user paths** — use `$HOME` or XDG variables.
+8. **Never hardcode user paths.** Use `$HOME` or XDG variables.
 
 ---
 
@@ -187,8 +187,7 @@ pushd ~/Downloads/Programs/Eyes
   (IT/EN/RU/ZH) or a single script with runtime language selection?
 - **Database backend for Phase C**: SQLite, flat JSON files, or something
   else? Decide before implementing parsers.
-- **Argos**: evaluated (modular Python OSINT tool) but not integrated —
-  out of scope for now.
+- **Argos**: evaluated (modular Python OSINT tool) but not integrated. Out of scope for now.
 
 ---
 

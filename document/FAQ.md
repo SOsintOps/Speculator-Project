@@ -19,10 +19,10 @@
     * [How can I learn to use the installed tools?](#how-can-i-learn-to-use-the-installed-tools)
     * [Can I modify the script for my own needs?](#can-i-modify-the-script-for-my-own-needs)
     * [Can I propose other scripts for OSINT?](#can-i-propose-other-scripts-for-osint)
-    * [Where can I learn about customizing Zenity scripts?](#where-can-i-learn-about-customizing-zenity-scripts)
+    * [Where can I learn about customising Zenity scripts?](#where-can-i-learn-about-customising-zenity-scripts)
 * [Affiliation and Development](#affiliation-and-development)
     * [Is this project affiliated with Michael Bazzell?](#is-this-project-affiliated-with-michael-bazzell)
-    * [Are you affiliated with any organizations?](#are-you-affiliated-with-any-organizations)
+    * [Are you affiliated with any organisations?](#are-you-affiliated-with-any-organisations)
 * [Contribution](#contribution)
     * [How can I contribute to the Speculator Project?](#how-can-i-contribute-to-the-speculator-project)
 * [Additional Information](#additional-information)
@@ -33,7 +33,7 @@
 ## Introduction
 
 ### What is the Speculator Project?
-It is a Bash script for customizing Debian-based virtual machines, specifically tailored for OSINT activities. It automates the installation and configuration of various tools, offering a secure and standardized environment for intelligence work.
+It is a Bash script for customising Debian-based virtual machines for OSINT activities. It automates the installation and configuration of tools and produces a standardised environment for intelligence work.
 
 ### Who is this project for?
 The Speculator Project is designed for OSINT practitioners, researchers, analysts, and professionals in related fields who need a pre-configured and reliable environment for efficient intelligence gathering.
@@ -41,7 +41,7 @@ The Speculator Project is designed for OSINT practitioners, researchers, analyst
 ## Legal and Disclaimer
 
 ### What is the license for this project?
-The Speculator Project script itself is currently provided under a license that is still under investigation. However, please note that the individual tools and scripts installed by the Speculator Project are subject to their respective licenses. We encourage users to review the licensing terms of each tool directly on their official repositories or documentation. The Speculator Project does not modify or take responsibility for the licensing terms of third-party software.
+The Speculator Project script is currently under licence review. The individual tools it installs are subject to their own licences. Review the licensing terms for each tool on its official repository. The Speculator Project does not modify or take responsibility for third-party licensing terms.
 
 ## Getting Started and Resources
 
@@ -63,36 +63,36 @@ No, this project focuses on OSINT. It does not include tools for digital forensi
 ### I don't know anything about OSINT. Where should I start?
 Resources for beginners:
 
-* **Criminal Intelligence: Manual for Analysts**: This manual offers a foundational understanding of criminal intelligence, with practical guidance for analysts looking to develop their investigative and analytical skills.
-* **Deep Dive: Exploring the Real-world Value of OSINT**: Written by Rae Baker, this book delves into practical OSINT applications with real-world examples, focusing on tools, techniques, and methodologies for effective open-source intelligence gathering.
-* **OSINT Techniques, 11th Edition**: Authored by Michael Bazzell, this comprehensive guide provides step-by-step instructions for using OSINT tools, tailored techniques, and strategies for conducting investigations.
+* **Criminal Intelligence: Manual for Analysts**: covers the basics of criminal intelligence analysis and investigative method.
+* **Deep Dive: Exploring the Real-world Value of OSINT** by Rae Baker: covers practical OSINT tools and techniques with real-world examples.
+* **OSINT Techniques, 11th Edition** by Michael Bazzell: step-by-step instructions for OSINT tools and investigation strategies.
 
 ## Tools: Usage and Customisation
 
 ### What tools are included in the Speculator Project?
-The script installs a comprehensive suite of tools for various OSINT tasks. For a complete and up-to-date list of all included software, please refer to the `Tools Included` section of the main README file.
+See the `Tools Included` section of the README for a full and current list of installed software.
 
 ### How can I learn to use the installed tools?
-For detailed instructions on how to use each tool, we recommend referring to their official documentation or guides. Additionally, comprehensive usage examples and strategies can be found in Michael Bazzell's *OSINT Techniques, 11th Edition* and Rae Baker's *Deep Dive: Exploring the Real-world Value of OSINT*.
+Refer to each tool's official documentation. Practical usage examples are covered in Michael Bazzell's *OSINT Techniques, 11th Edition* and Rae Baker's *Deep Dive: Exploring the Real-world Value of OSINT*.
 
 ### Can I modify the script for my own needs?
-Absolutely. You are encouraged to modify, adapt, or expand the script to best suit your specific workflow and requirements. If you develop improvements or customizations that you believe could benefit the community, we would be grateful if you shared them by opening an issue or submitting a pull request. We may adopt your solutions in future versions.
+Yes. Modify, adapt or expand the script to suit your workflow. If you develop customisations that others would find useful, open an issue or submit a pull request. We may include them in future versions.
 
 ### Can I propose other scripts for OSINT?
 Yes, contributions are welcome. Please note that not all suggestions can be added immediately.
 
-### Where can I learn about customizing Zenity scripts?
-Customizing Zenity scripts is covered in *OSINT Techniques, 11th Edition* by Michael Bazzell (page 137).
+### Where can I learn about customising Zenity scripts?
+Customising Zenity scripts is covered in *OSINT Techniques, 11th Edition* by Michael Bazzell (page 137).
 
 ## Affiliation and Development
 
 ### Is this project affiliated with Michael Bazzell?
-No. To be perfectly clear, there is no affiliation, partnership, or official endorsement of any kind with Michael Bazzell or IntelTechniques.
+No. There is no affiliation, partnership or endorsement of any kind with Michael Bazzell or IntelTechniques.
 
-The Speculator Project is a completely independent initiative inspired by the work and methodologies presented in his book, *OSINT Techniques, 11th Edition*. We highly recommend this book as a valuable resource for learning how to use the individual tools included in this script.
+The Speculator Project is an independent initiative inspired by his book, *OSINT Techniques, 11th Edition*. We recommend it as the primary reference for the tools included in this script.
 
-### Are you affiliated with any organizations?
-Yes, we are affiliated with the OSINT-focused blog osintops.com.
+### Are you affiliated with any organisations?
+Yes. We are affiliated with osintops.com.
 
 ## Contribution
 
@@ -112,4 +112,4 @@ Yes, AI tools were used to assist in creating this project. Rest assured, no AI 
 The Speculatores were ancient Roman scouts and reconnaissance officers who gathered intelligence for military operations. More details can be found in the `Speculatores Historical Background`.
 
 ### Why did you choose this name?
-It is a long story. The name "Speculatores" was chosen to honor the intelligence and reconnaissance traditions of the Roman Empire, reflecting the project's mission of providing tools for modern OSINT and intelligence work.
+The name "Speculatores" was chosen to honour the intelligence and reconnaissance traditions of the Roman Empire. See the Speculatores Historical Background document for more detail.
