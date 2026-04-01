@@ -20,7 +20,9 @@ The term "Speculatores" refers to Roman scouts and intelligence officers who pla
 ## System Requirements
 
   - **Operating System**: **Debian 13 "Trixie" (amd64)**.
+  - **Virtualisation**: **VirtualBox** (recommended). The script installs VirtualBox Guest Additions automatically.
   - **Disk Space**: Minimum **50 GB** recommended.
+  - **RAM**: Minimum **4 GB** recommended.
   - **Permissions**: Sudo privileges are required.
   - **Internet Connection**: Needed to download and configure tools.
 

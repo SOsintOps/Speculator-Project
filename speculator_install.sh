@@ -270,6 +270,37 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     sudo apt update
 
+    # ---------------------------------------------------------------
+    # VirtualBox Guest Additions
+    # Enables shared folders, clipboard, display auto-resize and
+    # drag-and-drop between host and guest.
+    # Packages are in the 'contrib' component; enable it if missing.
+    # ---------------------------------------------------------------
+    echo "--> Configuring VirtualBox Guest Additions..."
+    _SOURCES_FILE="/etc/apt/sources.list"
+    if ! grep -q "contrib" "$_SOURCES_FILE" 2>/dev/null \
+        && ! grep -rq "contrib" /etc/apt/sources.list.d/ 2>/dev/null; then
+        echo "INFO: Enabling 'contrib' component for VirtualBox guest packages..."
+        sudo sed -i 's/main$/main contrib non-free non-free-firmware/' "$_SOURCES_FILE" || true
+        sudo apt update
+    fi
+
+    if sudo apt install -y \
+        virtualbox-guest-utils \
+        virtualbox-guest-x11 \
+        linux-headers-$(uname -r) \
+        dkms; then
+        mark_ok "vbox:guest-additions"
+        # Add the real user to the vboxsf group for shared folder access
+        sudo usermod -aG vboxsf "$REAL_USER" \
+            || echo "WARNING: Could not add $REAL_USER to vboxsf group."
+        sudo systemctl enable virtualbox-guest-utils.service 2>/dev/null || true
+    else
+        echo "WARNING: VirtualBox Guest Additions install failed."
+        echo "INFO: Install manually from VirtualBox menu: Devices > Insert Guest Additions CD."
+        mark_fail "vbox:guest-additions"
+    fi
+
     echo "--> Installing system packages (one-by-one for resilience)..."
     PACKAGES=(
         # Core build tools
