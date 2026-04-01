@@ -1,11 +1,11 @@
-# Changelog — Speculator Project
+# Changelog: Speculator Project
 
 All notable changes to this project will be documented in this file.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
-## [8.0] — 2026-04-01
+## [8.0] - 2026-04-01
 
 ### Structural rewrite of `speculator_install.sh` (v7.3 → v8.0)
 
@@ -17,10 +17,10 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   `SUDO_USER` + `getent passwd` so all user-space files land in the correct
   home directory even when the script is run as root.
 - **XDG-compliant directory layout**:
-  - `~/.local/share/speculator/logs/` — install logs
-  - `~/.local/share/speculator/scripts/` — launcher scripts
-  - `~/.local/share/icons/speculator/` — icons
-  - `~/.config/speculator/` — tool configs (e.g. h8mail)
+  - `~/.local/share/speculator/logs/`: install logs
+  - `~/.local/share/speculator/scripts/`: launcher scripts
+  - `~/.local/share/icons/speculator/`: icons
+  - `~/.config/speculator/`: tool configs (e.g. h8mail)
 - **Full tee logging** to `$LOG_DIR/install_YYYY-MM-DD_HH-MM-SS.log`;
   machine-readable results written to a separate `install_results_*.txt`.
 - **Installation tracking**: `_INSTALL_OK` / `_INSTALL_FAIL` bash arrays +
@@ -86,7 +86,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
-## [7.3] — (pre-rewrite baseline)
+## [7.3] - (pre-rewrite baseline)
 
 Original script. Single-user hardcoded paths, no tracking, no dry-run.
 Targeted earlier Debian versions. No structured changelog maintained.
