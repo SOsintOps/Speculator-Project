@@ -5,6 +5,55 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [8.2] - 2026-04-05
+
+### Installer fixes and user.sh v2.0.3
+
+#### Fixed — `speculator_install.sh`
+- **Wallpaper path**: corrected from `wallpapers/speculator1.jpg` to
+  `media/wallpapers/speculator1.jpg`; wallpaper was silently skipped and
+  desktop fell back to the solid colour `rgb(66, 81, 100)`.
+- **Taskbar (GNOME 47 incompatibility)**: replaced `gnome-shell-extension-dash-to-dock`
+  with `gnome-shell-extension-dash-to-panel`. `dash-to-dock` is incompatible with
+  GNOME 47 (Debian Trixie) and caused the top panel to disappear entirely.
+  Phase 5 now disables `dash-to-dock`, enables `dash-to-panel`, and configures a
+  bottom panel at height 36px.
+- **`zenity` missing from PACKAGES**: added to the Desktop / utilities group.
+  `user.sh` requires Zenity; it was not being installed by the script.
+- **`user.sh` local copy**: Phase 4 now copies `scripts/user.sh` from the repo to
+  `$SCRIPTS_DIR`, overriding the IntelTechniques-downloaded version.
+
+#### Added — `speculator_install.sh`
+- **`turboholehe`**: added to `PIPX_PACKAGES`.
+- **`mailcat`**: added via `install_py_tool_from_git`.
+- **`Profil3r`**: added via `install_py_tool_from_git`.
+
+#### Fixed — `scripts/user.sh` (v2.0.3)
+- **`blackbird` removed from `REQUIRED_TOOLS`**: Blackbird is a Python script,
+  not a PATH binary. `command -v blackbird` always failed, causing the script
+  to exit at startup. Blackbird presence is now verified via `pushd` at call time.
+- **`h8mail` config path**: corrected from `$HOME/Downloads/h8mail_config.ini`
+  to `$HOME/h8mail_config.ini` (where the installer generates it via `h8mail -g`).
+- **`h8mail -q username` flag removed**: `-q` is not a valid h8mail flag. Removed
+  from both `run_all_username_tools` and the `Username-H8Mail` menu case.
+- **Eyes output message**: `run_all_email_tools` now shows a Zenity info dialog
+  after Eyes completes, informing the user that output is in the Eyes directory
+  (Eyes does not support a custom output path).
+- **Turboholehe input**: Turboholehe takes a name+surname, not an email address.
+  The menu option now opens a separate Zenity entry asking for first and last name.
+  Removed from `run_all_email_tools` (no name context available there).
+- **Wayland compatibility**: added `GDK_BACKEND=x11` guard for Wayland sessions.
+- **Zenity bootstrap guard**: `check_required_tools` now checks for Zenity itself
+  first via `echo >&2` before attempting to use it for error dialogs.
+
+#### Added — `scripts/user.sh` (v2.0.3)
+- **Mr.Holmes**: added to username tools menu and `run_all_username_tools`.
+  Runs `python3 Holmes.py -u <username> --all` from `$HOME/Downloads/Programs/Mr.Holmes`;
+  output saved to `$sessionDir/$inputValue-MrHolmes.txt`.
+- **Turboholehe**: added to email tools menu (asks for name+surname separately).
+
+---
+
 ## [8.1] - 2026-04-04
 
 ### Multiple fixes and additions

@@ -312,10 +312,10 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         default-jre httrack webhttrack libimage-exiftool-perl
         mediainfo-gui mat2 subversion
         # Desktop / utilities
-        kazam bleachbit libxcb-cursor0 docker.io
+        zenity kazam bleachbit libxcb-cursor0 docker.io
         # GNOME extensions
         gnome-shell-extensions gnome-shell-extension-manager
-        gnome-shell-extension-dash-to-dock
+        gnome-shell-extension-dash-to-panel
     )
     for pkg in "${PACKAGES[@]}"; do
         sudo apt install -y "$pkg" || echo "WARNING: Failed to install '$pkg', continuing..."
@@ -461,6 +461,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         shodan
         fierce
         censys
+        turboholehe
     )
     for pkg in "${PIPX_PACKAGES[@]}"; do
         if run_as_user pipx install "$pkg"; then
@@ -486,6 +487,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     install_py_tool_from_git "https://github.com/opsdisk/metagoofil"
     install_py_tool_from_git "https://github.com/smicallef/spiderfoot"
     install_py_tool_from_git "https://github.com/lanmaster53/recon-ng" "REQUIREMENTS"
+    install_py_tool_from_git "https://github.com/sharsil/mailcat"
+    install_py_tool_from_git "https://github.com/Greyjedix/Profil3r"
 
     # -- 3c. h8mail configuration --
     echo "--> Configuring h8mail..."
@@ -642,6 +645,15 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     chmod +x "$SCRIPTS_DIR/"*.sh 2>/dev/null || true
 
+    # Copy user.sh from repo to SCRIPTS_DIR (local version overrides downloaded)
+    _REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+    if [ -f "$_REPO_DIR/scripts/user.sh" ]; then
+        echo "--> Installing local user.sh..."
+        cp "$_REPO_DIR/scripts/user.sh" "$SCRIPTS_DIR/user.sh"
+        chown "$REAL_USER:$REAL_USER" "$SCRIPTS_DIR/user.sh" 2>/dev/null || true
+        chmod +x "$SCRIPTS_DIR/user.sh"
+    fi
+
     # Create evidence directory in Downloads and add Desktop symlink
     echo "--> Setting up evidence directory..."
     run_as_user mkdir -p "$REAL_HOME/Downloads/evidence"
@@ -674,33 +686,35 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
         sudo apt install -y gnome-extensions-cli || true
 
+        # Remove dash-to-dock if present — incompatible with GNOME 47 and causes the
+        # top panel to disappear entirely.
+        sudo apt remove -y gnome-shell-extension-dash-to-dock 2>/dev/null || true
+
         # gnome-extensions enable requires a running gnome-shell session
         if command -v pgrep >/dev/null 2>&1 && pgrep -x gnome-shell >/dev/null 2>&1; then
-            run_as_user gnome-extensions enable "dash-to-dock@micxgx.gmail.com" \
-                || echo "WARNING: Could not enable dash-to-dock extension."
+            run_as_user gnome-extensions disable "dash-to-dock@micxgx.gmail.com" 2>/dev/null || true
+            run_as_user gnome-extensions enable "dash-to-panel@jderose9.github.com" \
+                || echo "WARNING: Could not enable dash-to-panel extension."
         else
-            echo "INFO: gnome-shell not running; dash-to-dock will be enabled on next login."
+            echo "INFO: gnome-shell not running; dash-to-panel will be enabled on next login."
         fi
 
-        SCHEMA_DOCK="org.gnome.shell.extensions.dash-to-dock"
-        LOCAL_SCHEMA="$REAL_HOME/.local/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/schemas/"
+        SCHEMA_PANEL="org.gnome.shell.extensions.dash-to-panel"
+        LOCAL_SCHEMA="$REAL_HOME/.local/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas/"
         # Use an array to safely handle paths with spaces and avoid word splitting
         SCHEMA_ARGS=()
         [ -d "$LOCAL_SCHEMA" ] && SCHEMA_ARGS=(--schemadir "$LOCAL_SCHEMA")
 
         # gsettings requires a D-Bus session; skip silently if not in a GUI session
         if [ -n "${DBUS_SESSION_BUS_ADDRESS:-}" ] || [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; then
-            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK autohide false || true
-            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK autohide-in-fullscreen false || true
-            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK intellihide false || true
-            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK dash-max-icon-size 32 || true
-            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK dock-fixed true || true
-            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK dock-position 'RIGHT' || true
-            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK extend-height true || true
+            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_PANEL panel-positions '{"0":"BOTTOM"}' || true
+            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_PANEL panel-sizes '{"0":36}' || true
+            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_PANEL appicon-margin 8 || true
+            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_PANEL show-activities-button false || true
 
             run_as_user gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark' || true
             run_as_user gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close" || true
-            _WALLPAPER_SRC="$(dirname "$0")/wallpapers/speculator1.jpg"
+            _WALLPAPER_SRC="$(dirname "$0")/media/wallpapers/speculator1.jpg"
             _WALLPAPER_DEST="$REAL_HOME/Pictures/speculator1.jpg"
             run_as_user mkdir -p "$REAL_HOME/Pictures"
             if [ -f "$_WALLPAPER_SRC" ]; then
@@ -710,7 +724,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
                 run_as_user gsettings set org.gnome.desktop.background picture-uri-dark "file://$_WALLPAPER_DEST" || true
                 run_as_user gsettings set org.gnome.desktop.background picture-options 'zoom' || true
             else
-                echo "INFO: wallpapers/speculator1.jpg not found. Skipping wallpaper."
+                echo "INFO: media/wallpapers/speculator1.jpg not found. Skipping wallpaper."
                 run_as_user gsettings set org.gnome.desktop.background picture-uri '' || true
                 run_as_user gsettings set org.gnome.desktop.background picture-uri-dark '' || true
             fi
