@@ -5,6 +5,47 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [8.1] - 2026-04-04
+
+### Multiple fixes and additions
+
+#### Added
+- **WireTapper** (`git:WireTapper`): wireless/cellular network OSINT tool; requires
+  API keys for Wigle.net, wpa-sec, OpenCellID, and Shodan; installed via `install_py_tool_from_git`
+  with `WireTapper.txt` requirements.
+- **TLDSweep** (`git:TLDSweep`): domain TLD sweep and monitoring tool; pure Python
+  stdlib, no requirements file; simple git clone install.
+- **Evidence directory**: `$HOME/Downloads/evidence/` created during Phase 4; Desktop
+  symlink `$HOME/Desktop/evidence → $HOME/Downloads/evidence` added for easy access.
+- **Wallpaper support**: `wallpapers/speculator1.jpg` copied to `$HOME/Pictures/` and
+  set via `gsettings picture-uri` with `picture-options 'zoom'`; falls back to solid
+  colour if file not present.
+
+#### Fixed
+- **phoneinfoga**: replaced `go install github.com/sundowndev/phoneinfoga/v2@latest`
+  (fails on Python 3.13 / missing `client/dist/*` assets) with precompiled binary
+  download from GitHub Releases (`phoneinfoga_Linux_x86_64.tar.gz`). Binary installed
+  to `$HOME/.local/bin/`. Tracking label changed to `bin:phoneinfoga`.
+- **recon-ng**: requirements file argument corrected from `"requirements.txt"` back to
+  `"REQUIREMENTS"` (the actual filename in the lanmaster53/recon-ng repo).
+- **VirtualBox Guest Additions**: removed apt install attempt. Replaced with a
+  `lsmod | grep vboxguest` check that marks `vbox:guest-additions` OK if already
+  present, or prints manual install instructions and continues without failing.
+- **Installation log path**: `LOG_DIR` changed from `~/.local/share/speculator/logs/`
+  to `~/Downloads/`; install log and results file now written directly to Downloads.
+
+#### Changed
+- **`scripts/user.sh`** (renamed from `users.sh`):
+  - Added missing `#!/usr/bin/env bash` shebang.
+  - `EVIDENCE_DIR` updated from `$HOME/Desktop/evidence` to `$HOME/Downloads/evidence`.
+- **Dock position**: changed from `LEFT` to `RIGHT` via `gsettings dash-to-dock dock-position`.
+- **GNOME debloat**: `apt purge` block added in Phase 6. Removed: all GNOME games,
+  `gnome-music`, `rhythmbox`, `cheese`, `gnome-weather`, `gnome-clocks`, `gnome-calendar`,
+  `gnome-contacts`, `epiphany-browser`, `shotwell`, `gnome-software`.
+  Kept: `evolution`, `totem`, `gnome-maps`, `simple-scan`.
+
+---
+
 ## [8.0] - 2026-04-01
 
 ### Structural rewrite of `speculator_install.sh` (v7.3 → v8.0)
