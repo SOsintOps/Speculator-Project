@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 ################################################################################
 ## OSINT Unified Input Script (English Version + Improvements)
+## Version 2.0.3 - Remove blackbird from REQUIRED_TOOLS; fix h8mail config path;
+##                 fix Eyes message in run_all; Turboholehe asks name+surname;
+##                 GDK_BACKEND for Wayland; zenity bootstrap guard; h8mail -q removed;
+##                 Mr.Holmes added to username tools
+## Version 2.0.2 - Add maigret to REQUIRED_TOOLS; remove -e flag; fix comment
 ## Version 2.0.1 - Evidence dir moved to ~/Downloads/evidence; renamed to user.sh
-## Version 2.0.0 - Phase E: Bug fixes (recursive main→while loop, maigret path, eyes path, pushd safety, ~ →$HOME, BDFR flag)
+## Version 2.0.0 - Phase E: Bug fixes (recursive main→while loop, maigret path,
+##                 eyes path, pushd safety, ~ →$HOME, BDFR flag)
 ## Version 1.0.1 - Added proper Maigret virtual environment activation and reports path
-## Previous version: 1.0.0 - Initial script
+## Version 1.0.0 - Initial script
 ################################################################################
 
-set -euo pipefail
+set -uo pipefail
+[ "$XDG_SESSION_TYPE" = "wayland" ] && export GDK_BACKEND=x11
 
 EVIDENCE_DIR="$HOME/Downloads/evidence"
 
@@ -25,19 +32,25 @@ REQUIRED_TOOLS=(
  sth
  sherlock
  bdfr
+ maigret
 )
 
 check_required_tools() {
+ if ! command -v zenity &>/dev/null; then
+   echo "ERROR: zenity is not installed. Run: sudo apt install zenity" >&2
+   exit 1
+ fi
  for tool in "${REQUIRED_TOOLS[@]}"; do
    if ! command -v "$tool" &>/dev/null; then
-     zenity --error --text="The tool '$tool' is not installed or not in PATH.\nPlease install it before running this script."
+     zenity --error --text="The tool '$tool' is not installed or not in PATH.\nPlease install it before running this script." \
+       2>/dev/null
      exit 1
    fi
  done
 }
 
 ###############################################################################
-# 1. Ensure $HOME/Desktop/evidence directory exists
+# 1. Ensure $HOME/Downloads/evidence directory exists
 ###############################################################################
 ensure_base_dir() {
  if [ ! -d "$EVIDENCE_DIR" ]; then
@@ -120,22 +133,25 @@ run_all_email_tools() {
  # 2) SocialScan
  socialscan "$inputValue" --json "$sessionDir/$inputValue-socialscan.txt"
 
- # 3) Eyes
+ # 3) Eyes (output goes to Eyes' own directory, not to evidence)
  pushd "$HOME/Downloads/Programs/Eyes" >/dev/null 2>&1 || {
-   zenity --error --text="Eyes directory not found at $HOME/Downloads/Programs/Eyes"
+   zenity --error --text="Eyes directory not found at $HOME/Downloads/Programs/Eyes" 2>/dev/null
    return 1
  }
  python3 eyes.py "$inputValue"
  popd >/dev/null 2>&1
+ zenity --info \
+   --text="Eyes completed.\nOutput is in: $HOME/Downloads/Programs/Eyes\n(Eyes does not support a custom output path.)" \
+   2>/dev/null
 
  # 4) GHunt
  ghunt email "$inputValue" > "$sessionDir/$inputValue-GHunt.txt"
 
  # 5) H8Mail
- h8mail -t "$inputValue" -c "$HOME/Downloads/h8mail_config.ini" \
+ h8mail -t "$inputValue" -c "$HOME/h8mail_config.ini" \
    -o "$sessionDir/$inputValue-H8Mail.txt"
 
- zenity --info --text="All email tools have finished.\nResults are in: $sessionDir"
+ zenity --info --text="All email tools have finished.\nResults are in: $sessionDir" 2>/dev/null
 }
 
 ###############################################################################
@@ -152,6 +168,7 @@ run_email_tools() {
    --title="Email Tools" \
    --column="Tool" \
    "Email-Holehe" \
+   "Email-Turboholehe" \
    "Email-SocialScan" \
    "Email-Eyes" \
    "Email-GHunt" \
@@ -163,6 +180,20 @@ run_email_tools() {
    "Email-Holehe")
      holehe "$inputValue" > "$sessionDir/$inputValue-Holehe.txt"
      xdg-open "$sessionDir/$inputValue-Holehe.txt" >/dev/null 2>&1 &
+     ;;
+   "Email-Turboholehe")
+     if ! command -v turboholehe &>/dev/null; then
+       zenity --error --text="Turboholehe is not installed.\nRun: pipx install turboholehe" 2>/dev/null
+     else
+       local fullname
+       fullname=$(zenity --entry \
+         --title="Turboholehe" \
+         --text="Enter first and last name (e.g. John Smith):" \
+         --width=400 2>/dev/null) || return
+       [ -z "$fullname" ] && return
+       turboholehe $fullname > "$sessionDir/${fullname// /_}-Turboholehe.txt" 2>/dev/null || true
+       xdg-open "$sessionDir/${fullname// /_}-Turboholehe.txt" >/dev/null 2>&1 &
+     fi
      ;;
    "Email-SocialScan")
      socialscan "$inputValue" --json "$sessionDir/$inputValue-socialscan.txt"
@@ -182,7 +213,7 @@ run_email_tools() {
      xdg-open "$sessionDir/$inputValue-GHunt.txt" >/dev/null 2>&1 &
      ;;
    "Email-H8Mail")
-     h8mail -t "$inputValue" -c "$HOME/Downloads/h8mail_config.ini" \
+     h8mail -t "$inputValue" -c "$HOME/h8mail_config.ini" \
        -o "$sessionDir/$inputValue-H8Mail.txt"
      xdg-open "$sessionDir/$inputValue-H8Mail.txt" >/dev/null 2>&1 &
      ;;
@@ -268,7 +299,17 @@ run_all_username_tools() {
  # 4) Maigret
  maigret -a -P -T "$inputValue" --folderoutput="$sessionDir"
 
- # 5) WhatsMyName
+ # 5) Mr.Holmes
+ if [ -d "$HOME/Downloads/Programs/Mr.Holmes" ]; then
+   pushd "$HOME/Downloads/Programs/Mr.Holmes" >/dev/null 2>&1 || {
+     zenity --error --text="Mr.Holmes directory not found" 2>/dev/null
+     return 1
+   }
+   python3 Holmes.py -u "$inputValue" --all | tee "$sessionDir/$inputValue-MrHolmes.txt"
+   popd >/dev/null 2>&1
+ fi
+
+ # 6) WhatsMyName
  pushd "$HOME/Downloads/Programs/WhatsMyName-Python" >/dev/null 2>&1 || {
    zenity --error --text="WhatsMyName-Python directory not found"
    return 1
@@ -276,17 +317,18 @@ run_all_username_tools() {
  python3 whatsmyname.py -u "$inputValue" | tee "$sessionDir/$inputValue-WhatsMyName.txt"
  popd >/dev/null 2>&1
 
- # 6) BDFR
+ # 7) BDFR
  mkdir -p "$sessionDir/BDFR"
  bdfr archive "$sessionDir/BDFR" --user "$inputValue" --submitted
  bdfr archive "$sessionDir/BDFR" --user "$inputValue" --allcomments
 
- # 7) H8Mail
- h8mail -t "$inputValue" -q username \
-   -c "$HOME/Downloads/h8mail_config.ini" \
+ # 8) H8Mail
+ h8mail -t "$inputValue" \
+   -c "$HOME/h8mail_config.ini" \
    -o "$sessionDir/$inputValue-H8Mail.txt"
 
- zenity --info --text="All username tools have finished.\nReports are in: $sessionDir"
+ zenity --info --text="All username tools have finished.\nReports are in: $sessionDir" \
+   2>/dev/null
 }
 
 ###############################################################################
@@ -306,6 +348,7 @@ run_username_tools() {
    "Username-SocialScan" \
    "Username-Blackbird" \
    "Username-Maigret" \
+   "Username-Mr.Holmes" \
    "Username-WhatsMyName" \
    "Username-BDFR" \
    "Username-H8Mail" \
@@ -335,6 +378,19 @@ run_username_tools() {
      maigret -a -P -T "$inputValue" --folderoutput="$sessionDir"
      zenity --info --text="Maigret done. Reports saved in $sessionDir."
      ;;
+   "Username-Mr.Holmes")
+     if [ -d "$HOME/Downloads/Programs/Mr.Holmes" ]; then
+       pushd "$HOME/Downloads/Programs/Mr.Holmes" >/dev/null 2>&1 || {
+         zenity --error --text="Mr.Holmes directory not found" 2>/dev/null
+         return 1
+       }
+       python3 Holmes.py -u "$inputValue" --all | tee "$sessionDir/$inputValue-MrHolmes.txt"
+       popd >/dev/null 2>&1
+       xdg-open "$sessionDir/$inputValue-MrHolmes.txt" >/dev/null 2>&1 &
+     else
+       zenity --error --text="Mr.Holmes not found at $HOME/Downloads/Programs/Mr.Holmes" 2>/dev/null
+     fi
+     ;;
    "Username-WhatsMyName")
      pushd "$HOME/Downloads/Programs/WhatsMyName-Python" >/dev/null 2>&1 || {
        zenity --error --text="WhatsMyName-Python directory not found"
@@ -351,8 +407,8 @@ run_username_tools() {
      xdg-open "$sessionDir/BDFR" >/dev/null 2>&1 &
      ;;
    "Username-H8Mail")
-     h8mail -t "$inputValue" -q username \
-       -c "$HOME/Downloads/h8mail_config.ini" \
+     h8mail -t "$inputValue" \
+       -c "$HOME/h8mail_config.ini" \
        -o "$sessionDir/$inputValue-H8Mail.txt"
      xdg-open "$sessionDir/$inputValue-H8Mail.txt" >/dev/null 2>&1 &
      ;;
