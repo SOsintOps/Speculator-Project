@@ -1,5 +1,7 @@
+#!/usr/bin/env bash
 ################################################################################
 ## OSINT Unified Input Script (English Version + Improvements)
+## Version 2.0.1 - Evidence dir moved to ~/Downloads/evidence; renamed to user.sh
 ## Version 2.0.0 - Phase E: Bug fixes (recursive main→while loop, maigret path, eyes path, pushd safety, ~ →$HOME, BDFR flag)
 ## Version 1.0.1 - Added proper Maigret virtual environment activation and reports path
 ## Previous version: 1.0.0 - Initial script
@@ -7,7 +9,7 @@
 
 set -euo pipefail
 
-EVIDENCE_DIR="$HOME/Desktop/evidence"
+EVIDENCE_DIR="$HOME/Downloads/evidence"
 
 ###############################################################################
 # 0. Pre-check: verify that required tools are installed

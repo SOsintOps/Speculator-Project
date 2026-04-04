@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 8.0 (Phase A - Structural Fixes)
+# # Version: 8.1
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -57,7 +57,7 @@ fi
 # XDG-COMPLIANT DIRECTORY STRUCTURE
 # ---------------------------------------------------------------
 PROGRAMS_DIR="$REAL_HOME/Downloads/Programs"
-LOG_DIR="$REAL_HOME/.local/share/speculator/logs"
+LOG_DIR="$REAL_HOME/Downloads"
 SCRIPTS_DIR="$REAL_HOME/.local/share/speculator/scripts"
 ICONS_DIR="$REAL_HOME/.local/share/icons/speculator"
 DESKTOP_DIR="$REAL_HOME/.local/share/applications"
@@ -267,38 +267,26 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     # PHASE 1: SYSTEM PREPARATION
     # ###############################################################
     echo "--- PHASE 1: System Preparation and Dependencies ---"
+    echo "    [ALEA IACTA EST] Machina configuratur. Hostes ignorant. Bene."
 
     sudo apt update
 
     # ---------------------------------------------------------------
-    # VirtualBox Guest Additions
-    # Enables shared folders, clipboard, display auto-resize and
-    # drag-and-drop between host and guest.
-    # Packages are in the 'contrib' component; enable it if missing.
+    # VirtualBox Guest Additions — PREREQUISITE (manual install)
+    # Must be installed by the user BEFORE running this script.
+    # VirtualBox menu > Devices > Insert Guest Additions CD image...
+    # then: sudo mount /dev/cdrom /mnt && sudo sh /mnt/VBoxLinuxAdditions.run
     # ---------------------------------------------------------------
-    echo "--> Configuring VirtualBox Guest Additions..."
-    _SOURCES_FILE="/etc/apt/sources.list"
-    if ! grep -q "contrib" "$_SOURCES_FILE" 2>/dev/null \
-        && ! grep -rq "contrib" /etc/apt/sources.list.d/ 2>/dev/null; then
-        echo "INFO: Enabling 'contrib' component for VirtualBox guest packages..."
-        sudo sed -i 's/main$/main contrib non-free non-free-firmware/' "$_SOURCES_FILE" || true
-        sudo apt update
-    fi
-
-    if sudo apt install -y \
-        virtualbox-guest-utils \
-        virtualbox-guest-x11 \
-        linux-headers-$(uname -r) \
-        dkms; then
+    echo "--> Checking VirtualBox Guest Additions (prerequisite)..."
+    if lsmod 2>/dev/null | grep -q "vboxguest"; then
+        echo "INFO: VirtualBox Guest Additions detected. OK."
         mark_ok "vbox:guest-additions"
-        # Add the real user to the vboxsf group for shared folder access
-        sudo usermod -aG vboxsf "$REAL_USER" \
-            || echo "WARNING: Could not add $REAL_USER to vboxsf group."
-        sudo systemctl enable virtualbox-guest-utils.service 2>/dev/null || true
     else
-        echo "WARNING: VirtualBox Guest Additions install failed."
-        echo "INFO: Install manually from VirtualBox menu: Devices > Insert Guest Additions CD."
-        mark_fail "vbox:guest-additions"
+        echo "INFO: VirtualBox Guest Additions not detected."
+        echo "INFO: Install manually before next run:"
+        echo "INFO:   VirtualBox menu > Devices > Insert Guest Additions CD image..."
+        echo "INFO:   sudo mount /dev/cdrom /mnt && sudo sh /mnt/VBoxLinuxAdditions.run"
+        echo "INFO: Continuing installation without Guest Additions."
     fi
 
     echo "--> Installing system packages (one-by-one for resilience)..."
@@ -349,6 +337,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     # PHASE 2: CORE APPLICATIONS
     # ###############################################################
     echo "--- PHASE 2: Core Applications ---"
+    echo "    [NOTA BENE] Applicationes parantur. Agens noster in umbra vigilat."
 
     # -- Firefox ESR: profile template --
     echo "--> Configuring Firefox ESR..."
@@ -438,6 +427,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     # PHASE 3: OSINT TOOLS
     # ###############################################################
     echo "--- PHASE 3: OSINT Tools ---"
+    echo "    [CAVE] Plura instrumenta installantur quam nemo umquam usurus est. Hoc est OSINT."
 
     # -- 3a. pipx tools --
     echo "--> Installing tools via pipx..."
@@ -495,7 +485,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     install_py_tool_from_git "https://github.com/Lazza/Carbon14"
     install_py_tool_from_git "https://github.com/opsdisk/metagoofil"
     install_py_tool_from_git "https://github.com/smicallef/spiderfoot"
-    install_py_tool_from_git "https://github.com/lanmaster53/recon-ng" "requirements.txt"
+    install_py_tool_from_git "https://github.com/lanmaster53/recon-ng" "REQUIREMENTS"
 
     # -- 3c. h8mail configuration --
     echo "--> Configuring h8mail..."
@@ -560,7 +550,14 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     tracked "go:subfinder"   run_as_user go install -v "github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
     tracked "go:httpx"       run_as_user go install -v "github.com/projectdiscovery/httpx/cmd/httpx@latest"
     tracked "go:nuclei"      run_as_user go install -v "github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest"
-    tracked "go:phoneinfoga" run_as_user go install -v "github.com/sundowndev/phoneinfoga/v2@latest"
+    echo "--> Installing phoneinfoga (precompiled binary)..."
+    tracked "bin:phoneinfoga" run_as_user bash -c "
+        curl -fsSL 'https://github.com/sundowndev/phoneinfoga/releases/latest/download/phoneinfoga_Linux_x86_64.tar.gz' \
+        -o /tmp/phoneinfoga.tar.gz && \
+        tar -xz -C \$HOME/.local/bin/ -f /tmp/phoneinfoga.tar.gz phoneinfoga && \
+        chmod +x \$HOME/.local/bin/phoneinfoga && \
+        rm -f /tmp/phoneinfoga.tar.gz
+    "
 
     # Ensure Go binaries are in PATH for subsequent commands
     REAL_GOPATH=$(run_as_user go env GOPATH 2>/dev/null || echo "$REAL_HOME/go")
@@ -585,6 +582,22 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         mark_ok "git:Mr.Holmes"
     fi
 
+    # -- 3h. WireTapper (wireless/cellular network OSINT, requires API keys) --
+    install_py_tool_from_git "https://github.com/h9zdev/WireTapper" "WireTapper.txt"
+
+    # -- 3i. TLDSweep (domain TLD sweep, stdlib only — no requirements) --
+    echo "--> Cloning TLDSweep..."
+    if [ ! -d "$PROGRAMS_DIR/TLDSweep" ]; then
+        if run_as_user git clone "https://github.com/DarkWebInformer/TLDSweep.git" "$PROGRAMS_DIR/TLDSweep"; then
+            mark_ok "git:TLDSweep"
+        else
+            echo "WARNING: TLDSweep clone failed."
+            mark_fail "git:TLDSweep"
+        fi
+    else
+        mark_ok "git:TLDSweep"
+    fi
+
 
     # ###############################################################
     # PHASE 4: LAUNCHERS AND SCRIPTS
@@ -592,6 +605,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     #  these in a future release.)
     # ###############################################################
     echo "--- PHASE 4: Scripts and Launchers ---"
+    echo "    [FIAT LUX] Scripturae appositae. Agens iam cliccare potest sine terminali."
 
     INTEL_BASE="https://${INTEL_USER}:${INTEL_PASS}@inteltechniques.com/osintvm"
     SCRIPT_NAMES=(api domain framework image metadata update user video)
@@ -628,6 +642,14 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     chmod +x "$SCRIPTS_DIR/"*.sh 2>/dev/null || true
 
+    # Create evidence directory in Downloads and add Desktop symlink
+    echo "--> Setting up evidence directory..."
+    run_as_user mkdir -p "$REAL_HOME/Downloads/evidence"
+    if [ ! -e "$REAL_HOME/Desktop/evidence" ]; then
+        run_as_user ln -s "$REAL_HOME/Downloads/evidence" "$REAL_HOME/Desktop/evidence" \
+            || echo "INFO: Could not create Desktop/evidence symlink (Desktop may not exist yet)."
+    fi
+
     # Install desktop files system-wide so GNOME picks them up
     sudo cp "$DESKTOP_DIR"/speculator-*.desktop /usr/share/applications/ 2>/dev/null || true
     sudo gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
@@ -643,6 +665,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     # (Skipped automatically if GNOME 40+ is not detected)
     # ###############################################################
     echo "--- PHASE 5: GNOME Look and Feel ---"
+    echo "    [QUAESTIO] Desktop ornatur. Quia etiam speculator aestheticam curat."
 
     # Use POSIX grep -o (no -P flag) for compatibility with minimal Debian installs
     GNOME_VERSION=$(gnome-shell --version 2>/dev/null | grep -o '[0-9]*' | head -1 || echo "0")
@@ -672,13 +695,25 @@ exec > >(tee -a "$LOG_FILE") 2>&1
             run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK intellihide false || true
             run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK dash-max-icon-size 32 || true
             run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK dock-fixed true || true
-            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK dock-position 'LEFT' || true
+            run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK dock-position 'RIGHT' || true
             run_as_user gsettings "${SCHEMA_ARGS[@]}" set $SCHEMA_DOCK extend-height true || true
 
             run_as_user gsettings set org.gnome.Terminal.Legacy.Settings theme-variant 'dark' || true
             run_as_user gsettings set org.gnome.desktop.wm.preferences button-layout ":minimize,maximize,close" || true
-            run_as_user gsettings set org.gnome.desktop.background picture-uri '' || true
-            run_as_user gsettings set org.gnome.desktop.background picture-uri-dark '' || true
+            _WALLPAPER_SRC="$(dirname "$0")/wallpapers/speculator1.jpg"
+            _WALLPAPER_DEST="$REAL_HOME/Pictures/speculator1.jpg"
+            run_as_user mkdir -p "$REAL_HOME/Pictures"
+            if [ -f "$_WALLPAPER_SRC" ]; then
+                cp "$_WALLPAPER_SRC" "$_WALLPAPER_DEST" || true
+                chown "$REAL_USER:$REAL_USER" "$_WALLPAPER_DEST" 2>/dev/null || true
+                run_as_user gsettings set org.gnome.desktop.background picture-uri "file://$_WALLPAPER_DEST" || true
+                run_as_user gsettings set org.gnome.desktop.background picture-uri-dark "file://$_WALLPAPER_DEST" || true
+                run_as_user gsettings set org.gnome.desktop.background picture-options 'zoom' || true
+            else
+                echo "INFO: wallpapers/speculator1.jpg not found. Skipping wallpaper."
+                run_as_user gsettings set org.gnome.desktop.background picture-uri '' || true
+                run_as_user gsettings set org.gnome.desktop.background picture-uri-dark '' || true
+            fi
             run_as_user gsettings set org.gnome.desktop.background primary-color 'rgb(66, 81, 100)' || true
             run_as_user gsettings set org.gnome.desktop.notifications show-banners false || true
             run_as_user gsettings set org.gnome.desktop.session idle-delay 0 || true
@@ -701,10 +736,30 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     # PHASE 6: FINAL CLEANUP
     # ###############################################################
     echo "--- PHASE 6: Finalizing and Cleaning Up ---"
+    echo "    [VALE] Operatio finita. Nunc speculate... vel somnum cape. Melius speculate."
 
     sudo apt update
     sudo apt upgrade -y
     sudo apt --fix-broken install -y
+
+    # ---------------------------------------------------------------
+    # Debloat: remove default GNOME applications useless for OSINT
+    # Kept: evolution, totem, gnome-maps, simple-scan
+    # ---------------------------------------------------------------
+    echo "--> Removing unused GNOME applications..."
+    _BLOAT=(
+        aisleriot gnome-mahjongg gnome-mines gnome-sudoku quadrapassel
+        iagno swell-foop tali hitori lightsoff gnome-robots
+        five-or-more four-in-a-row gnome-tetravex
+        gnome-music rhythmbox
+        cheese
+        gnome-weather gnome-clocks gnome-calendar gnome-contacts
+        epiphany-browser
+        shotwell
+        gnome-software
+    )
+    sudo apt purge -y "${_BLOAT[@]}" 2>/dev/null || true
+
     sudo apt autoremove -y
 
     rm -f "$REAL_HOME/Downloads/google-earth-stable_current_amd64.deb" 2>/dev/null || true
