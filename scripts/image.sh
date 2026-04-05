@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # image.sh — Zenity GUI launcher for image metadata and OSINT tools
-# Version : v1.0.0
+# Version : 0.1.0
 # Phase   : B
 # Project : Speculator OSINT VM (Debian 13)
 # Tools   : exiftool (apt), mat2 (apt), xeuledoc (pipx)

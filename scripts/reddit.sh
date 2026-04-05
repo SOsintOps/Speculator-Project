@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # reddit.sh — Zenity GUI launcher for Reddit OSINT tools
-# Version   : v1.0.0
+# Version   : 0.1.0
 # Phase     : B
 # Project   : Speculator Project
 # =============================================================================

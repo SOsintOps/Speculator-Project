@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 ################################################################################
 ## OSINT Unified Input Script (English Version + Improvements)
-## Version 2.0.3 - Remove blackbird from REQUIRED_TOOLS; fix h8mail config path;
-##                 fix Eyes message in run_all; Turboholehe asks name+surname;
-##                 GDK_BACKEND for Wayland; zenity bootstrap guard; h8mail -q removed;
-##                 Mr.Holmes added to username tools
-## Version 2.0.2 - Add maigret to REQUIRED_TOOLS; remove -e flag; fix comment
-## Version 2.0.1 - Evidence dir moved to ~/Downloads/evidence; renamed to user.sh
-## Version 2.0.0 - Phase E: Bug fixes (recursive main→while loop, maigret path,
-##                 eyes path, pushd safety, ~ →$HOME, BDFR flag)
-## Version 1.0.1 - Added proper Maigret virtual environment activation and reports path
-## Version 1.0.0 - Initial script
+## Version 0.2.0.3 - Remove blackbird from REQUIRED_TOOLS; fix h8mail config path;
+##                   fix Eyes message in run_all; Turboholehe asks name+surname;
+##                   GDK_BACKEND for Wayland; zenity bootstrap guard; h8mail -q removed;
+##                   Mr.Holmes added to username tools
+## Version 0.2.0.2 - Add maigret to REQUIRED_TOOLS; remove -e flag; fix comment
+## Version 0.2.0.1 - Evidence dir moved to ~/Downloads/evidence; renamed to user.sh
+## Version 0.2.0.0 - Phase E: Bug fixes (recursive main→while loop, maigret path,
+##                   eyes path, pushd safety, ~ →$HOME, BDFR flag)
+## Version 0.1.0.1 - Added proper Maigret virtual environment activation and reports path
+## Version 0.1.0.0 - Initial script
 ################################################################################
 
 set -uo pipefail
