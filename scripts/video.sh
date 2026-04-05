@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ################################################################################
 ## Video Download and Processing Launcher
-## Version 1.0.0 - Phase B: Zenity GUI for yt-dlp, streamlink, gallery-dl, ffmpeg
+## Version 0.1.0 - Phase B: Zenity GUI for yt-dlp, streamlink, gallery-dl, ffmpeg
 ################################################################################
 
 set -uo pipefail

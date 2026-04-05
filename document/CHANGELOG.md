@@ -5,9 +5,28 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
-## [8.2] - 2026-04-05
+## [0.8.3] - 2026-04-06
 
-### Installer fixes and user.sh v2.0.3
+### Phase B launcher scripts added; version numbering moved to 0.x pre-release scheme
+
+#### Added
+- **Phase B scripts** (all at version 0.1.0): eight Zenity GUI launcher scripts added
+  to `scripts/`: `domain.sh`, `video.sh`, `image.sh`, `metadata.sh`, `api.sh`,
+  `instagram.sh`, `reddit.sh`, `archives.sh`. Each writes output to
+  `$HOME/Downloads/evidence/{target}/`.
+- **`media/icons/`**: desktop icon assets committed.
+- **`shortcuts/`**: legacy `.desktop` reference files committed.
+
+#### Changed
+- **Version numbering**: all version strings moved to `0.x` pre-release scheme.
+  Versioned releases begin at `1.0.0`. Mapping: `v8.x → 0.8.x`, `v2.x.y → 0.2.x.y`,
+  `v1.0.0 (Phase B) → 0.1.0`.
+
+---
+
+## [0.8.2] - 2026-04-05
+
+### Installer fixes and user.sh 0.2.0.3
 
 #### Fixed — `speculator_install.sh`
 - **Wallpaper path**: corrected from `wallpapers/speculator1.jpg` to
@@ -28,7 +47,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - **`mailcat`**: added via `install_py_tool_from_git`.
 - **`Profil3r`**: added via `install_py_tool_from_git`.
 
-#### Fixed — `scripts/user.sh` (v2.0.3)
+#### Fixed — `scripts/user.sh` (0.2.0.3)
 - **`blackbird` removed from `REQUIRED_TOOLS`**: Blackbird is a Python script,
   not a PATH binary. `command -v blackbird` always failed, causing the script
   to exit at startup. Blackbird presence is now verified via `pushd` at call time.
@@ -46,7 +65,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - **Zenity bootstrap guard**: `check_required_tools` now checks for Zenity itself
   first via `echo >&2` before attempting to use it for error dialogs.
 
-#### Added — `scripts/user.sh` (v2.0.3)
+#### Added — `scripts/user.sh` (0.2.0.3)
 - **Mr.Holmes**: added to username tools menu and `run_all_username_tools`.
   Runs `python3 Holmes.py -u <username> --all` from `$HOME/Downloads/Programs/Mr.Holmes`;
   output saved to `$sessionDir/$inputValue-MrHolmes.txt`.
@@ -54,7 +73,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
-## [8.1] - 2026-04-04
+## [0.8.1] - 2026-04-04
 
 ### Multiple fixes and additions
 
@@ -95,7 +114,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
-## [8.0] - 2026-04-01
+## [0.8.0] - 2026-04-01
 
 ### Structural rewrite of `speculator_install.sh` (v7.3 → v8.0)
 

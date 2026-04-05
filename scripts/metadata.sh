@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # metadata.sh — Zenity GUI launcher for metadata extraction tools
-# Version: v1.0.0 | Phase B
+# Version: 0.1.0 | Phase B
 # Tools: Carbon14, metagoofil, metagoofil + exiftool, mediainfo
 
 set -uo pipefail

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # archives.sh — Zenity GUI launcher for web archive tools
-# Version: v1.0.0 | Phase B
+# Version: 0.1.0 | Phase B
 # Part of the Speculator Project OSINT environment
 # Target OS: Debian 13 "Trixie" amd64
 

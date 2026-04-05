@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ################################################################################
 ## Domain OSINT Launcher
-## Version 1.0.0 - Phase B: Zenity GUI for domain reconnaissance tools
+## Version 0.1.0 - Phase B: Zenity GUI for domain reconnaissance tools
 ## Tools: Amass, Sublist3r, theHarvester, Photon, httrack
 ################################################################################
 

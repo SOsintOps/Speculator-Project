@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ################################################################################
 ## API OSINT Launcher
-## Version 1.0.0 - Phase B: Zenity GUI for API-based OSINT tools
+## Version 0.1.0 - Phase B: Zenity GUI for API-based OSINT tools
 ## Tools: SpiderFoot, recon-ng, Shodan CLI, Censys CLI
 ################################################################################
 
