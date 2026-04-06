@@ -15,6 +15,7 @@
     * [Is this project designed for digital forensics too?](#is-this-project-designed-for-digital-forensics-too)
     * [I don't know anything about OSINT. Where should I start?](#i-dont-know-anything-about-osint-where-should-i-start)
 * [Tools: Usage and Customisation](#tools-usage-and-customisation)
+    * [Why does Firefox take a long time to start the first time after installation?](#why-does-firefox-take-a-long-time-to-start-the-first-time-after-installation)
     * [What tools are included in the Speculator Project?](#what-tools-are-included-in-the-speculator-project)
     * [How can I learn to use the installed tools?](#how-can-i-learn-to-use-the-installed-tools)
     * [Can I modify the script for my own needs?](#can-i-modify-the-script-for-my-own-needs)
@@ -69,6 +70,9 @@ Resources for beginners:
 
 ## Tools: Usage and Customisation
 
+### Why does Firefox take a long time to start the first time after installation?
+This is normal. On the first launch after a fresh installation, Firefox performs initial profile setup, compiles shader caches and indexes extensions. Subsequent launches are fast. If Firefox appears to hang, wait up to two minutes before closing it.
+
 ### What tools are included in the Speculator Project?
 See the `Tools Included` section of the README for a full and current list of installed software.
 
@@ -82,7 +86,9 @@ Yes. Modify, adapt or expand the script to suit your workflow. If you develop cu
 Yes, contributions are welcome. Please note that not all suggestions can be added immediately.
 
 ### Where can I learn about customising Zenity scripts?
-Customising Zenity scripts is covered in *OSINT Techniques, 11th Edition* by Michael Bazzell (page 137).
+Customising Zenity scripts is covered in *OSINT Techniques, 11th Edition* by Michael Bazzell (page 137). The official Zenity documentation is available at [https://help.gnome.org/users/zenity/stable/](https://help.gnome.org/users/zenity/stable/).
+
+If you are serious about OSINT, reading the book and following Michael Bazzell's courses and podcast are strongly recommended. His material is among the most practical and consistently updated available in the field.
 
 ## Affiliation and Development
 
@@ -109,7 +115,7 @@ You can contribute by:
 Yes, AI tools were used to assist in creating this project. Rest assured, no AI was overworked during this process.
 
 ### Who were the Speculatores?
-The Speculatores were ancient Roman scouts and reconnaissance officers who gathered intelligence for military operations. More details can be found in the `Speculatores Historical Background`.
+The Speculatores were ancient Roman scouts and reconnaissance officers who gathered intelligence for military operations. After installation, you will find *A Travelling Speculator* in your Documents folder. Read it to understand the historical background and the thinking behind this project. Further detail is also available in the `Speculatores Historical Background` document included in the repository.
 
 ### Why did you choose this name?
 The name "Speculatores" was chosen to honour the intelligence and reconnaissance traditions of the Roman Empire. See the Speculatores Historical Background document for more detail.

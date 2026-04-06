@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 0.8.2
+# # Version: 0.8.5
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -10,7 +10,6 @@
 # USAGE:
 #   sudo ./speculator_install.sh              # Normal installation
 #   sudo ./speculator_install.sh --dry-run    # Simulate without installing
-#   INTEL_USER=x INTEL_PASS=y sudo ./speculator_install.sh
 # ###############################################################
 
 
@@ -31,16 +30,6 @@ done
 
 
 # ---------------------------------------------------------------
-# INTEL TECHNIQUES CREDENTIALS
-# Provided with "OSINT Techniques" book by Michael Bazzell.
-# Override at runtime:
-#   INTEL_USER=xxx INTEL_PASS=yyy sudo ./speculator_install.sh
-# ---------------------------------------------------------------
-INTEL_USER="${INTEL_USER:-tuvm}"
-INTEL_PASS="${INTEL_PASS:-311}"
-
-
-# ---------------------------------------------------------------
 # USER DETECTION (sudo-safe)
 # When invoked via sudo, target the invoking user, not root.
 # ---------------------------------------------------------------
@@ -56,7 +45,7 @@ fi
 # ---------------------------------------------------------------
 # XDG-COMPLIANT DIRECTORY STRUCTURE
 # ---------------------------------------------------------------
-PROGRAMS_DIR="$REAL_HOME/Downloads/Programs"
+PROGRAMS_DIR="$REAL_HOME/.local/share/speculator/programs"
 LOG_DIR="$REAL_HOME/Downloads"
 SCRIPTS_DIR="$REAL_HOME/.local/share/speculator/scripts"
 ICONS_DIR="$REAL_HOME/.local/share/icons/speculator"
@@ -302,7 +291,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         firefox-esr-l10n-ru libreoffice-l10n-ru
         # Chinese Simplified
         firefox-esr-l10n-zh-cn libreoffice-l10n-zh-cn
-        fonts-wqy-zenhei ibus-pinyin
+        fonts-wqy-zenhei fonts-noto-cjk
+        ibus ibus-gtk3 ibus-pinyin
         # Python
         python3-venv python3-pip python3-testresources python3-lxml
         libxml2-dev libxslt1-dev
@@ -320,6 +310,11 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     for pkg in "${PACKAGES[@]}"; do
         sudo apt install -y "$pkg" || echo "WARNING: Failed to install '$pkg', continuing..."
     done
+
+    # Set system default locale to British English.
+    # locales-all installs all locale definitions but does not set the system default.
+    echo "--> Setting system locale to en_GB.UTF-8..."
+    sudo update-locale LANG=en_GB.UTF-8 LC_MESSAGES=en_GB.UTF-8 || true
 
     # sq (sequoia-sq) — used for GPG key dearmoring; fall back to gpg if unavailable
     sudo apt install -y sq || echo "INFO: 'sq' not available; sn0int install will use gpg --dearmor fallback."
@@ -610,48 +605,60 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     echo "--- PHASE 4: Scripts and Launchers ---"
     echo "    [FIAT LUX] Scripturae appositae. Agens iam cliccare potest sine terminali."
 
-    INTEL_BASE="https://${INTEL_USER}:${INTEL_PASS}@inteltechniques.com/osintvm"
-    SCRIPT_NAMES=(api domain framework image metadata update user video)
-
-    # Helper: download and validate — removes file if empty or HTML error page
-    _download_asset() {
-        local dest="$1" url="$2"
-        run_as_user curl -fsSL --retry 3 -o "$dest" "$url" || true
-        if [ -f "$dest" ]; then
-            if [ ! -s "$dest" ]; then
-                echo "WARNING: Downloaded file is empty: $dest (removing)"
-                rm -f "$dest"
-            elif head -c 15 "$dest" 2>/dev/null | grep -qi "<!DOCTYPE\|<html"; then
-                echo "WARNING: $dest looks like an HTML page (wrong credentials?). Removing."
-                rm -f "$dest"
-            fi
-        fi
-    }
-
-    echo "--> Downloading IntelTechniques scripts, desktop files, and icons..."
-    for name in "${SCRIPT_NAMES[@]}"; do
-        _download_asset "$SCRIPTS_DIR/${name}.sh"      "${INTEL_BASE}/${name}.sh"
-        [ -f "$SCRIPTS_DIR/${name}.sh" ] \
-            || echo "WARNING: Failed to download ${name}.sh"
-        _download_asset "$DESKTOP_DIR/speculator-${name}.desktop" \
-            "${INTEL_BASE}/${name}.desktop"
-        _download_asset "$ICONS_DIR/speculator-${name}.png" \
-            "${INTEL_BASE}/${name}.png"
+    # Install all Phase B scripts from repo
+    _REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
+    echo "--> Installing scripts from repo..."
+    for _sh in "$_REPO_DIR/scripts/"*.sh; do
+        [ -f "$_sh" ] || continue
+        _sname="$(basename "$_sh")"
+        cp "$_sh" "$SCRIPTS_DIR/$_sname"
+        chown "$REAL_USER:$REAL_USER" "$SCRIPTS_DIR/$_sname" 2>/dev/null || true
+        chmod +x "$SCRIPTS_DIR/$_sname"
+        echo "    Installed: $_sname"
     done
 
-    # search has a desktop/icon but no standalone .sh
-    _download_asset "$DESKTOP_DIR/speculator-search.desktop" "${INTEL_BASE}/search.desktop"
-    _download_asset "$ICONS_DIR/speculator-search.png"       "${INTEL_BASE}/search.png"
+    # Install icons from media/icons/ with speculator- naming convention.
+    # Maps local icon filenames to the speculator-<name>.png convention.
+    echo "--> Installing icons from repo..."
+    declare -A _ICON_MAP=(
+        [user.png]=speculator-user.png
+        [domains.png]=speculator-domain.png
+        [instagram.png]=speculator-instagram.png
+        [youtube-dl.png]=speculator-video.png
+        [metagoofil.png]=speculator-metadata.png
+        [recon-ng.png]=speculator-api.png
+        [spiderfoot.png]=speculator-framework.png
+        [evidence.png]=speculator-evidence.png
+    )
+    for _src_icon in "${!_ICON_MAP[@]}"; do
+        _src_path="$_REPO_DIR/media/icons/$_src_icon"
+        _dst_path="$ICONS_DIR/${_ICON_MAP[$_src_icon]}"
+        if [ -f "$_src_path" ]; then
+            cp "$_src_path" "$_dst_path"
+            chown "$REAL_USER:$REAL_USER" "$_dst_path" 2>/dev/null || true
+        fi
+    done
 
-    chmod +x "$SCRIPTS_DIR/"*.sh 2>/dev/null || true
+    # Install shortcuts from repo.
+    # Each shortcuts/*.desktop is installed as speculator-<name>.desktop
+    # with __HOME__ substituted for the actual home directory.
+    echo "--> Installing shortcuts from repo..."
+    for _df in "$_REPO_DIR/shortcuts/"*.desktop; do
+        [ -f "$_df" ] || continue
+        _dest_name="speculator-$(basename "$_df")"
+        sed "s|__HOME__|$REAL_HOME|g" "$_df" > "$DESKTOP_DIR/$_dest_name"
+        chown "$REAL_USER:$REAL_USER" "$DESKTOP_DIR/$_dest_name" 2>/dev/null || true
+        echo "    Installed: $_dest_name"
+    done
 
-    # Copy user.sh from repo to SCRIPTS_DIR (local version overrides downloaded)
-    _REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
-    if [ -f "$_REPO_DIR/scripts/user.sh" ]; then
-        echo "--> Installing local user.sh..."
-        cp "$_REPO_DIR/scripts/user.sh" "$SCRIPTS_DIR/user.sh"
-        chown "$REAL_USER:$REAL_USER" "$SCRIPTS_DIR/user.sh" 2>/dev/null || true
-        chmod +x "$SCRIPTS_DIR/user.sh"
+    # Copy the Speculatores document to ~/Documents
+    echo "--> Installing Speculatores document..."
+    run_as_user mkdir -p "$REAL_HOME/Documents"
+    if [ -f "$_REPO_DIR/media/A Travelling Speculator.pdf" ]; then
+        cp "$_REPO_DIR/media/A Travelling Speculator.pdf" \
+            "$REAL_HOME/Documents/A Travelling Speculator.pdf"
+        chown "$REAL_USER:$REAL_USER" \
+            "$REAL_HOME/Documents/A Travelling Speculator.pdf" 2>/dev/null || true
     fi
 
     # Create evidence directory in Downloads and add Desktop symlink
@@ -667,9 +674,18 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     sudo gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
 
     # Set GNOME dock favourites (best-effort; may fail outside a GUI session)
-    _GNOME_FAVS="['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop', 'speculator-update.desktop', 'speculator-search.desktop', 'speculator-video.desktop', 'speculator-user.desktop', 'speculator-image.desktop', 'speculator-domain.desktop', 'speculator-metadata.desktop', 'speculator-framework.desktop', 'speculator-api.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop']"
+    # speculator-search and speculator-framework removed: no local replacements yet.
+    _GNOME_FAVS="['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'speculator-evidence.desktop', 'org.gnome.Terminal.desktop', 'speculator-update.desktop', 'speculator-video.desktop', 'speculator-user.desktop', 'speculator-image.desktop', 'speculator-domain.desktop', 'speculator-metadata.desktop', 'speculator-api.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop']"
     run_as_user gsettings set org.gnome.shell favorite-apps "$_GNOME_FAVS" \
         || echo "INFO: Could not set GNOME favorites (expected if outside a GUI session)."
+
+    # Add Nautilus bookmark for direct access to the Speculator data directory.
+    # .local is hidden by default; this makes maintenance easier via Files.
+    _SPEC_BOOKMARK="file://$REAL_HOME/.local/share/speculator"
+    _BOOKMARKS_FILE="$REAL_HOME/.config/gtk-3.0/bookmarks"
+    run_as_user mkdir -p "$REAL_HOME/.config/gtk-3.0"
+    grep -qF "$_SPEC_BOOKMARK" "$_BOOKMARKS_FILE" 2>/dev/null \
+        || echo "$_SPEC_BOOKMARK Speculator" >> "$_BOOKMARKS_FILE"
 
 
     # ###############################################################

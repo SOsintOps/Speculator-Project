@@ -8,10 +8,9 @@ CLAUDE.md
 PROJECT_STATUS.md
 
 # ---------------------------------------------------------------
-# PDF files (everywhere)
+# PDF files — ignore output directories; track repo documents
 # ---------------------------------------------------------------
 pdf/
-**/*.pdf
 
 # ---------------------------------------------------------------
 # Script locali Windows

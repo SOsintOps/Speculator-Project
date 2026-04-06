@@ -14,8 +14,9 @@ set -uo pipefail
 # ---------------------------------------------------------------------------
 INSTALOADER_BIN="$HOME/.local/bin/instaloader"
 TOUTATIS_BIN="$HOME/.local/bin/toutatis"
-OSINTGRAM_VENV="$HOME/Downloads/Programs/Osintgram/OsintgramEnvironment"
-OSINTGRAM_DIR="$HOME/Downloads/Programs/Osintgram"
+PROGRAMS_DIR="$HOME/.local/share/speculator/programs"
+OSINTGRAM_VENV="$PROGRAMS_DIR/Osintgram/OsintgramEnvironment"
+OSINTGRAM_DIR="$PROGRAMS_DIR/Osintgram"
 
 # ---------------------------------------------------------------------------
 # run_instaloader — download a public Instagram profile

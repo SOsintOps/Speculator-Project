@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=Usernames OSINT
+Name=Usernames tools
 Comment=Sherlock, Maigret, Blackbird
 Categories=Network;OSINT
-Exec=/home/osint/Documents/scripts/usernames.sh
-Icon=/home/osint/Pictures/icons/usernames.png
+Exec=/home/osint/Documents/scripts/user.sh
+Icon=/home/osint/Pictures/icons/user.png
 Terminal=true

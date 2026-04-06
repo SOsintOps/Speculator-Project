@@ -10,6 +10,7 @@ set -uo pipefail
 [ "$XDG_SESSION_TYPE" = "wayland" ] && export GDK_BACKEND=x11
 
 EVIDENCE_DIR="$HOME/Downloads/evidence"
+PROGRAMS_DIR="$HOME/.local/share/speculator/programs"
 
 ###############################################################################
 # Ensure base evidence directory exists
@@ -24,8 +25,8 @@ ensure_base_dir() {
 # SpiderFoot (venv)
 ###############################################################################
 run_spiderfoot() {
-  local VENV="$HOME/Downloads/Programs/spiderfoot/spiderfootEnvironment"
-  local SF_PY="$HOME/Downloads/Programs/spiderfoot/sf.py"
+  local VENV="$PROGRAMS_DIR/spiderfoot/spiderfootEnvironment"
+  local SF_PY="$PROGRAMS_DIR/spiderfoot/sf.py"
 
   if [ ! -x "$VENV/bin/python" ]; then
     zenity --error \
@@ -61,7 +62,7 @@ run_spiderfoot() {
 # recon-ng (venv, interactive terminal)
 ###############################################################################
 run_recon_ng() {
-  local VENV="$HOME/Downloads/Programs/recon-ng/recon-ngEnvironment"
+  local VENV="$PROGRAMS_DIR/recon-ng/recon-ngEnvironment"
 
   if [ ! -x "$VENV/bin/python" ]; then
     zenity --error \
@@ -70,7 +71,7 @@ run_recon_ng() {
     return 1
   fi
 
-  x-terminal-emulator -e bash -c "cd \"$HOME/Downloads/Programs/recon-ng\" && \"$VENV/bin/python\" recon-ng"
+  x-terminal-emulator -e bash -c "cd \"$PROGRAMS_DIR/recon-ng\" && \"$VENV/bin/python\" recon-ng"
   zenity --info \
     --text="recon-ng launched in a new terminal." \
     2> >(grep -v 'GtkDialog' >&2)

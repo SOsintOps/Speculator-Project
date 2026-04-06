@@ -10,6 +10,7 @@ set -uo pipefail
 [ "$XDG_SESSION_TYPE" = "wayland" ] && export GDK_BACKEND=x11
 
 EVIDENCE_DIR="$HOME/Downloads/evidence"
+PROGRAMS_DIR="$HOME/.local/share/speculator/programs"
 
 ###############################################################################
 # Ensure base evidence directory exists
@@ -64,7 +65,7 @@ run_amass() {
 run_sublist3r() {
   local target="$1"
   local sessionDir="$2"
-  local VENV="$HOME/Downloads/Programs/Sublist3r/Sublist3rEnvironment"
+  local VENV="$PROGRAMS_DIR/Sublist3r/Sublist3rEnvironment"
 
   if [ ! -x "$VENV/bin/python" ]; then
     zenity --error \
@@ -73,8 +74,8 @@ run_sublist3r() {
     return 1
   fi
 
-  pushd "$HOME/Downloads/Programs/Sublist3r" >/dev/null 2>&1 || {
-    zenity --error --text="Dir not found: $HOME/Downloads/Programs/Sublist3r" \
+  pushd "$PROGRAMS_DIR/Sublist3r" >/dev/null 2>&1 || {
+    zenity --error --text="Dir not found: $PROGRAMS_DIR/Sublist3r" \
       2> >(grep -v 'GtkDialog' >&2)
     return 1
   }
@@ -88,7 +89,7 @@ run_sublist3r() {
 run_theharvester() {
   local target="$1"
   local sessionDir="$2"
-  local VENV="$HOME/Downloads/Programs/theHarvester/.venv"
+  local VENV="$PROGRAMS_DIR/theHarvester/.venv"
 
   if [ ! -x "$VENV/bin/python" ]; then
     zenity --error \
@@ -97,8 +98,8 @@ run_theharvester() {
     return 1
   fi
 
-  pushd "$HOME/Downloads/Programs/theHarvester" >/dev/null 2>&1 || {
-    zenity --error --text="Dir not found: $HOME/Downloads/Programs/theHarvester" \
+  pushd "$PROGRAMS_DIR/theHarvester" >/dev/null 2>&1 || {
+    zenity --error --text="Dir not found: $PROGRAMS_DIR/theHarvester" \
       2> >(grep -v 'GtkDialog' >&2)
     return 1
   }
@@ -112,7 +113,7 @@ run_theharvester() {
 run_photon() {
   local target="$1"
   local sessionDir="$2"
-  local VENV="$HOME/Downloads/Programs/Photon/PhotonEnvironment"
+  local VENV="$PROGRAMS_DIR/Photon/PhotonEnvironment"
 
   if [ ! -x "$VENV/bin/python" ]; then
     zenity --error \
@@ -121,8 +122,8 @@ run_photon() {
     return 1
   fi
 
-  pushd "$HOME/Downloads/Programs/Photon" >/dev/null 2>&1 || {
-    zenity --error --text="Dir not found: $HOME/Downloads/Programs/Photon" \
+  pushd "$PROGRAMS_DIR/Photon" >/dev/null 2>&1 || {
+    zenity --error --text="Dir not found: $PROGRAMS_DIR/Photon" \
       2> >(grep -v 'GtkDialog' >&2)
     return 1
   }
