@@ -3,6 +3,7 @@
 # ---------------------------------------------------------------
 .claude/
 .claude-flow/
+.swarm/
 .mcp.json
 CLAUDE.md
 PROJECT_STATUS.md
