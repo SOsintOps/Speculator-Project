@@ -17,6 +17,7 @@ set -uo pipefail
 [ "$XDG_SESSION_TYPE" = "wayland" ] && export GDK_BACKEND=x11
 
 EVIDENCE_DIR="$HOME/Downloads/evidence"
+PROGRAMS_DIR="$HOME/.local/share/speculator/programs"
 
 ###############################################################################
 # 0. Pre-check: verify that required tools are installed
@@ -134,14 +135,14 @@ run_all_email_tools() {
  socialscan "$inputValue" --json "$sessionDir/$inputValue-socialscan.txt"
 
  # 3) Eyes (output goes to Eyes' own directory, not to evidence)
- pushd "$HOME/Downloads/Programs/Eyes" >/dev/null 2>&1 || {
-   zenity --error --text="Eyes directory not found at $HOME/Downloads/Programs/Eyes" 2>/dev/null
+ pushd "$PROGRAMS_DIR/Eyes" >/dev/null 2>&1 || {
+   zenity --error --text="Eyes directory not found at $PROGRAMS_DIR/Eyes" 2>/dev/null
    return 1
  }
  python3 eyes.py "$inputValue"
  popd >/dev/null 2>&1
  zenity --info \
-   --text="Eyes completed.\nOutput is in: $HOME/Downloads/Programs/Eyes\n(Eyes does not support a custom output path.)" \
+   --text="Eyes completed.\nOutput is in: $PROGRAMS_DIR/Eyes\n(Eyes does not support a custom output path.)" \
    2>/dev/null
 
  # 4) GHunt
@@ -200,8 +201,8 @@ run_email_tools() {
      xdg-open "$sessionDir/$inputValue-socialscan.txt" >/dev/null 2>&1 &
      ;;
    "Email-Eyes")
-     pushd "$HOME/Downloads/Programs/Eyes" >/dev/null 2>&1 || {
-       zenity --error --text="Eyes directory not found at $HOME/Downloads/Programs/Eyes"
+     pushd "$PROGRAMS_DIR/Eyes" >/dev/null 2>&1 || {
+       zenity --error --text="Eyes directory not found at $PROGRAMS_DIR/Eyes"
        return 1
      }
      python3 eyes.py "$inputValue"
@@ -288,20 +289,20 @@ run_all_username_tools() {
  socialscan "$inputValue" --json "$sessionDir/$inputValue-socialscan.txt"
 
  # 3) Blackbird
- pushd "$HOME/Downloads/Programs/blackbird" >/dev/null 2>&1 || {
+ pushd "$PROGRAMS_DIR/blackbird" >/dev/null 2>&1 || {
    zenity --error --text="Blackbird directory not found"
    return 1
  }
  python3 blackbird.py -u "$inputValue" --pdf
  popd >/dev/null 2>&1
- mv -f "$HOME/Downloads/Programs/blackbird/results"/* "$sessionDir" 2>/dev/null || true
+ mv -f "$PROGRAMS_DIR/blackbird/results"/* "$sessionDir" 2>/dev/null || true
 
  # 4) Maigret
  maigret -a -P -T "$inputValue" --folderoutput="$sessionDir"
 
  # 5) Mr.Holmes
- if [ -d "$HOME/Downloads/Programs/Mr.Holmes" ]; then
-   pushd "$HOME/Downloads/Programs/Mr.Holmes" >/dev/null 2>&1 || {
+ if [ -d "$PROGRAMS_DIR/Mr.Holmes" ]; then
+   pushd "$PROGRAMS_DIR/Mr.Holmes" >/dev/null 2>&1 || {
      zenity --error --text="Mr.Holmes directory not found" 2>/dev/null
      return 1
    }
@@ -310,7 +311,7 @@ run_all_username_tools() {
  fi
 
  # 6) WhatsMyName
- pushd "$HOME/Downloads/Programs/WhatsMyName-Python" >/dev/null 2>&1 || {
+ pushd "$PROGRAMS_DIR/WhatsMyName-Python" >/dev/null 2>&1 || {
    zenity --error --text="WhatsMyName-Python directory not found"
    return 1
  }
@@ -365,13 +366,13 @@ run_username_tools() {
      xdg-open "$sessionDir/$inputValue-socialscan.txt" >/dev/null 2>&1 &
      ;;
    "Username-Blackbird")
-     pushd "$HOME/Downloads/Programs/blackbird" >/dev/null 2>&1 || {
+     pushd "$PROGRAMS_DIR/blackbird" >/dev/null 2>&1 || {
        zenity --error --text="Blackbird directory not found"
        return 1
      }
      python3 blackbird.py -u "$inputValue" --pdf
      popd >/dev/null 2>&1
-     mv -f "$HOME/Downloads/Programs/blackbird/results"/* "$sessionDir" 2>/dev/null || true
+     mv -f "$PROGRAMS_DIR/blackbird/results"/* "$sessionDir" 2>/dev/null || true
      zenity --info --text="Blackbird done. Files in 'results' were moved to $sessionDir."
      ;;
    "Username-Maigret")
@@ -379,8 +380,8 @@ run_username_tools() {
      zenity --info --text="Maigret done. Reports saved in $sessionDir."
      ;;
    "Username-Mr.Holmes")
-     if [ -d "$HOME/Downloads/Programs/Mr.Holmes" ]; then
-       pushd "$HOME/Downloads/Programs/Mr.Holmes" >/dev/null 2>&1 || {
+     if [ -d "$PROGRAMS_DIR/Mr.Holmes" ]; then
+       pushd "$PROGRAMS_DIR/Mr.Holmes" >/dev/null 2>&1 || {
          zenity --error --text="Mr.Holmes directory not found" 2>/dev/null
          return 1
        }
@@ -388,11 +389,11 @@ run_username_tools() {
        popd >/dev/null 2>&1
        xdg-open "$sessionDir/$inputValue-MrHolmes.txt" >/dev/null 2>&1 &
      else
-       zenity --error --text="Mr.Holmes not found at $HOME/Downloads/Programs/Mr.Holmes" 2>/dev/null
+       zenity --error --text="Mr.Holmes not found at $PROGRAMS_DIR/Mr.Holmes" 2>/dev/null
      fi
      ;;
    "Username-WhatsMyName")
-     pushd "$HOME/Downloads/Programs/WhatsMyName-Python" >/dev/null 2>&1 || {
+     pushd "$PROGRAMS_DIR/WhatsMyName-Python" >/dev/null 2>&1 || {
        zenity --error --text="WhatsMyName-Python directory not found"
        return 1
      }

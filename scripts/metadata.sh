@@ -6,12 +6,14 @@
 set -uo pipefail
 [ "$XDG_SESSION_TYPE" = "wayland" ] && export GDK_BACKEND=x11
 
+PROGRAMS_DIR="$HOME/.local/share/speculator/programs"
+
 # ---------------------------------------------------------------------------
 # run_carbon14
 # ---------------------------------------------------------------------------
 run_carbon14() {
-    local VENV="$HOME/Downloads/Programs/Carbon14/Carbon14Environment"
-    local SCRIPT_DIR="$HOME/Downloads/Programs/Carbon14"
+    local VENV="$PROGRAMS_DIR/Carbon14/Carbon14Environment"
+    local SCRIPT_DIR="$PROGRAMS_DIR/Carbon14"
 
     if [ ! -f "$VENV/bin/python" ]; then
         zenity --error \
@@ -52,8 +54,8 @@ run_carbon14() {
 # run_metagoofil
 # ---------------------------------------------------------------------------
 run_metagoofil() {
-    local VENV="$HOME/Downloads/Programs/metagoofil/metagoofilEnvironment"
-    local SCRIPT_DIR="$HOME/Downloads/Programs/metagoofil"
+    local VENV="$PROGRAMS_DIR/metagoofil/metagoofilEnvironment"
+    local SCRIPT_DIR="$PROGRAMS_DIR/metagoofil"
     local fqdnregex='\b((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\b'
 
     if [ ! -f "$VENV/bin/python" ]; then
@@ -104,8 +106,8 @@ run_metagoofil() {
 # run_metagoofil_exiftool
 # ---------------------------------------------------------------------------
 run_metagoofil_exiftool() {
-    local VENV="$HOME/Downloads/Programs/metagoofil/metagoofilEnvironment"
-    local SCRIPT_DIR="$HOME/Downloads/Programs/metagoofil"
+    local VENV="$PROGRAMS_DIR/metagoofil/metagoofilEnvironment"
+    local SCRIPT_DIR="$PROGRAMS_DIR/metagoofil"
     local fqdnregex='\b((xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}\b'
 
     if [ ! -f "$VENV/bin/python" ]; then

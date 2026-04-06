@@ -5,6 +5,70 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.8.5] - 2026-04-07
+
+### Evidence shortcut in dock; language support fixes
+
+#### Added — `speculator_install.sh`
+- **Evidence dock shortcut**: `shortcuts/evidence.desktop` installed as
+  `speculator-evidence.desktop`. Appears in the dock between Nautilus and Terminal.
+  Opens `~/Downloads/evidence` via `xdg-open`. Uses `evidence.png` from `media/icons/`.
+
+#### Fixed — `speculator_install.sh`
+- **System default locale**: `update-locale LANG=en_GB.UTF-8 LC_MESSAGES=en_GB.UTF-8`
+  added after package installation. `locales-all` installs all locale definitions
+  but never sets the system default; without this the VM boots with the installer's
+  inherited locale rather than British English.
+- **Chinese input method**: added `ibus` and `ibus-gtk3` to PACKAGES explicitly.
+  `ibus-pinyin` was already listed but depends on `ibus`; without the base package
+  GNOME cannot load the input method engine. Added `fonts-noto-cjk` for
+  comprehensive CJK font coverage alongside `fonts-wqy-zenhei`.
+
+#### Changed — `speculator_install.sh`
+- **Version bumped to 0.8.5**.
+
+---
+
+## [0.8.4] - 2026-04-07
+
+### Architecture: self-contained installer; XDG-compliant directory layout; shortcuts system
+
+#### Changed — `speculator_install.sh`
+- **Version bumped to 0.8.4**.
+- **`PROGRAMS_DIR` moved to XDG location**: changed from `$HOME/Downloads/Programs`
+  to `$HOME/.local/share/speculator/programs`. All git-cloned tools now install into
+  the same XDG subtree as scripts, icons and config. A Nautilus bookmark named
+  "Speculator" is added to `~/.config/gtk-3.0/bookmarks` for easy access.
+- **Installer is now fully self-contained**: all scripts, desktop shortcuts and icons
+  are sourced from the repository. No external script download is required at install
+  time. The Firefox profile template (`ff-template.zip`) remains the only file fetched
+  remotely, as no local alternative exists.
+- **Scripts installed from repo**: all `scripts/*.sh` files are now copied from the
+  local repository to `$SCRIPTS_DIR` at install time.
+- **Icons installed from repo**: `media/icons/` assets are copied to `$ICONS_DIR`
+  with the `speculator-` naming convention (e.g. `user.png` → `speculator-user.png`).
+- **Shortcuts installed from repo**: all `shortcuts/*.desktop` templates are installed
+  as `speculator-<name>.desktop` with `__HOME__` substituted for the actual home path.
+- **`_GNOME_FAVS` updated**: `speculator-framework.desktop` and
+  `speculator-search.desktop` removed (no local replacements yet).
+
+#### Changed — `scripts/` (all Phase B scripts)
+- **`PROGRAMS_DIR` variable added** to `user.sh`, `api.sh`, `domain.sh`,
+  `instagram.sh`, `metadata.sh`. All hardcoded `$HOME/Downloads/Programs/` paths
+  replaced with `$PROGRAMS_DIR/`. Scripts without venv paths (`archives.sh`,
+  `video.sh`, `reddit.sh`, `image.sh`) required no changes.
+
+#### Added — `shortcuts/user.desktop`
+- New shortcut template for `user.sh`. Display name: **Person**. Uses `__HOME__`
+  placeholder substituted at install time. `Terminal=false` (Zenity GUI).
+  Replaces `shortcuts/usernames.desktop` (which had hardcoded `/home/osint/` paths).
+
+#### Added — `document/FAQ.md`
+- New entry: *"Why does Firefox take a long time to start the first time after
+  installation?"* — clarifies that the delay is normal on first launch.
+
+---
+
 ## [0.8.3] - 2026-04-06
 
 ### Phase B launcher scripts added; version numbering moved to 0.x pre-release scheme
@@ -40,7 +104,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - **`zenity` missing from PACKAGES**: added to the Desktop / utilities group.
   `user.sh` requires Zenity; it was not being installed by the script.
 - **`user.sh` local copy**: Phase 4 now copies `scripts/user.sh` from the repo to
-  `$SCRIPTS_DIR`, overriding the IntelTechniques-downloaded version.
+  `$SCRIPTS_DIR`, ensuring the repo version is always used.
 
 #### Added — `speculator_install.sh`
 - **`turboholehe`**: added to `PIPX_PACKAGES`.
@@ -140,9 +204,6 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   installs deps without activating the venv. SpiderFoot `lxml` patch included.
 - **`run_as_user()`** helper: runs a command as `$REAL_USER` via `sudo -u`
   when invoked as root; runs it directly otherwise.
-- **`_download_asset()`** helper (Phase 4): downloads IntelTechniques assets,
-  validates size and MIME type, removes files that are empty or HTML error
-  pages (wrong credentials detection).
 - **`sq` / `gpg` fallback** for sn0int keyring dearmoring.
 - **Go tools**: `subfinder`, `httpx`, `nuclei`, `phoneinfoga` added alongside
   `amass`.
@@ -188,8 +249,6 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - Script version bumped from 7.3 to 8.0.
 - Target OS explicitly Debian 13 "Trixie" (amd64); script warns and continues
   on other Debian versions.
-- Intel Techniques credentials externalised to env vars
-  `INTEL_USER` / `INTEL_PASS` (defaults preserved for backwards compatibility).
 - Stray root artefact files (`Cloning`, `Configuring`, `Debian`, `Downloading`,
   `Installing`) removed from the repository.
 
