@@ -192,15 +192,43 @@ install_py_tool_from_git() {
     full_req_path=$(find "$tool_dir" -maxdepth 3 -name "$req_filename" -print -quit 2>/dev/null)
 
     if [ -z "$full_req_path" ]; then
-        echo "WARNING: '$req_filename' not found in $tool_name. Skipping pip install."
-        mark_fail "git:$tool_name"
+        # Fallback: if setup.py exists, install via pip install -e .
+        if [ -f "$tool_dir/setup.py" ]; then
+            echo "    No '$req_filename' found; trying pip install -e . (setup.py detected)..."
+            if ! run_as_user python3 -m venv --system-site-packages "$venv_dir"; then
+                echo "WARNING: Failed to create venv for $tool_name."
+                mark_fail "git:$tool_name"
+                return 0
+            fi
+            if run_as_user "$venv_dir/bin/pip" install --quiet -e "$tool_dir"; then
+                mark_ok "git:$tool_name"
+            else
+                echo "WARNING: pip install -e . failed for $tool_name (non-fatal)."
+                mark_fail "git:$tool_name"
+            fi
+        else
+            echo "WARNING: '$req_filename' not found in $tool_name. Skipping pip install."
+            mark_fail "git:$tool_name"
+        fi
         return 0
     fi
 
     # Apply known patches before installing
     if [ "$tool_name" = "spiderfoot" ]; then
-        echo "    Patch: removing lxml from SpiderFoot requirements..."
-        sed -i "/lxml/d" "$full_req_path" || true
+        echo "    Patch: replacing lxml pin in SpiderFoot requirements (4.x incompatible with Python 3.13)..."
+        # Replace lxml==4.9.4 with lxml>=5.0.0 (handles CRLF and any version format)
+        python3 -c "
+import sys
+path = sys.argv[1]
+with open(path, 'r', errors='replace') as f:
+    lines = f.readlines()
+with open(path, 'w') as f:
+    for line in lines:
+        if line.strip().rstrip('\r').startswith('lxml'):
+            f.write('lxml>=5.0.0\n')
+        else:
+            f.write(line)
+" "$full_req_path" || sed -i 's/^lxml[=<>!~][^\r\n]*/lxml>=5.0.0/' "$full_req_path" || true
     fi
 
     # Create venv and install dependencies (no activation needed — use venv pip directly)
@@ -210,7 +238,18 @@ install_py_tool_from_git() {
         return 0
     fi
 
-    if run_as_user "$venv_dir/bin/pip" install --quiet -r "$full_req_path"; then
+    # Spiderfoot: write a constraint file so pip cannot downgrade lxml below 5.0 even if
+    # another transitive dependency requests it.
+    if [ "$tool_name" = "spiderfoot" ]; then
+        echo "    Pinning lxml>=5.0 via constraint file..."
+        echo "lxml>=5.0.0" > "$venv_dir/constraints.txt"
+        _pip_constraint_flag="-c $venv_dir/constraints.txt"
+    else
+        _pip_constraint_flag=""
+    fi
+
+    # shellcheck disable=SC2086
+    if run_as_user "$venv_dir/bin/pip" install --quiet -r "$full_req_path" $_pip_constraint_flag; then
         mark_ok "git:$tool_name"
     else
         echo "WARNING: pip install failed for $tool_name (non-fatal)."
@@ -302,7 +341,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         default-jre httrack webhttrack libimage-exiftool-perl
         mediainfo-gui mat2 subversion
         # Desktop / utilities
-        zenity kazam bleachbit libxcb-cursor0 docker.io
+        zenity kazam bleachbit libxcb-cursor0 docker.io evince
         # GNOME extensions
         gnome-shell-extensions gnome-shell-extension-manager
         gnome-shell-extension-dash-to-panel
@@ -456,7 +495,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         shodan
         fierce
         censys
-        turboholehe
     )
     for pkg in "${PIPX_PACKAGES[@]}"; do
         if run_as_user pipx install "$pkg"; then
@@ -487,7 +525,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     # -- 3c. h8mail configuration --
     echo "--> Configuring h8mail..."
-    run_as_user "$REAL_HOME/.local/bin/h8mail" -g || true
+    run_as_user sh -c "cd \"$REAL_HOME\" && \"$REAL_HOME/.local/bin/h8mail\" -g" || true
     H8MAIL_CONFIG="$REAL_HOME/h8mail_config.ini"
     if [ -f "$H8MAIL_CONFIG" ]; then
         sed -i 's/\;leak\-lookup\_pub/leak\-lookup\_pub/g' "$H8MAIL_CONFIG" || true
@@ -594,6 +632,19 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         fi
     else
         mark_ok "git:TLDSweep"
+    fi
+
+    # -- 3j. Turbolehe (email variant generator for holehe; stdlib only — no requirements) --
+    echo "--> Cloning Turbolehe..."
+    if [ ! -d "$PROGRAMS_DIR/Turbolehe" ]; then
+        if run_as_user git clone "https://github.com/purrsec/Turbolehe.git" "$PROGRAMS_DIR/Turbolehe"; then
+            mark_ok "git:Turbolehe"
+        else
+            echo "WARNING: Turbolehe clone failed."
+            mark_fail "git:Turbolehe"
+        fi
+    else
+        mark_ok "git:Turbolehe"
     fi
 
 
