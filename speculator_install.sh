@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 0.8.5
+# # Version: 0.8.7
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -215,8 +215,9 @@ install_py_tool_from_git() {
 
     # Apply known patches before installing
     if [ "$tool_name" = "spiderfoot" ]; then
-        echo "    Patch: replacing lxml pin in SpiderFoot requirements (4.x incompatible with Python 3.13)..."
-        # Replace lxml==4.9.4 with lxml>=5.0.0 (handles CRLF and any version format)
+        # lxml 4.x is incompatible with Python 3.13. Remove lxml from requirements entirely
+        # so pip resolves the rest without conflict; lxml>=5.0 is installed separately below.
+        echo "    Patch: removing lxml from SpiderFoot requirements (installed separately at >=5.0)..."
         python3 -c "
 import sys
 path = sys.argv[1]
@@ -224,11 +225,9 @@ with open(path, 'r', errors='replace') as f:
     lines = f.readlines()
 with open(path, 'w') as f:
     for line in lines:
-        if line.strip().rstrip('\r').startswith('lxml'):
-            f.write('lxml>=5.0.0\n')
-        else:
+        if not line.strip().rstrip('\r').startswith('lxml'):
             f.write(line)
-" "$full_req_path" || sed -i 's/^lxml[=<>!~][^\r\n]*/lxml>=5.0.0/' "$full_req_path" || true
+" "$full_req_path" || sed -i '/^lxml/d' "$full_req_path" || true
     fi
 
     # Create venv and install dependencies (no activation needed — use venv pip directly)
@@ -238,19 +237,18 @@ with open(path, 'w') as f:
         return 0
     fi
 
-    # Spiderfoot: write a constraint file so pip cannot downgrade lxml below 5.0 even if
-    # another transitive dependency requests it.
-    if [ "$tool_name" = "spiderfoot" ]; then
-        echo "    Pinning lxml>=5.0 via constraint file..."
-        echo "lxml>=5.0.0" > "$venv_dir/constraints.txt"
-        _pip_constraint_flag="-c $venv_dir/constraints.txt"
-    else
-        _pip_constraint_flag=""
-    fi
-
-    # shellcheck disable=SC2086
-    if run_as_user "$venv_dir/bin/pip" install --quiet -r "$full_req_path" $_pip_constraint_flag; then
-        mark_ok "git:$tool_name"
+    if run_as_user "$venv_dir/bin/pip" install --quiet -r "$full_req_path"; then
+        if [ "$tool_name" = "spiderfoot" ]; then
+            echo "    Installing lxml>=5.0.0 (Python 3.13 compatible)..."
+            if run_as_user "$venv_dir/bin/pip" install --quiet --force-reinstall "lxml>=5.0.0"; then
+                mark_ok "git:$tool_name"
+            else
+                echo "WARNING: lxml>=5.0 install failed for spiderfoot."
+                mark_fail "git:$tool_name"
+            fi
+        else
+            mark_ok "git:$tool_name"
+        fi
     else
         echo "WARNING: pip install failed for $tool_name (non-fatal)."
         mark_fail "git:$tool_name"

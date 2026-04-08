@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 ################################################################################
 ## OSINT Unified Input Script
+## Version 0.4.1.0 - Session log: record selected tools, full cmd, stdout+stderr
 ## Version 0.4.0.0 - Replace Gum/whiptail with Zenity checklist; single flat
 ##                   list per category with multi-select (no scroll menus).
 ##                   Preserved from v0.3.4.0: run_tool(), session log, semantic
@@ -19,7 +20,7 @@ export PATH="$HOME/.local/bin:$PATH"
 
 EVIDENCE_DIR="$HOME/Downloads/evidence"
 PROGRAMS_DIR="$HOME/.local/share/speculator/programs"
-SCRIPT_VERSION="0.4.0.0"
+SCRIPT_VERSION="0.4.1.0"
 
 VERBOSE=false
 [[ "${1:-}" == "-v" || "${1:-}" == "--verbose" ]] && VERBOSE=true
@@ -168,6 +169,7 @@ run_tool() {
   local rc=0 t_start t_end duration
 
   log_step "$label" "run"
+  _session_log "[START] $label | $(date +'%H:%M:%S') | cmd: $*"
   t_start=$(date +%s)
 
   if $VERBOSE; then
@@ -192,6 +194,12 @@ run_tool() {
   fi
 
   t_end=$(date +%s); duration=$(( t_end - t_start ))
+
+  # Write tool output to session log
+  if [ -n "${SESSION_LOG_FILE:-}" ]; then
+    [ -s "$out" ] && { printf "  [stdout]\n" >> "$SESSION_LOG_FILE"; cat "$out" >> "$SESSION_LOG_FILE"; printf "\n" >> "$SESSION_LOG_FILE"; }
+    [ -s "$err" ] && { printf "  [stderr]\n" >> "$SESSION_LOG_FILE"; cat "$err" >> "$SESSION_LOG_FILE"; printf "\n" >> "$SESSION_LOG_FILE"; }
+  fi
 
   if [ $rc -ne 0 ]; then
     TOOL_STATUS["$label"]="fail"; TOOL_DURATION["$label"]="$duration"
@@ -385,6 +393,7 @@ run_email_tools() {
   [ -z "$sel" ] && return
   TOOL_STATUS=(); TOOL_DURATION=()
   IFS=':' read -ra selected <<< "$sel"
+  _session_log "Selected: ${selected[*]}"
   local total=${#selected[@]} cur=0
 
   for tool in "${selected[@]}"; do
@@ -471,6 +480,7 @@ run_hash_tools() {
   [ -z "$sel" ] && return
   TOOL_STATUS=(); TOOL_DURATION=()
   IFS=':' read -ra selected <<< "$sel"
+  _session_log "Selected: ${selected[*]}"
   local total=${#selected[@]} cur=0
 
   for tool in "${selected[@]}"; do
@@ -520,6 +530,7 @@ run_fullname_tools() {
   [ -z "$sel" ] && return
   TOOL_STATUS=(); TOOL_DURATION=()
   IFS=':' read -ra selected <<< "$sel"
+  _session_log "Selected: ${selected[*]}"
   local total=${#selected[@]} cur=0
 
   for tool in "${selected[@]}"; do
@@ -567,6 +578,7 @@ run_username_tools() {
   [ -z "$sel" ] && return
   TOOL_STATUS=(); TOOL_DURATION=()
   IFS=':' read -ra selected <<< "$sel"
+  _session_log "Selected: ${selected[*]}"
   local total=${#selected[@]} cur=0
 
   for tool in "${selected[@]}"; do
