@@ -361,9 +361,9 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     # -- Firefox ESR: enterprise policies (privacy + OSINT bookmarks + extensions) --
     echo "--> Configuring Firefox ESR via policies.json..."
     _FF_POLICY_DIR="/usr/lib/firefox-esr/distribution"
-    mkdir -p "$_FF_POLICY_DIR"
-    cp "$_REPO_DIR/config/policies.json" "$_FF_POLICY_DIR/policies.json"
-    chmod 644 "$_FF_POLICY_DIR/policies.json"
+    sudo mkdir -p "$_FF_POLICY_DIR"
+    sudo cp "$_REPO_DIR/config/policies.json" "$_FF_POLICY_DIR/policies.json"
+    sudo chmod 644 "$_FF_POLICY_DIR/policies.json"
 
     # -- Brave Browser --
     echo "--> Installing Brave Browser..."
