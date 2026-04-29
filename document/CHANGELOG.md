@@ -40,9 +40,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   the same XDG subtree as scripts, icons and config. A Nautilus bookmark named
   "Speculator" is added to `~/.config/gtk-3.0/bookmarks` for easy access.
 - **Installer is now fully self-contained**: all scripts, desktop shortcuts and icons
-  are sourced from the repository. No external script download is required at install
-  time. The Firefox profile template (`ff-template.zip`) remains the only file fetched
-  remotely, as no local alternative exists.
+  are sourced from the repository. No external download is required at install time.
 - **Scripts installed from repo**: all `scripts/*.sh` files are now copied from the
   local repository to `$SCRIPTS_DIR` at install time.
 - **Icons installed from repo**: `media/icons/` assets are copied to `$ICONS_DIR`
