@@ -2,7 +2,7 @@
 ################################################################################
 ## API OSINT Launcher
 ## Version 0.1.0 - Phase B: Zenity GUI for API-based OSINT tools
-## Tools: SpiderFoot, recon-ng, Shodan CLI, Censys CLI
+## Tools: recon-ng, Shodan CLI, Censys CLI
 ################################################################################
 
 set -uo pipefail
@@ -19,43 +19,6 @@ ensure_base_dir() {
   if [ ! -d "$EVIDENCE_DIR" ]; then
     mkdir -p "$EVIDENCE_DIR"
   fi
-}
-
-###############################################################################
-# SpiderFoot (venv)
-###############################################################################
-run_spiderfoot() {
-  local VENV="$PROGRAMS_DIR/spiderfoot/spiderfootEnvironment"
-  local SF_PY="$PROGRAMS_DIR/spiderfoot/sf.py"
-
-  if [ ! -x "$VENV/bin/python" ]; then
-    zenity --error \
-      --text="SpiderFoot venv not found at $VENV. Please install SpiderFoot first." \
-      2> >(grep -v 'GtkDialog' >&2)
-    return 1
-  fi
-
-  if [ ! -f "$SF_PY" ]; then
-    zenity --error \
-      --text="SpiderFoot script not found at $SF_PY. Please install SpiderFoot first." \
-      2> >(grep -v 'GtkDialog' >&2)
-    return 1
-  fi
-
-  if pgrep -f "spiderfoot -l" >/dev/null 2>&1; then
-    zenity --info \
-      --text="SpiderFoot is already running at http://127.0.0.1:5001" \
-      2> >(grep -v 'GtkDialog' >&2)
-    xdg-open "http://127.0.0.1:5001" >/dev/null 2>&1
-    return 0
-  fi
-
-  "$VENV/bin/python" "$SF_PY" -l 127.0.0.1:5001 &
-  sleep 5
-  xdg-open "http://127.0.0.1:5001" >/dev/null 2>&1
-  zenity --info \
-    --text="SpiderFoot started at http://127.0.0.1:5001" \
-    2> >(grep -v 'GtkDialog' >&2)
 }
 
 ###############################################################################
@@ -150,7 +113,6 @@ main() {
     choice=$(zenity --list \
       --title="API OSINT Tools" \
       --column="Tool" \
-      "SpiderFoot — web recon framework" \
       "recon-ng — recon framework" \
       "Shodan — search query" \
       "Censys — search query" \
@@ -158,9 +120,6 @@ main() {
       2> >(grep -v 'GtkDialog' >&2)) || break
 
     case "$choice" in
-      "SpiderFoot — web recon framework")
-        run_spiderfoot
-        ;;
       "recon-ng — recon framework")
         run_recon_ng
         ;;

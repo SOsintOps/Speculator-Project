@@ -1,10 +1,13 @@
 # Speculator Project
 
+![Version](https://img.shields.io/badge/version-0.8.8-blue)
+![License](https://img.shields.io/badge/license-Unlicense-green)
+![OS](https://img.shields.io/badge/OS-Debian%2013%20Trixie-red)
+![Shell](https://img.shields.io/badge/shell-bash-yellow)
+
 ## Overview
 
-The Speculator Project is inspired by the techniques outlined in the book [OSINT Techniques, 11th Edition](https://inteltechniques.com/book1.html) by Michael Bazzell. It demonstrates how to adapt these methods and tools to meet individual needs.
-
-This project provides a Bash script designed to customise Debian-based virtual machines specifically for Open Source Intelligence (OSINT) activities. Its goal is to create a secure and standardised environment for intelligence gathering.
+The Speculator Project is the successor to [Argos](https://github.com/SOsintOps/Argos), building on the techniques and lessons learned during its development. It provides a Bash script designed to customise Debian-based virtual machines for Open Source Intelligence (OSINT) activities. Its goal is to create a secure and standardised environment for intelligence gathering.
 
 ### The Speculatores
 
@@ -12,8 +15,8 @@ The term "Speculatores" refers to Roman scouts and intelligence officers who pla
 
 ## Features
 
-  - **Comprehensive Tool Installation**: Offers a variety of tools for analyzing usernames, social media, metadata, domains, and more.
-  - **Browser Setup**: Configures Firefox, Brave, and Tor browsers to enhance secure research.
+  - **Comprehensive Tool Installation**: Offers a variety of tools for analysing usernames, social media, metadata, domains and more.
+  - **Browser Setup**: Configures Firefox, Brave and Tor browsers to support secure research.
   - **Desktop Customisation**: Configures the GNOME desktop environment for OSINT workflows.
   - **Resilient Installation**: The script is designed to continue even if a single tool fails to install, ensuring the most complete setup possible.
 
@@ -44,82 +47,107 @@ The term "Speculatores" refers to Roman scouts and intelligence officers who pla
 
 ## Usage
 
-After installation and a system reboot, the tools and environment are ready for use. The script configures browsers, installs essential OSINT tools, and prepares the system for secure investigations. Refer to the tool documentation for specific usage instructions, or consult the [FAQ page](https://github.com/SOsintOps/Speculator-Project/blob/main/document/FAQ.md) for common queries.
+After installation and a system reboot, the tools and environment are ready for use. The script configures browsers, installs essential OSINT tools and prepares the system for secure investigations. Refer to the tool documentation for specific usage instructions, or consult the [FAQ page](https://github.com/SOsintOps/Speculator-Project/blob/main/document/FAQ.md) for common queries.
 
 ## Tools Included
 
-### Social Media and Username Tools
+### Person Investigation (email, username, phone, fullname)
 
   - [Blackbird](https://github.com/p1ngul1n0/blackbird)
-  - **[BDFR (Bulk Downloader for Reddit)](https://github.com/aliparlakci/bulk-downloader-for-reddit)**
+  - [BDFR (Bulk Downloader for Reddit)](https://github.com/aliparlakci/bulk-downloader-for-reddit)
   - [Eyes](https://github.com/N0rz3/Eyes)
   - [GHunt](https://github.com/mxrch/GHunt)
   - [Holehe](https://github.com/megadose/holehe)
   - [Maigret](https://github.com/soxoj/maigret)
   - [Sherlock](https://github.com/sherlock-project/sherlock)
   - [SocialScan](https://github.com/iojw/socialscan)
-  - [WhatsMyName](https://github.com/WebBreacher/WhatsMyName)
+  - [WhatsMyName](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python)
   - [h8mail](https://github.com/khast3x/h8mail)
   - [Osintgram](https://github.com/Datalux/Osintgram)
+  - [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes)
+  - [Mailcat](https://github.com/sharsil/mailcat)
+  - [Profil3r](https://github.com/Greyjedix/Profil3r)
+  - [Turbolehe](https://github.com/purrsec/Turbolehe)
+  - [Naminter](https://github.com/sifrfrederik/naminter)
+  - [Social-Analyzer](https://github.com/qeeqbox/social-analyzer)
+  - [Aliens Eye](https://github.com/arxhr007/Aliens_eye)
+  - [Enola](https://github.com/TheYahya/enola)
+  - [Stalkie](https://github.com/n0thhhing/stalkie)
+  - [Ignorant](https://github.com/megadose/ignorant)
+  - [PhoneInfoga](https://github.com/sundowndev/phoneinfoga)
 
 ### Domain and Web Tools
 
-  - [Amass](https://github.com/OWASP/Amass)
-  - [HTTrack](https://www.httrack.com/) & **WebHTTrack**
+  - [Amass](https://github.com/owasp-amass/amass)
   - [Photon](https://github.com/s0md3v/Photon)
   - [Sublist3r](https://github.com/aboul3la/Sublist3r)
   - [theHarvester](https://github.com/laramies/theHarvester)
+  - [Subfinder](https://github.com/projectdiscovery/subfinder)
+  - [HTTPX](https://github.com/projectdiscovery/httpx)
+  - [Nuclei](https://github.com/projectdiscovery/nuclei)
+  - [Fierce](https://github.com/mschwager/fierce)
+  - [TLDSweep](https://github.com/TLDSweep/TLDSweep)
+  - [Metagoofil](https://github.com/opsdisk/metagoofil)
 
-### Metadata Tools
+### Metadata and Image Tools
 
   - [Carbon14](https://github.com/Lazza/Carbon14)
   - [ExifTool](https://exiftool.org/)
   - [MAT2](https://0xacab.org/jvoisin/mat2)
-  - [Metagoofil](https://github.com/opsdisk/metagoofil)
-  
+  - [Xeuledoc](https://github.com/AnalystTool/xeuledoc)
+  - MediaInfo
+
 ### Frameworks
 
-  - [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes)
   - [Recon-ng](https://github.com/lanmaster53/recon-ng)
   - [Sn0int](https://github.com/kpcyrd/sn0int)
-  - [Spiderfoot](https://github.com/smicallef/spiderfoot)
+  - [Maigret Web](https://github.com/soxoj/maigret) (web UI on port 5001)
+  - [Changedetection.io](https://github.com/dgtlmoon/changedetection.io)
+
+### Video and Media
+
+  - [yt-dlp](https://github.com/yt-dlp/yt-dlp)
+  - [Streamlink](https://github.com/streamlink/streamlink)
+  - [Gallery-dl](https://github.com/mikf/gallery-dl)
+
+### Archives
+
+  - [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox)
+  - [WaybackPy](https://github.com/akamhy/waybackpy)
+  - [Waybackpack](https://github.com/jsvine/waybackpack)
+  - [Internet Archive CLI](https://github.com/jjjake/internetarchive)
 
 ### Browsers
 
-  - Firefox (customised for OSINT)
+  - Firefox (configured for OSINT)
   - Brave
   - Tor
 
-### Additional Tools & Utilities
+### Additional Utilities
 
-  - [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox)
-  - [BleachBit](https://www.bleachbit.org/)
-  - [Changedetection.io](https://github.com/dgtlmoon/changedetection.io)
-  - **FFmpeg**
-  - [Gallery-dl](https://github.com/mikf/gallery-dl)
-  - **Google Earth Pro**
-  - [Instaloader](https://github.com/instaloader/instaloader)
-  - [Internet Archive Command-Line Interface](https://github.com/jjjake/internetarchive)
-  - **Kazam**
-  - **MediaInfo GUI**
-  - [Name-That-Hash](https://github.com/HashPals/Name-That-Hash)
-  - [Search-That-Hash](https://github.com/HashPals/Search-That-Hash)
-  - **Streamlink**
-  - [Toutatis](https://github.com/megadose/toutatis)
-  - **VLC Media Player**
-  - [WaybackPy](https://github.com/akamhy/waybackpy)
-  - [Waybackpack](https://github.com/jsvine/waybackpack)
-  - [xeuledoc](https://github.com/AnalystTool/xeuledoc)
-  - **yt-dlp**
+  - BleachBit
+  - FFmpeg
+  - Google Earth Pro
+  - Kazam
+  - VLC Media Player
+  - [WireTapper](https://github.com/waffl3ss/WireTapper)
 
-## Contribution
+## Documentation
 
-Open an issue or submit a pull request. All contributions are welcome.
+  - [FAQ](document/FAQ.md): common questions and answers
+  - [Changelog](document/CHANGELOG.md): version history
+  - [The Speculatores](document/speculatores.md): historical background
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on reporting bugs, suggesting features and submitting pull requests.
 
 ## License
 
-This project is currently being reviewed for proper licensing. Use it at your own risk.
+This project is released into the public domain under the [Unlicense](LICENSE).
 
 ## Disclaimer
+
+The Speculator Project is inspired by the techniques outlined in the book *OSINT Techniques, 11th Edition* by Michael Bazzell.
 
 This script is provided "as-is" without any warranties. It is intended solely for educational and testing purposes. Please use it responsibly and at your own risk.

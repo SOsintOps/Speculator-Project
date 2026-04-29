@@ -206,28 +206,24 @@ install_py_tool_from_git() {
                 echo "WARNING: pip install -e . failed for $tool_name (non-fatal)."
                 mark_fail "git:$tool_name"
             fi
+        elif [ -f "$tool_dir/pyproject.toml" ]; then
+            echo "    No '$req_filename' found; trying pip install . (pyproject.toml detected)..."
+            if ! run_as_user python3 -m venv --system-site-packages "$venv_dir"; then
+                echo "WARNING: Failed to create venv for $tool_name."
+                mark_fail "git:$tool_name"
+                return 0
+            fi
+            if run_as_user "$venv_dir/bin/pip" install --quiet "$tool_dir"; then
+                mark_ok "git:$tool_name"
+            else
+                echo "WARNING: pip install . failed for $tool_name (non-fatal)."
+                mark_fail "git:$tool_name"
+            fi
         else
             echo "WARNING: '$req_filename' not found in $tool_name. Skipping pip install."
             mark_fail "git:$tool_name"
         fi
         return 0
-    fi
-
-    # Apply known patches before installing
-    if [ "$tool_name" = "spiderfoot" ]; then
-        # lxml 4.x is incompatible with Python 3.13. Remove lxml from requirements entirely
-        # so pip resolves the rest without conflict; lxml>=5.0 is installed separately below.
-        echo "    Patch: removing lxml from SpiderFoot requirements (installed separately at >=5.0)..."
-        python3 -c "
-import sys
-path = sys.argv[1]
-with open(path, 'r', errors='replace') as f:
-    lines = f.readlines()
-with open(path, 'w') as f:
-    for line in lines:
-        if not line.strip().rstrip('\r').startswith('lxml'):
-            f.write(line)
-" "$full_req_path" || sed -i '/^lxml/d' "$full_req_path" || true
     fi
 
     # Create venv and install dependencies (no activation needed — use venv pip directly)
@@ -238,13 +234,6 @@ with open(path, 'w') as f:
     fi
 
     if run_as_user "$venv_dir/bin/pip" install --quiet -r "$full_req_path"; then
-        if [ "$tool_name" = "spiderfoot" ]; then
-            # lxml is NOT reinstalled here. The venv uses --system-site-packages,
-            # so it inherits python3-lxml from apt (Debian 13 ships a Python 3.13
-            # compatible version). The lxml line was already removed from
-            # requirements.txt by the patch above, avoiding pip version conflicts.
-            echo "    SpiderFoot: using system python3-lxml via --system-site-packages"
-        fi
         mark_ok "git:$tool_name"
     else
         echo "WARNING: pip install failed for $tool_name (non-fatal)."
@@ -316,7 +305,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     PACKAGES=(
         # Core build tools
         gnupg curl wget git pipx flatpak unzip build-essential
-        pkg-config libsodium-dev golang-go
+        pkg-config libsodium-dev libcairo2-dev golang-go
         # Locale and fonts (IT + RU + ZH + EN base)
         locales-all fonts-noto-core
         # Italian
@@ -368,44 +357,12 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     echo "--- PHASE 2: Core Applications ---"
     echo "    [NOTA BENE] Applicationes parantur. Agens noster in umbra vigilat."
 
-    # -- Firefox ESR: profile template --
-    echo "--> Configuring Firefox ESR..."
-    pkill -f firefox-esr || true
-    # Wait up to 10s for Firefox to fully terminate before touching its profile
-    # pgrep may not be installed on minimal Debian images
-    if command -v pgrep >/dev/null 2>&1; then
-        for _i in {1..10}; do
-            pgrep -f firefox-esr >/dev/null || break
-            sleep 1
-        done
-    else
-        sleep 3
-    fi
-    run_as_user curl -fsSL -o "$REAL_HOME/ff-template.zip" \
-        "https://inteltechniques.com/data/osintvm/ff-template.zip" \
-        || echo "WARNING: Firefox template download failed."
-    # Check both existence AND non-empty size to catch failed downloads
-    if [ -f "$REAL_HOME/ff-template.zip" ] && [ -s "$REAL_HOME/ff-template.zip" ]; then
-        run_as_user unzip -o "$REAL_HOME/ff-template.zip" \
-            -d "$REAL_HOME/.mozilla/firefox/" || echo "WARNING: Firefox template unzip failed."
-        # Find the default profile via profiles.ini (more reliable than glob)
-        PROFILE_DIR=""
-        _PROFILES_INI="$REAL_HOME/.mozilla/firefox/profiles.ini"
-        if [ -f "$_PROFILES_INI" ]; then
-            _DEFAULT_PROFILE=$(awk -F= '/^\[/{sect=$0} /^Default=1/{in_default=1} in_default && /^Path=/{print $2; exit}' "$_PROFILES_INI" || true)
-            [ -n "$_DEFAULT_PROFILE" ] && PROFILE_DIR="$REAL_HOME/.mozilla/firefox/$_DEFAULT_PROFILE"
-        fi
-        # Fallback to glob if profiles.ini approach failed
-        if [ -z "$PROFILE_DIR" ] || [ ! -d "$PROFILE_DIR" ]; then
-            PROFILE_DIR=$(find "$REAL_HOME/.mozilla/firefox/" -maxdepth 1 -type d \
-                -name "*.default-esr*" 2>/dev/null | head -1)
-        fi
-        if [ -n "$PROFILE_DIR" ] && [ -d "$REAL_HOME/.mozilla/firefox/ff-template" ]; then
-            cp -R "$REAL_HOME/.mozilla/firefox/ff-template/"* "$PROFILE_DIR/" \
-                || echo "WARNING: Firefox profile copy failed."
-        fi
-        rm -rf "$REAL_HOME/.mozilla/firefox/ff-template" "$REAL_HOME/ff-template.zip"
-    fi
+    # -- Firefox ESR: enterprise policies (privacy + OSINT bookmarks + extensions) --
+    echo "--> Configuring Firefox ESR via policies.json..."
+    local _FF_POLICY_DIR="/usr/lib/firefox-esr/distribution"
+    mkdir -p "$_FF_POLICY_DIR"
+    cp "$_REPO_DIR/config/policies.json" "$_FF_POLICY_DIR/policies.json"
+    chmod 644 "$_FF_POLICY_DIR/policies.json"
 
     # -- Brave Browser --
     echo "--> Installing Brave Browser..."
@@ -517,7 +474,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     install_py_tool_from_git "https://github.com/aboul3la/Sublist3r"
     install_py_tool_from_git "https://github.com/Lazza/Carbon14"
     install_py_tool_from_git "https://github.com/opsdisk/metagoofil"
-    install_py_tool_from_git "https://github.com/smicallef/spiderfoot"
     install_py_tool_from_git "https://github.com/lanmaster53/recon-ng" "REQUIREMENTS"
     install_py_tool_from_git "https://github.com/sharsil/mailcat"
     install_py_tool_from_git "https://github.com/Greyjedix/Profil3r"
@@ -582,6 +538,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     # -- 3f. Go-based tools --
     echo "--> Installing Go-based tools..."
+    export GOTOOLCHAIN=auto
     # Run go installs as the real user so binaries land in their GOPATH
     tracked "go:amass"       run_as_user go install -v "github.com/owasp-amass/amass/v4/...@latest"
     tracked "go:subfinder"   run_as_user go install -v "github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
@@ -594,7 +551,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     tracked "go:stalkie"     run_as_user go install -v "github.com/ashendilantha/stalkie@latest"
     # Investigo: riscrittura Go di Sherlock con download contenuti profili,
     # 32 goroutine concorrenti, supporto Tor, usa DB Sherlock (~479 siti)
-    tracked "go:investigo"   run_as_user go install -v "github.com/tdh8316/Investigo@latest"
+    tracked "go:investigo"   run_as_user go install -v "github.com/tdh8316/Investigo/cmd/investigo@latest"
     echo "--> Installing phoneinfoga (precompiled binary)..."
     tracked "bin:phoneinfoga" run_as_user bash -c "
         curl -fsSL 'https://github.com/sundowndev/phoneinfoga/releases/latest/download/phoneinfoga_Linux_x86_64.tar.gz' \
@@ -659,8 +616,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     # ###############################################################
     # PHASE 4: LAUNCHERS AND SCRIPTS
-    # (Downloaded from IntelTechniques; custom versions will replace
-    #  these in a future release.)
     # ###############################################################
     echo "--- PHASE 4: Scripts and Launchers ---"
     echo "    [FIAT LUX] Scripturae appositae. Agens iam cliccare potest sine terminali."
@@ -687,8 +642,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         [youtube-dl.png]=speculator-video.png
         [metagoofil.png]=speculator-metadata.png
         [recon-ng.png]=speculator-api.png
-        [spiderfoot.png]=speculator-framework.png
         [evidence.png]=speculator-evidence.png
+        [maigret.png]=speculator-maigret.png
     )
     for _src_icon in "${!_ICON_MAP[@]}"; do
         _src_path="$_REPO_DIR/media/icons/$_src_icon"
@@ -735,7 +690,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     # Set GNOME dock favourites (best-effort; may fail outside a GUI session)
     # speculator-search and speculator-framework removed: no local replacements yet.
-    _GNOME_FAVS="['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'speculator-evidence.desktop', 'org.gnome.Terminal.desktop', 'speculator-update.desktop', 'speculator-video.desktop', 'speculator-user.desktop', 'speculator-image.desktop', 'speculator-domain.desktop', 'speculator-metadata.desktop', 'speculator-api.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop']"
+    _GNOME_FAVS="['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'speculator-evidence.desktop', 'org.gnome.Terminal.desktop', 'speculator-update.desktop', 'speculator-video.desktop', 'speculator-user.desktop', 'speculator-maigret.desktop', 'speculator-image.desktop', 'speculator-domain.desktop', 'speculator-metadata.desktop', 'speculator-api.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop']"
     run_as_user gsettings set org.gnome.shell favorite-apps "$_GNOME_FAVS" \
         || echo "INFO: Could not set GNOME favorites (expected if outside a GUI session)."
 
@@ -921,19 +876,6 @@ RESULT_FILE="$LOG_DIR/install_results_$(date +%Y-%m-%d_%H-%M-%S).txt"
     echo "ok_count=$ok_count"
     echo "fail_count=$fail_count"
     echo "total=$total"
-    echo ""
-    echo "[ok]"
-    for item in "${_INSTALL_OK[@]}";   do echo "$item"; done
-    echo ""
-    echo "[failed]"
-    for item in "${_INSTALL_FAIL[@]}"; do echo "$item"; done
-} > "$RESULT_FILE"
-echo "Results file: $RESULT_FILE"
-
-exit 0
-file: $RESULT_FILE"
-
-exit 0
     echo ""
     echo "[ok]"
     for item in "${_INSTALL_OK[@]}";   do echo "$item"; done
