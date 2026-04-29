@@ -1,6 +1,6 @@
 # Speculator Project
 
-![Version](https://img.shields.io/badge/version-0.8.8-blue)
+![Version](https://img.shields.io/badge/version-0.8.9-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![OS](https://img.shields.io/badge/OS-Debian%2013%20Trixie-red)
 ![Shell](https://img.shields.io/badge/shell-bash-yellow)
@@ -68,6 +68,7 @@ After installation and a system reboot, the tools and environment are ready for 
 [h8mail](https://github.com/khast3x/h8mail) -
 [Holehe](https://github.com/megadose/holehe) -
 [Ignorant](https://github.com/megadose/ignorant) -
+[Instaloader](https://github.com/instaloader/instaloader) -
 [Maigret](https://github.com/soxoj/maigret) -
 [Mailcat](https://github.com/sharsil/mailcat) -
 [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes) -
@@ -79,6 +80,7 @@ After installation and a system reboot, the tools and environment are ready for 
 [Social-Analyzer](https://github.com/qeeqbox/social-analyzer) -
 [SocialScan](https://github.com/iojw/socialscan) -
 [Stalkie](https://github.com/n0thhhing/stalkie) -
+[Toutatis](https://github.com/megadose/toutatis) -
 [Turbolehe](https://github.com/purrsec/Turbolehe) -
 [WhatsMyName](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python)
 
@@ -129,7 +131,10 @@ Brave - Firefox (configured for OSINT) - Tor
 
 ### Additional Utilities
 
-BleachBit - FFmpeg - Google Earth Pro - Kazam - VLC Media Player -
+BleachBit - FFmpeg - Google Earth Pro - Kazam -
+[Name-That-Hash](https://github.com/HashPals/Name-That-Hash) -
+[Search-That-Hash](https://github.com/HashPals/Search-That-Hash) -
+VLC Media Player -
 [WireTapper](https://github.com/waffl3ss/WireTapper)
 
 ## Documentation
