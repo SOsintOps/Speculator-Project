@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 0.8.7
+# # Version: 0.8.8
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -239,16 +239,13 @@ with open(path, 'w') as f:
 
     if run_as_user "$venv_dir/bin/pip" install --quiet -r "$full_req_path"; then
         if [ "$tool_name" = "spiderfoot" ]; then
-            echo "    Installing lxml>=5.0.0 (Python 3.13 compatible)..."
-            if run_as_user "$venv_dir/bin/pip" install --quiet --force-reinstall "lxml>=5.0.0"; then
-                mark_ok "git:$tool_name"
-            else
-                echo "WARNING: lxml>=5.0 install failed for spiderfoot."
-                mark_fail "git:$tool_name"
-            fi
-        else
-            mark_ok "git:$tool_name"
+            # lxml is NOT reinstalled here. The venv uses --system-site-packages,
+            # so it inherits python3-lxml from apt (Debian 13 ships a Python 3.13
+            # compatible version). The lxml line was already removed from
+            # requirements.txt by the patch above, avoiding pip version conflicts.
+            echo "    SpiderFoot: using system python3-lxml via --system-site-packages"
         fi
+        mark_ok "git:$tool_name"
     else
         echo "WARNING: pip install failed for $tool_name (non-fatal)."
         mark_fail "git:$tool_name"
@@ -493,6 +490,10 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         shodan
         fierce
         censys
+        naminter
+        # social-analyzer: 999 siti, web UI, OCR detection. NOTE: lo stato 'maybe'
+        # genera falsi positivi — usare con filtro --threshold o esaminare i soli 'found'.
+        social-analyzer
     )
     for pkg in "${PIPX_PACKAGES[@]}"; do
         if run_as_user pipx install "$pkg"; then
@@ -520,6 +521,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     install_py_tool_from_git "https://github.com/lanmaster53/recon-ng" "REQUIREMENTS"
     install_py_tool_from_git "https://github.com/sharsil/mailcat"
     install_py_tool_from_git "https://github.com/Greyjedix/Profil3r"
+    # Aliens Eye: 841 siti, AI confidence scoring (0-100%), 3 livelli di scansione
+    install_py_tool_from_git "https://github.com/arxhr007/Aliens_eye"
 
     # -- 3c. h8mail configuration --
     echo "--> Configuring h8mail..."
@@ -584,6 +587,14 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     tracked "go:subfinder"   run_as_user go install -v "github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
     tracked "go:httpx"       run_as_user go install -v "github.com/projectdiscovery/httpx/cmd/httpx@latest"
     tracked "go:nuclei"      run_as_user go install -v "github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest"
+    # Enola: username hunter Go-based, 407 siti, binario singolo, veloce
+    tracked "go:enola"       run_as_user go install -v "github.com/theyahya/enola/cmd/enola@latest"
+    # Stalkie: 13 siti, confidence scoring multi-segnale, headless browser go-rod,
+    # login wall detection, supporto Tor/SOCKS5
+    tracked "go:stalkie"     run_as_user go install -v "github.com/ashendilantha/stalkie@latest"
+    # Investigo: riscrittura Go di Sherlock con download contenuti profili,
+    # 32 goroutine concorrenti, supporto Tor, usa DB Sherlock (~479 siti)
+    tracked "go:investigo"   run_as_user go install -v "github.com/tdh8316/Investigo@latest"
     echo "--> Installing phoneinfoga (precompiled binary)..."
     tracked "bin:phoneinfoga" run_as_user bash -c "
         curl -fsSL 'https://github.com/sundowndev/phoneinfoga/releases/latest/download/phoneinfoga_Linux_x86_64.tar.gz' \
@@ -910,6 +921,19 @@ RESULT_FILE="$LOG_DIR/install_results_$(date +%Y-%m-%d_%H-%M-%S).txt"
     echo "ok_count=$ok_count"
     echo "fail_count=$fail_count"
     echo "total=$total"
+    echo ""
+    echo "[ok]"
+    for item in "${_INSTALL_OK[@]}";   do echo "$item"; done
+    echo ""
+    echo "[failed]"
+    for item in "${_INSTALL_FAIL[@]}"; do echo "$item"; done
+} > "$RESULT_FILE"
+echo "Results file: $RESULT_FILE"
+
+exit 0
+file: $RESULT_FILE"
+
+exit 0
     echo ""
     echo "[ok]"
     for item in "${_INSTALL_OK[@]}";   do echo "$item"; done
