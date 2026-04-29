@@ -13,7 +13,7 @@ The Speculator Project is the successor to [Argos](https://github.com/SOsintOps/
 
 ### The Speculatores
 
-The term "Speculatores" refers to Roman scouts and intelligence officers who played a crucial role in gathering important information during military operations. For more information on the historical background of the Speculatores, visit [this page](https://github.com/SOsintOps/Speculator-Project/blob/main/documents/speculatores.md).
+We took our name from the Speculatores, the scouts and spies of the Roman legions. They operated in silence, collected what mattered and reported back. [Read more](https://github.com/SOsintOps/Speculator-Project/blob/main/documents/speculatores.md).
 
 ## Features
 
