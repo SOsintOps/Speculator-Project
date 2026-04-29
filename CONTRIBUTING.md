@@ -37,7 +37,7 @@ This is a pure Bash project. No Node.js, no Python frameworks, no external build
 - `/scripts/` for launcher scripts; `/scripts/lib/` for shared libraries.
 - `/config/` for configuration files.
 - `/tests/` for test files.
-- `/document/` for project documentation.
+- `/documents/` for project documentation.
 - `/media/icons/` for icon files.
 - `/shortcuts/` for `.desktop` files.
 

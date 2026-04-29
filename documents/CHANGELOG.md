@@ -61,7 +61,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   placeholder substituted at install time. `Terminal=false` (Zenity GUI).
   Replaces `shortcuts/usernames.desktop` (which had hardcoded `/home/osint/` paths).
 
-#### Added — `document/FAQ.md`
+#### Added — `documents/FAQ.md`
 - New entry: *"Why does Firefox take a long time to start the first time after
   installation?"* — clarifies that the delay is normal on first launch.
 
