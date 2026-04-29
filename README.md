@@ -7,7 +7,7 @@
 
 ## Overview
 
-<img align="left" width="86" height="150" src="media/speculator.png">
+<img align="left" width="129" height="225" src="media/speculator.png">
 
 The Speculator Project is the successor to [Argos](https://github.com/SOsintOps/Argos), building on the techniques and lessons learned during its development. It provides a Bash script designed to customise Debian-based virtual machines for Open Source Intelligence (OSINT) activities. Its goal is to create a secure and standardised environment for intelligence gathering.
 
