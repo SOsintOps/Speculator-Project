@@ -1,7 +1,7 @@
 # Speculator Project
 
 ![Version](https://img.shields.io/badge/version-0.8.8-blue)
-![License](https://img.shields.io/badge/license-Unlicense-green)
+![License](https://img.shields.io/badge/license-MIT-green)
 ![OS](https://img.shields.io/badge/OS-Debian%2013%20Trixie-red)
 ![Shell](https://img.shields.io/badge/shell-bash-yellow)
 
@@ -142,10 +142,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on reporting bugs, suggest
 
 ## License
 
-This project is released into the public domain under the [Unlicense](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
 
 ## Disclaimer
 
-The Speculator Project is inspired by the techniques outlined in the book *OSINT Techniques, 11th Edition* by Michael Bazzell.
+The Speculator Project draws on techniques described in *OSINT Techniques, 11th Edition* by Michael Bazzell. This project is not affiliated with, endorsed by, or connected to Michael Bazzell or IntelTechniques in any way.
 
 This script is provided "as-is" without any warranties. It is intended solely for educational and testing purposes. Please use it responsibly and at your own risk.
