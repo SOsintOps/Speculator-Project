@@ -57,65 +57,60 @@ After installation and a system reboot, the tools and environment are ready for 
 
 ### Person Investigation (email, username, phone, fullname)
 
-| | | |
-|---|---|---|
-| [Blackbird](https://github.com/p1ngul1n0/blackbird) | [Eyes](https://github.com/N0rz3/Eyes) | [GHunt](https://github.com/mxrch/GHunt) |
-| [Holehe](https://github.com/megadose/holehe) | [Maigret](https://github.com/soxoj/maigret) | [Sherlock](https://github.com/sherlock-project/sherlock) |
-| [SocialScan](https://github.com/iojw/socialscan) | [WhatsMyName](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python) | [h8mail](https://github.com/khast3x/h8mail) |
-| [Osintgram](https://github.com/Datalux/Osintgram) | [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes) | [Mailcat](https://github.com/sharsil/mailcat) |
-| [Profil3r](https://github.com/Greyjedix/Profil3r) | [Turbolehe](https://github.com/purrsec/Turbolehe) | [Naminter](https://github.com/sifrfrederik/naminter) |
-| [Social-Analyzer](https://github.com/qeeqbox/social-analyzer) | [Aliens Eye](https://github.com/arxhr007/Aliens_eye) | [Enola](https://github.com/TheYahya/enola) |
-| [Stalkie](https://github.com/n0thhhing/stalkie) | [Ignorant](https://github.com/megadose/ignorant) | [PhoneInfoga](https://github.com/sundowndev/phoneinfoga) |
-| [BDFR](https://github.com/aliparlakci/bulk-downloader-for-reddit) | | |
+| | | | |
+|---|---|---|---|
+| [Aliens Eye](https://github.com/arxhr007/Aliens_eye) | [BDFR](https://github.com/aliparlakci/bulk-downloader-for-reddit) | [Blackbird](https://github.com/p1ngul1n0/blackbird) | [Enola](https://github.com/TheYahya/enola) |
+| [Eyes](https://github.com/N0rz3/Eyes) | [GHunt](https://github.com/mxrch/GHunt) | [h8mail](https://github.com/khast3x/h8mail) | [Holehe](https://github.com/megadose/holehe) |
+| [Ignorant](https://github.com/megadose/ignorant) | [Maigret](https://github.com/soxoj/maigret) | [Mailcat](https://github.com/sharsil/mailcat) | [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes) |
+| [Naminter](https://github.com/sifrfrederik/naminter) | [Osintgram](https://github.com/Datalux/Osintgram) | [PhoneInfoga](https://github.com/sundowndev/phoneinfoga) | [Profil3r](https://github.com/Greyjedix/Profil3r) |
+| [Sherlock](https://github.com/sherlock-project/sherlock) | [Social-Analyzer](https://github.com/qeeqbox/social-analyzer) | [SocialScan](https://github.com/iojw/socialscan) | [Stalkie](https://github.com/n0thhhing/stalkie) |
+| [Turbolehe](https://github.com/purrsec/Turbolehe) | [WhatsMyName](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python) | | |
 
 ### Domain and Web Tools
 
-| | | |
-|---|---|---|
-| [Amass](https://github.com/owasp-amass/amass) | [Photon](https://github.com/s0md3v/Photon) | [Sublist3r](https://github.com/aboul3la/Sublist3r) |
-| [theHarvester](https://github.com/laramies/theHarvester) | [Subfinder](https://github.com/projectdiscovery/subfinder) | [HTTPX](https://github.com/projectdiscovery/httpx) |
-| [Nuclei](https://github.com/projectdiscovery/nuclei) | [Fierce](https://github.com/mschwager/fierce) | [TLDSweep](https://github.com/TLDSweep/TLDSweep) |
-| [Metagoofil](https://github.com/opsdisk/metagoofil) | | |
+| | | | |
+|---|---|---|---|
+| [Amass](https://github.com/owasp-amass/amass) | [Fierce](https://github.com/mschwager/fierce) | [HTTPX](https://github.com/projectdiscovery/httpx) | [Metagoofil](https://github.com/opsdisk/metagoofil) |
+| [Nuclei](https://github.com/projectdiscovery/nuclei) | [Photon](https://github.com/s0md3v/Photon) | [Subfinder](https://github.com/projectdiscovery/subfinder) | [Sublist3r](https://github.com/aboul3la/Sublist3r) |
+| [theHarvester](https://github.com/laramies/theHarvester) | [TLDSweep](https://github.com/TLDSweep/TLDSweep) | | |
 
 ### Metadata and Image Tools
 
-| | | |
-|---|---|---|
-| [Carbon14](https://github.com/Lazza/Carbon14) | [ExifTool](https://exiftool.org/) | [MAT2](https://0xacab.org/jvoisin/mat2) |
-| [Xeuledoc](https://github.com/AnalystTool/xeuledoc) | MediaInfo | |
+| | | | |
+|---|---|---|---|
+| [Carbon14](https://github.com/Lazza/Carbon14) | [ExifTool](https://exiftool.org/) | [MAT2](https://0xacab.org/jvoisin/mat2) | MediaInfo |
+| [Xeuledoc](https://github.com/AnalystTool/xeuledoc) | | | |
 
 ### Frameworks
 
-| | | |
-|---|---|---|
-| [Recon-ng](https://github.com/lanmaster53/recon-ng) | [Sn0int](https://github.com/kpcyrd/sn0int) | [Maigret Web](https://github.com/soxoj/maigret) |
-| [Changedetection.io](https://github.com/dgtlmoon/changedetection.io) | | |
+| | | | |
+|---|---|---|---|
+| [Changedetection.io](https://github.com/dgtlmoon/changedetection.io) | [Maigret Web](https://github.com/soxoj/maigret) | [Recon-ng](https://github.com/lanmaster53/recon-ng) | [Sn0int](https://github.com/kpcyrd/sn0int) |
 
 ### Video and Media
 
-| | | |
-|---|---|---|
-| [yt-dlp](https://github.com/yt-dlp/yt-dlp) | [Streamlink](https://github.com/streamlink/streamlink) | [Gallery-dl](https://github.com/mikf/gallery-dl) |
+| | | | |
+|---|---|---|---|
+| [Gallery-dl](https://github.com/mikf/gallery-dl) | [Streamlink](https://github.com/streamlink/streamlink) | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | |
 
 ### Archives
 
-| | | |
-|---|---|---|
-| [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox) | [WaybackPy](https://github.com/akamhy/waybackpy) | [Waybackpack](https://github.com/jsvine/waybackpack) |
-| [Internet Archive CLI](https://github.com/jjjake/internetarchive) | | |
+| | | | |
+|---|---|---|---|
+| [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox) | [Internet Archive CLI](https://github.com/jjjake/internetarchive) | [WaybackPy](https://github.com/akamhy/waybackpy) | [Waybackpack](https://github.com/jsvine/waybackpack) |
 
 ### Browsers
 
-| | | |
-|---|---|---|
-| Firefox (configured for OSINT) | Brave | Tor |
+| | | | |
+|---|---|---|---|
+| Brave | Firefox (configured for OSINT) | Tor | |
 
 ### Additional Utilities
 
-| | | |
-|---|---|---|
-| BleachBit | FFmpeg | Google Earth Pro |
-| Kazam | VLC Media Player | [WireTapper](https://github.com/waffl3ss/WireTapper) |
+| | | | |
+|---|---|---|---|
+| BleachBit | FFmpeg | Google Earth Pro | Kazam |
+| VLC Media Player | [WireTapper](https://github.com/waffl3ss/WireTapper) | | |
 
 ## Documentation
 
