@@ -5,6 +5,108 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.8.9] - 2026-04-29
+
+### SpiderFoot removed, Maigret web UI, Firefox policies, project restructure
+
+#### Removed
+- **SpiderFoot**: removed entirely after 5 failed lxml fix attempts across v0.8.6-v0.8.8.
+  All references removed from installer, scripts, config and shortcuts.
+- **8 Phase B launcher scripts** (`api.sh`, `archives.sh`, `domain.sh`, `image.sh`,
+  `instagram.sh`, `metadata.sh`, `reddit.sh`, `video.sh`): removed pending full rewrite.
+- **`shortcuts/usernames.desktop`**: stale file with hardcoded `/home/osint/` paths.
+- **`tests/test_speculator_install.sh`**: removed.
+
+#### Added
+- **Maigret web UI** (`scripts/maigret-web.sh`): native pipx launch on port 5001.
+  Symlinks `/tmp/maigret_reports` into `~/Downloads/evidence/maigret/reports/`.
+  Desktop shortcut and GNOME taskbar entry added.
+- **Firefox ESR enterprise policies** (`config/policies.json`): replaces external
+  ff-template.zip download. 16 privacy policies, 4 extensions (uBlock Origin,
+  CanvasBlocker, ClearURLs, Multi-Account Containers), 31 OSINT bookmarks.
+- **`config/tools.conf`**: pipe-delimited tool manifest (57 tools).
+- **OSINT report templates** (`templates/`): Cherry Tree master template, executive
+  reports, case directory structure, scratch notes.
+- **GitHub community files**: `CONTRIBUTING.md`, `SECURITY.md`, issue templates
+  (bug report, feature request).
+- **Speculator mascot** (`media/speculator.png`): Scribblenauts-style character in
+  README Overview section.
+
+#### Changed
+- **`document/` renamed to `documents/`** for English consistency. All references updated.
+- **README.md**: rewritten with badges, Argos lineage, quick install one-liner,
+  inline tool lists (A-Z), 59 tools across 8 categories.
+- **License**: switched from Unlicense to MIT (copyright SOsintOps 2026).
+- **Disclaimer**: explicit non-affiliation with Michael Bazzell and IntelTechniques.
+- **Commit history**: reworded v0.8.5 commit to remove IntelTechniques references.
+
+#### Fixed — `speculator_install.sh`
+- **`_REPO_DIR` undefined at Phase 2**: variable was defined at Phase 4 (line 624)
+  but used at Phase 2 for Firefox policies. Moved to global scope (line 55).
+- **Version banner stale**: runtime banner said `v0.8.2`, updated to `v0.8.9`.
+- **`local` outside function**: removed invalid `local` keyword in Firefox policy block.
+- **Version bumped to 0.8.9**.
+
+---
+
+## [0.8.8] - 2026-04-08
+
+### 5 new name checkers, Investigo, SpiderFoot lxml fix v4
+
+#### Added — `speculator_install.sh`
+- **Naminter**, **Social-Analyzer**, **Aliens Eye**, **Enola**, **Stalkie**: five new
+  username/name checker tools added via `install_py_tool_from_git`.
+- **Investigo**: username checker added via Go install.
+
+#### Fixed — `speculator_install.sh`
+- **SpiderFoot lxml fix v4**: force system-site-packages in venv, echo override for
+  lxml import. Still failed; led to full removal in v0.8.9.
+- **Version bumped to 0.8.8**.
+
+---
+
+## [0.8.7] - 2026-04-08
+
+### SpiderFoot lxml fix v3, user.sh session log enrichment
+
+#### Fixed — `speculator_install.sh`
+- **SpiderFoot lxml fix v3**: removed lxml from requirements.txt entirely, installed
+  all other deps first, then force-reinstalled `lxml>=5.0.0` separately. Fix v2
+  (constraint file) failed due to transitive dependency conflict.
+
+#### Changed — `scripts/user.sh` (v0.4.1.0)
+- **Session log enrichment**: now records selected tools, exact command, stdout and
+  stderr per tool. Previously only status markers were written.
+- **Version bumped to 0.8.7**.
+
+---
+
+## [0.8.6] - 2026-04-07
+
+### Installer bug fixes, user.sh v0.4.0.0
+
+#### Fixed — `speculator_install.sh`
+- **h8mail**: `h8mail -g` now runs from `$REAL_HOME` so config lands at correct path.
+- **Profil3r**: fallback to `pip install -e .` when `setup.py` present but no
+  `requirements.txt`.
+- **Turbolehe**: removed from `PIPX_PACKAGES`; installed via git clone from
+  `github.com/purrsec/Turbolehe`.
+- **SpiderFoot lxml fix v2**: python3 rewrites requirements.txt (handles CRLF);
+  pip constraint file pins `lxml>=5.0.0` in venv.
+
+#### Added — `speculator_install.sh`
+- **evince** added to `PACKAGES` (PDF reader).
+
+#### Changed — `scripts/user.sh` (v0.4.0.0)
+- Replaced Gum/whiptail with `zenity --list --checklist` (flat multi-select with
+  Status column).
+- `export PATH` includes `~/.local/bin` (fixes Missing Tools false positive from
+  desktop launcher).
+- Mr.Holmes entry point corrected: `Holmes.py` to `MrHolmes.py`.
+- **Version bumped to 0.8.6**.
+
+---
+
 ## [0.8.5] - 2026-04-07
 
 ### Evidence shortcut in dock; language support fixes
