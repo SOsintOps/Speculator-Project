@@ -57,84 +57,65 @@ After installation and a system reboot, the tools and environment are ready for 
 
 ### Person Investigation (email, username, phone, fullname)
 
-  - [Blackbird](https://github.com/p1ngul1n0/blackbird)
-  - [BDFR (Bulk Downloader for Reddit)](https://github.com/aliparlakci/bulk-downloader-for-reddit)
-  - [Eyes](https://github.com/N0rz3/Eyes)
-  - [GHunt](https://github.com/mxrch/GHunt)
-  - [Holehe](https://github.com/megadose/holehe)
-  - [Maigret](https://github.com/soxoj/maigret)
-  - [Sherlock](https://github.com/sherlock-project/sherlock)
-  - [SocialScan](https://github.com/iojw/socialscan)
-  - [WhatsMyName](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python)
-  - [h8mail](https://github.com/khast3x/h8mail)
-  - [Osintgram](https://github.com/Datalux/Osintgram)
-  - [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes)
-  - [Mailcat](https://github.com/sharsil/mailcat)
-  - [Profil3r](https://github.com/Greyjedix/Profil3r)
-  - [Turbolehe](https://github.com/purrsec/Turbolehe)
-  - [Naminter](https://github.com/sifrfrederik/naminter)
-  - [Social-Analyzer](https://github.com/qeeqbox/social-analyzer)
-  - [Aliens Eye](https://github.com/arxhr007/Aliens_eye)
-  - [Enola](https://github.com/TheYahya/enola)
-  - [Stalkie](https://github.com/n0thhhing/stalkie)
-  - [Ignorant](https://github.com/megadose/ignorant)
-  - [PhoneInfoga](https://github.com/sundowndev/phoneinfoga)
+| | | |
+|---|---|---|
+| [Blackbird](https://github.com/p1ngul1n0/blackbird) | [Eyes](https://github.com/N0rz3/Eyes) | [GHunt](https://github.com/mxrch/GHunt) |
+| [Holehe](https://github.com/megadose/holehe) | [Maigret](https://github.com/soxoj/maigret) | [Sherlock](https://github.com/sherlock-project/sherlock) |
+| [SocialScan](https://github.com/iojw/socialscan) | [WhatsMyName](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python) | [h8mail](https://github.com/khast3x/h8mail) |
+| [Osintgram](https://github.com/Datalux/Osintgram) | [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes) | [Mailcat](https://github.com/sharsil/mailcat) |
+| [Profil3r](https://github.com/Greyjedix/Profil3r) | [Turbolehe](https://github.com/purrsec/Turbolehe) | [Naminter](https://github.com/sifrfrederik/naminter) |
+| [Social-Analyzer](https://github.com/qeeqbox/social-analyzer) | [Aliens Eye](https://github.com/arxhr007/Aliens_eye) | [Enola](https://github.com/TheYahya/enola) |
+| [Stalkie](https://github.com/n0thhhing/stalkie) | [Ignorant](https://github.com/megadose/ignorant) | [PhoneInfoga](https://github.com/sundowndev/phoneinfoga) |
+| [BDFR](https://github.com/aliparlakci/bulk-downloader-for-reddit) | | |
 
 ### Domain and Web Tools
 
-  - [Amass](https://github.com/owasp-amass/amass)
-  - [Photon](https://github.com/s0md3v/Photon)
-  - [Sublist3r](https://github.com/aboul3la/Sublist3r)
-  - [theHarvester](https://github.com/laramies/theHarvester)
-  - [Subfinder](https://github.com/projectdiscovery/subfinder)
-  - [HTTPX](https://github.com/projectdiscovery/httpx)
-  - [Nuclei](https://github.com/projectdiscovery/nuclei)
-  - [Fierce](https://github.com/mschwager/fierce)
-  - [TLDSweep](https://github.com/TLDSweep/TLDSweep)
-  - [Metagoofil](https://github.com/opsdisk/metagoofil)
+| | | |
+|---|---|---|
+| [Amass](https://github.com/owasp-amass/amass) | [Photon](https://github.com/s0md3v/Photon) | [Sublist3r](https://github.com/aboul3la/Sublist3r) |
+| [theHarvester](https://github.com/laramies/theHarvester) | [Subfinder](https://github.com/projectdiscovery/subfinder) | [HTTPX](https://github.com/projectdiscovery/httpx) |
+| [Nuclei](https://github.com/projectdiscovery/nuclei) | [Fierce](https://github.com/mschwager/fierce) | [TLDSweep](https://github.com/TLDSweep/TLDSweep) |
+| [Metagoofil](https://github.com/opsdisk/metagoofil) | | |
 
 ### Metadata and Image Tools
 
-  - [Carbon14](https://github.com/Lazza/Carbon14)
-  - [ExifTool](https://exiftool.org/)
-  - [MAT2](https://0xacab.org/jvoisin/mat2)
-  - [Xeuledoc](https://github.com/AnalystTool/xeuledoc)
-  - MediaInfo
+| | | |
+|---|---|---|
+| [Carbon14](https://github.com/Lazza/Carbon14) | [ExifTool](https://exiftool.org/) | [MAT2](https://0xacab.org/jvoisin/mat2) |
+| [Xeuledoc](https://github.com/AnalystTool/xeuledoc) | MediaInfo | |
 
 ### Frameworks
 
-  - [Recon-ng](https://github.com/lanmaster53/recon-ng)
-  - [Sn0int](https://github.com/kpcyrd/sn0int)
-  - [Maigret Web](https://github.com/soxoj/maigret) (web UI on port 5001)
-  - [Changedetection.io](https://github.com/dgtlmoon/changedetection.io)
+| | | |
+|---|---|---|
+| [Recon-ng](https://github.com/lanmaster53/recon-ng) | [Sn0int](https://github.com/kpcyrd/sn0int) | [Maigret Web](https://github.com/soxoj/maigret) |
+| [Changedetection.io](https://github.com/dgtlmoon/changedetection.io) | | |
 
 ### Video and Media
 
-  - [yt-dlp](https://github.com/yt-dlp/yt-dlp)
-  - [Streamlink](https://github.com/streamlink/streamlink)
-  - [Gallery-dl](https://github.com/mikf/gallery-dl)
+| | | |
+|---|---|---|
+| [yt-dlp](https://github.com/yt-dlp/yt-dlp) | [Streamlink](https://github.com/streamlink/streamlink) | [Gallery-dl](https://github.com/mikf/gallery-dl) |
 
 ### Archives
 
-  - [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox)
-  - [WaybackPy](https://github.com/akamhy/waybackpy)
-  - [Waybackpack](https://github.com/jsvine/waybackpack)
-  - [Internet Archive CLI](https://github.com/jjjake/internetarchive)
+| | | |
+|---|---|---|
+| [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox) | [WaybackPy](https://github.com/akamhy/waybackpy) | [Waybackpack](https://github.com/jsvine/waybackpack) |
+| [Internet Archive CLI](https://github.com/jjjake/internetarchive) | | |
 
 ### Browsers
 
-  - Firefox (configured for OSINT)
-  - Brave
-  - Tor
+| | | |
+|---|---|---|
+| Firefox (configured for OSINT) | Brave | Tor |
 
 ### Additional Utilities
 
-  - BleachBit
-  - FFmpeg
-  - Google Earth Pro
-  - Kazam
-  - VLC Media Player
-  - [WireTapper](https://github.com/waffl3ss/WireTapper)
+| | | |
+|---|---|---|
+| BleachBit | FFmpeg | Google Earth Pro |
+| Kazam | VLC Media Player | [WireTapper](https://github.com/waffl3ss/WireTapper) |
 
 ## Documentation
 
