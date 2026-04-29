@@ -21,10 +21,15 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - **Maigret web UI** (`scripts/maigret-web.sh`): native pipx launch on port 5001.
   Symlinks `/tmp/maigret_reports` into `~/Downloads/evidence/maigret/reports/`.
   Desktop shortcut and GNOME taskbar entry added.
-- **Firefox ESR enterprise policies** (`config/policies.json`): replaces external
-  ff-template.zip download. 16 privacy policies, 4 extensions (uBlock Origin,
-  CanvasBlocker, ClearURLs, Multi-Account Containers), 31 OSINT bookmarks.
+- **Firefox ESR enterprise policies** (`config/policies.json`): 16 privacy policies, 12 extensions (uBlock Origin,
+  CanvasBlocker, ClearURLs, Multi-Account Containers, Exif Viewer, Wayback Machine,
+  GPS Detect, Search by Image, Nimbus Screenshot, Resurrect Pages, Link Gopher,
+  Mitaka), 34 OSINT bookmarks organised in 8 themed folders plus 3 top-level
+  dashboard links (AML Toolbox, Nixintel, Terrorism Research).
 - **`config/tools.conf`**: pipe-delimited tool manifest (57 tools).
+- **`scripts/lib/common.sh`** (v0.1.0): shared library for all launcher scripts.
+  Manifest loading, Zenity checklist builder, run_tool/run_repo_python_tool with
+  semantic error detection, session logging, and generic `run_category()` flow.
 - **OSINT report templates** (`templates/`): Cherry Tree master template, executive
   reports, case directory structure, scratch notes.
 - **GitHub community files**: `CONTRIBUTING.md`, `SECURITY.md`, issue templates
@@ -43,9 +48,12 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 #### Fixed — `speculator_install.sh`
 - **`_REPO_DIR` undefined at Phase 2**: variable was defined at Phase 4 (line 624)
   but used at Phase 2 for Firefox policies. Moved to global scope (line 55).
+- **Firefox policies.json permission denied**: added `sudo` prefix to `mkdir`,
+  `cp` and `chmod` for `/usr/lib/firefox-esr/distribution/`.
 - **Version banner stale**: runtime banner said `v0.8.2`, updated to `v0.8.9`.
 - **`local` outside function**: removed invalid `local` keyword in Firefox policy block.
 - **Version bumped to 0.8.9**.
+- **56/56 components installed** (verified on VM, 2026-04-29): zero failures.
 
 ---
 
