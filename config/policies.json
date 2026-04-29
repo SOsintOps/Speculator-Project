@@ -186,6 +186,9 @@
     },
     "ManagedBookmarks": [
       { "toplevel_name": "OSINT" },
+      { "name": "AML Toolbox", "url": "https://start.me/p/rxeRqr/aml-toolbox" },
+      { "name": "Nixintel OSINT", "url": "https://start.me/p/rx6Qj8/nixintel-s-osint-resource-list" },
+      { "name": "Terrorism Research", "url": "https://start.me/p/OmExgb/terrorism-radicalisation-research-dashboard" },
       {
         "name": "Person Investigation",
         "children": [
