@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 0.8.8
+# # Version: 0.8.9
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -52,6 +52,7 @@ ICONS_DIR="$REAL_HOME/.local/share/icons/speculator"
 DESKTOP_DIR="$REAL_HOME/.local/share/applications"
 CONFIG_DIR="$REAL_HOME/.config/speculator"
 LOG_FILE="$LOG_DIR/install_$(date +%Y-%m-%d_%H-%M-%S).log"
+_REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 
 # ---------------------------------------------------------------
@@ -264,7 +265,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
 {
     echo "#################################################################"
-    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.8.2     #"
+    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.8.9     #"
     echo "# Target: Debian 13 Trixie (amd64)                             #"
     echo "#################################################################"
     echo "# Real user : $REAL_USER"
@@ -359,7 +360,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     # -- Firefox ESR: enterprise policies (privacy + OSINT bookmarks + extensions) --
     echo "--> Configuring Firefox ESR via policies.json..."
-    local _FF_POLICY_DIR="/usr/lib/firefox-esr/distribution"
+    _FF_POLICY_DIR="/usr/lib/firefox-esr/distribution"
     mkdir -p "$_FF_POLICY_DIR"
     cp "$_REPO_DIR/config/policies.json" "$_FF_POLICY_DIR/policies.json"
     chmod 644 "$_FF_POLICY_DIR/policies.json"
@@ -621,7 +622,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     echo "    [FIAT LUX] Scripturae appositae. Agens iam cliccare potest sine terminali."
 
     # Install all Phase B scripts from repo
-    _REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
     echo "--> Installing scripts from repo..."
     for _sh in "$_REPO_DIR/scripts/"*.sh; do
         [ -f "$_sh" ] || continue
