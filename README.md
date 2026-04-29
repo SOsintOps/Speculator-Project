@@ -11,7 +11,7 @@ The Speculator Project is the successor to [Argos](https://github.com/SOsintOps/
 
 ### The Speculatores
 
-The term "Speculatores" refers to Roman scouts and intelligence officers who played a crucial role in gathering important information during military operations. For more information on the historical background of the Speculatores, visit [this page](https://github.com/SOsintOps/Speculator-Project/blob/main/document/speculatores.md).
+The term "Speculatores" refers to Roman scouts and intelligence officers who played a crucial role in gathering important information during military operations. For more information on the historical background of the Speculatores, visit [this page](https://github.com/SOsintOps/Speculator-Project/blob/main/documents/speculatores.md).
 
 ## Features
 
@@ -31,23 +31,27 @@ The term "Speculatores" refers to Roman scouts and intelligence officers who pla
 
 ## Installation
 
+Quick install (single command):
+
+```bash
+git clone https://github.com/SOsintOps/speculator-project.git && cd speculator-project && sudo ./speculator_install.sh
+```
+
+Or step by step:
+
 1.  Clone the repository:
     ```bash
     git clone https://github.com/SOsintOps/speculator-project.git
     cd speculator-project
     ```
-2.  Make the script executable:
-    ```bash
-    chmod +x speculator_install.sh
-    ```
-3.  Run the script with superuser privileges:
+2.  Run the script with superuser privileges:
     ```bash
     sudo ./speculator_install.sh
     ```
 
 ## Usage
 
-After installation and a system reboot, the tools and environment are ready for use. The script configures browsers, installs essential OSINT tools and prepares the system for secure investigations. Refer to the tool documentation for specific usage instructions, or consult the [FAQ page](https://github.com/SOsintOps/Speculator-Project/blob/main/document/FAQ.md) for common queries.
+After installation and a system reboot, the tools and environment are ready for use. The script configures browsers, installs essential OSINT tools and prepares the system for secure investigations. Refer to the tool documentation for specific usage instructions, or consult the [FAQ page](https://github.com/SOsintOps/Speculator-Project/blob/main/documents/FAQ.md) for common queries.
 
 ## Tools Included
 
@@ -134,9 +138,9 @@ After installation and a system reboot, the tools and environment are ready for 
 
 ## Documentation
 
-  - [FAQ](document/FAQ.md): common questions and answers
-  - [Changelog](document/CHANGELOG.md): version history
-  - [The Speculatores](document/speculatores.md): historical background
+  - [FAQ](documents/FAQ.md): common questions and answers
+  - [Changelog](documents/CHANGELOG.md): version history
+  - [The Speculatores](documents/speculatores.md): historical background
 
 ## Contributing
 
