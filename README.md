@@ -57,7 +57,7 @@ After installation and a system reboot, the tools and environment are ready for 
 
 ### Person Investigation (email, username, phone, fullname)
 
-| | | | |
+| Tool | Tool | Tool | Tool |
 |---|---|---|---|
 | [Aliens Eye](https://github.com/arxhr007/Aliens_eye) | [BDFR](https://github.com/aliparlakci/bulk-downloader-for-reddit) | [Blackbird](https://github.com/p1ngul1n0/blackbird) | [Enola](https://github.com/TheYahya/enola) |
 | [Eyes](https://github.com/N0rz3/Eyes) | [GHunt](https://github.com/mxrch/GHunt) | [h8mail](https://github.com/khast3x/h8mail) | [Holehe](https://github.com/megadose/holehe) |
@@ -68,7 +68,7 @@ After installation and a system reboot, the tools and environment are ready for 
 
 ### Domain and Web Tools
 
-| | | | |
+| Tool | Tool | Tool | Tool |
 |---|---|---|---|
 | [Amass](https://github.com/owasp-amass/amass) | [Fierce](https://github.com/mschwager/fierce) | [HTTPX](https://github.com/projectdiscovery/httpx) | [Metagoofil](https://github.com/opsdisk/metagoofil) |
 | [Nuclei](https://github.com/projectdiscovery/nuclei) | [Photon](https://github.com/s0md3v/Photon) | [Subfinder](https://github.com/projectdiscovery/subfinder) | [Sublist3r](https://github.com/aboul3la/Sublist3r) |
@@ -76,38 +76,38 @@ After installation and a system reboot, the tools and environment are ready for 
 
 ### Metadata and Image Tools
 
-| | | | |
+| Tool | Tool | Tool | Tool |
 |---|---|---|---|
 | [Carbon14](https://github.com/Lazza/Carbon14) | [ExifTool](https://exiftool.org/) | [MAT2](https://0xacab.org/jvoisin/mat2) | MediaInfo |
 | [Xeuledoc](https://github.com/AnalystTool/xeuledoc) | | | |
 
 ### Frameworks
 
-| | | | |
+| Tool | Tool | Tool | Tool |
 |---|---|---|---|
 | [Changedetection.io](https://github.com/dgtlmoon/changedetection.io) | [Maigret Web](https://github.com/soxoj/maigret) | [Recon-ng](https://github.com/lanmaster53/recon-ng) | [Sn0int](https://github.com/kpcyrd/sn0int) |
 
 ### Video and Media
 
-| | | | |
+| Tool | Tool | Tool | Tool |
 |---|---|---|---|
 | [Gallery-dl](https://github.com/mikf/gallery-dl) | [Streamlink](https://github.com/streamlink/streamlink) | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | |
 
 ### Archives
 
-| | | | |
+| Tool | Tool | Tool | Tool |
 |---|---|---|---|
 | [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox) | [Internet Archive CLI](https://github.com/jjjake/internetarchive) | [WaybackPy](https://github.com/akamhy/waybackpy) | [Waybackpack](https://github.com/jsvine/waybackpack) |
 
 ### Browsers
 
-| | | | |
+| Tool | Tool | Tool | Tool |
 |---|---|---|---|
 | Brave | Firefox (configured for OSINT) | Tor | |
 
 ### Additional Utilities
 
-| | | | |
+| Tool | Tool | Tool | Tool |
 |---|---|---|---|
 | BleachBit | FFmpeg | Google Earth Pro | Kazam |
 | VLC Media Player | [WireTapper](https://github.com/waffl3ss/WireTapper) | | |
