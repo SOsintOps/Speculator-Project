@@ -57,60 +57,78 @@ After installation and a system reboot, the tools and environment are ready for 
 
 ### Person Investigation (email, username, phone, fullname)
 
-| Tool | | | |
-|---|---|---|---|
-| [Aliens Eye](https://github.com/arxhr007/Aliens_eye) | [BDFR](https://github.com/aliparlakci/bulk-downloader-for-reddit) | [Blackbird](https://github.com/p1ngul1n0/blackbird) | [Enola](https://github.com/TheYahya/enola) |
-| [Eyes](https://github.com/N0rz3/Eyes) | [GHunt](https://github.com/mxrch/GHunt) | [h8mail](https://github.com/khast3x/h8mail) | [Holehe](https://github.com/megadose/holehe) |
-| [Ignorant](https://github.com/megadose/ignorant) | [Maigret](https://github.com/soxoj/maigret) | [Mailcat](https://github.com/sharsil/mailcat) | [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes) |
-| [Naminter](https://github.com/sifrfrederik/naminter) | [Osintgram](https://github.com/Datalux/Osintgram) | [PhoneInfoga](https://github.com/sundowndev/phoneinfoga) | [Profil3r](https://github.com/Greyjedix/Profil3r) |
-| [Sherlock](https://github.com/sherlock-project/sherlock) | [Social-Analyzer](https://github.com/qeeqbox/social-analyzer) | [SocialScan](https://github.com/iojw/socialscan) | [Stalkie](https://github.com/n0thhhing/stalkie) |
-| [Turbolehe](https://github.com/purrsec/Turbolehe) | [WhatsMyName](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python) | | |
+[Aliens Eye](https://github.com/arxhr007/Aliens_eye) -
+[BDFR](https://github.com/aliparlakci/bulk-downloader-for-reddit) -
+[Blackbird](https://github.com/p1ngul1n0/blackbird) -
+[Enola](https://github.com/TheYahya/enola) -
+[Eyes](https://github.com/N0rz3/Eyes) -
+[GHunt](https://github.com/mxrch/GHunt) -
+[h8mail](https://github.com/khast3x/h8mail) -
+[Holehe](https://github.com/megadose/holehe) -
+[Ignorant](https://github.com/megadose/ignorant) -
+[Maigret](https://github.com/soxoj/maigret) -
+[Mailcat](https://github.com/sharsil/mailcat) -
+[Mr.Holmes](https://github.com/Lucksi/Mr.Holmes) -
+[Naminter](https://github.com/sifrfrederik/naminter) -
+[Osintgram](https://github.com/Datalux/Osintgram) -
+[PhoneInfoga](https://github.com/sundowndev/phoneinfoga) -
+[Profil3r](https://github.com/Greyjedix/Profil3r) -
+[Sherlock](https://github.com/sherlock-project/sherlock) -
+[Social-Analyzer](https://github.com/qeeqbox/social-analyzer) -
+[SocialScan](https://github.com/iojw/socialscan) -
+[Stalkie](https://github.com/n0thhhing/stalkie) -
+[Turbolehe](https://github.com/purrsec/Turbolehe) -
+[WhatsMyName](https://github.com/C3n7ral051nt4g3ncy/WhatsMyName-Python)
 
 ### Domain and Web Tools
 
-| Tool | | | |
-|---|---|---|---|
-| [Amass](https://github.com/owasp-amass/amass) | [Fierce](https://github.com/mschwager/fierce) | [HTTPX](https://github.com/projectdiscovery/httpx) | [Metagoofil](https://github.com/opsdisk/metagoofil) |
-| [Nuclei](https://github.com/projectdiscovery/nuclei) | [Photon](https://github.com/s0md3v/Photon) | [Subfinder](https://github.com/projectdiscovery/subfinder) | [Sublist3r](https://github.com/aboul3la/Sublist3r) |
-| [theHarvester](https://github.com/laramies/theHarvester) | [TLDSweep](https://github.com/TLDSweep/TLDSweep) | | |
+[Amass](https://github.com/owasp-amass/amass) -
+[Fierce](https://github.com/mschwager/fierce) -
+[HTTPX](https://github.com/projectdiscovery/httpx) -
+[Metagoofil](https://github.com/opsdisk/metagoofil) -
+[Nuclei](https://github.com/projectdiscovery/nuclei) -
+[Photon](https://github.com/s0md3v/Photon) -
+[Subfinder](https://github.com/projectdiscovery/subfinder) -
+[Sublist3r](https://github.com/aboul3la/Sublist3r) -
+[theHarvester](https://github.com/laramies/theHarvester) -
+[TLDSweep](https://github.com/TLDSweep/TLDSweep)
 
 ### Metadata and Image Tools
 
-| Tool | | | |
-|---|---|---|---|
-| [Carbon14](https://github.com/Lazza/Carbon14) | [ExifTool](https://exiftool.org/) | [MAT2](https://0xacab.org/jvoisin/mat2) | MediaInfo |
-| [Xeuledoc](https://github.com/AnalystTool/xeuledoc) | | | |
+[Carbon14](https://github.com/Lazza/Carbon14) -
+[ExifTool](https://exiftool.org/) -
+[MAT2](https://0xacab.org/jvoisin/mat2) -
+MediaInfo -
+[Xeuledoc](https://github.com/AnalystTool/xeuledoc)
 
 ### Frameworks
 
-| Tool | | | |
-|---|---|---|---|
-| [Changedetection.io](https://github.com/dgtlmoon/changedetection.io) | [Maigret Web](https://github.com/soxoj/maigret) | [Recon-ng](https://github.com/lanmaster53/recon-ng) | [Sn0int](https://github.com/kpcyrd/sn0int) |
+[Changedetection.io](https://github.com/dgtlmoon/changedetection.io) -
+[Maigret Web](https://github.com/soxoj/maigret) -
+[Recon-ng](https://github.com/lanmaster53/recon-ng) -
+[Sn0int](https://github.com/kpcyrd/sn0int)
 
 ### Video and Media
 
-| Tool | | | |
-|---|---|---|---|
-| [Gallery-dl](https://github.com/mikf/gallery-dl) | [Streamlink](https://github.com/streamlink/streamlink) | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | |
+[Gallery-dl](https://github.com/mikf/gallery-dl) -
+[Streamlink](https://github.com/streamlink/streamlink) -
+[yt-dlp](https://github.com/yt-dlp/yt-dlp)
 
 ### Archives
 
-| Tool | | | |
-|---|---|---|---|
-| [ArchiveBox](https://github.com/ArchiveBox/ArchiveBox) | [Internet Archive CLI](https://github.com/jjjake/internetarchive) | [WaybackPy](https://github.com/akamhy/waybackpy) | [Waybackpack](https://github.com/jsvine/waybackpack) |
+[ArchiveBox](https://github.com/ArchiveBox/ArchiveBox) -
+[Internet Archive CLI](https://github.com/jjjake/internetarchive) -
+[WaybackPy](https://github.com/akamhy/waybackpy) -
+[Waybackpack](https://github.com/jsvine/waybackpack)
 
 ### Browsers
 
-| Tool | | | |
-|---|---|---|---|
-| Brave | Firefox (configured for OSINT) | Tor | |
+Brave - Firefox (configured for OSINT) - Tor
 
 ### Additional Utilities
 
-| Tool | | | |
-|---|---|---|---|
-| BleachBit | FFmpeg | Google Earth Pro | Kazam |
-| VLC Media Player | [WireTapper](https://github.com/waffl3ss/WireTapper) | | |
+BleachBit - FFmpeg - Google Earth Pro - Kazam - VLC Media Player -
+[WireTapper](https://github.com/waffl3ss/WireTapper)
 
 ## Documentation
 
