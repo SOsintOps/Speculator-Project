@@ -81,9 +81,9 @@ log_step() {
     run)  printf "  ${C_CYAN}*${RESET}  ${BOLD}%-22s${RESET} ${C_CYAN}running...${RESET}\n" "$name" ;;
     ok)   printf "  ${C_GREEN}+${RESET}  ${BOLD}%-22s${RESET} ${C_GREEN}done${RESET}${C_GRAY}%s${RESET}\n" \
             "$name" "$extra" ;;
-    skip) printf "  ${C_ORANGE}o${RESET}  ${BOLD}%-22s${RESET} ${C_ORANGE}not available — skipped${RESET}\n" "$name" ;;
+    skip) printf "  ${C_ORANGE}o${RESET}  ${BOLD}%-22s${RESET} ${C_ORANGE}not available — skipped%s${RESET}\n" "$name" "$extra" ;;
     fail) printf "  ${C_RED}x${RESET}  ${BOLD}%-22s${RESET} ${C_RED}error%s${RESET}\n" "$name" "$extra" ;;
-    info) printf "  ${C_GRAY}i${RESET}  ${C_GRAY}%s${RESET}\n" "$name" ;;
+    info) printf "  ${C_GRAY}i${RESET}  ${C_GRAY}%s%s${RESET}\n" "$name" "$extra" ;;
   esac
   _session_log "[$stato] $name $extra"
 }

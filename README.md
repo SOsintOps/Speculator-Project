@@ -1,6 +1,6 @@
 # Speculator Project
 
-![Version](https://img.shields.io/badge/version-0.8.9-blue)
+![Version](https://img.shields.io/badge/version-0.9.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![OS](https://img.shields.io/badge/OS-Debian%2013%20Trixie-red)
 ![Shell](https://img.shields.io/badge/shell-bash-yellow)

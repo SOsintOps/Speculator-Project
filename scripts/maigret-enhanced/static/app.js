@@ -13,6 +13,17 @@ const state = {
   simulation: null,
 };
 
+/* ── Escaping ── */
+function esc(str) {
+  const d = document.createElement('div');
+  d.textContent = str || '';
+  return d.innerHTML;
+}
+
+function escAttr(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
 /* ── Init ── */
 document.addEventListener('DOMContentLoaded', () => {
   loadTags();
@@ -25,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadTags() {
   try {
     const res = await fetch('/api/tags');
+    if (!res.ok) return;
     state.tags = await res.json();
     renderTagCloud('tagCloudInclude', state.includedTags, 'included');
     renderTagCloud('tagCloudExclude', state.excludedTags, 'excluded');
@@ -76,6 +88,7 @@ async function startScan() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, top_sites: topSites, timeout, tags, excluded_tags: excludedTags, recursive }),
       });
+      if (!res.ok) { console.error('Scan start failed:', res.status); continue; }
       const data = await res.json();
       state.targets[username] = {
         jobId: data.id,
@@ -104,8 +117,15 @@ function addTargetTab(username) {
   bar.classList.add('active');
   const tab = document.createElement('div');
   tab.className = 'target-tab';
-  tab.id = `target-${username}`;
-  tab.innerHTML = `${username} <span class="count" id="tcount-${username}">0</span>`;
+  tab.id = `target-${escAttr(username)}`;
+  const nameSpan = document.createElement('span');
+  nameSpan.textContent = username + ' ';
+  const countSpan = document.createElement('span');
+  countSpan.className = 'count';
+  countSpan.id = `tcount-${username}`;
+  countSpan.textContent = '0';
+  tab.appendChild(nameSpan);
+  tab.appendChild(countSpan);
   tab.onclick = () => selectTarget(username);
   bar.appendChild(tab);
 }
@@ -120,23 +140,33 @@ function selectTarget(username) {
 
 /* ── SSE Progress ── */
 function listenProgress(username, jobId) {
-  const es = new EventSource(`/api/scan/${jobId}/progress`);
+  const es = new EventSource(`/api/scan/${encodeURIComponent(jobId)}/progress`);
+  let done = false;
   es.onmessage = (evt) => {
+    if (done) return;
     const data = JSON.parse(evt.data);
     if (!data.type) {
       updateProgress(username, data);
     } else if (data.type === 'done') {
+      done = true;
       es.close();
       state.targets[username].status = 'done';
       fetchResults(username, jobId);
     } else if (data.type === 'error') {
+      done = true;
       es.close();
       state.targets[username].status = 'error';
     }
   };
   es.onerror = () => {
+    if (done) return;
+    done = true;
     es.close();
-    fetchResults(username, jobId);
+    // Only fetch results if scan might have completed
+    const t = state.targets[username];
+    if (t && t.status === 'running') {
+      t.status = 'error';
+    }
   };
 }
 
@@ -177,17 +207,22 @@ function showProgress() {
 /* ── Fetch final results ── */
 async function fetchResults(username, jobId) {
   try {
-    const [resResults, resGraph] = await Promise.all([
-      fetch(`/api/scan/${jobId}/results`),
-      fetch(`/api/scan/${jobId}/graph`),
-    ]);
+    const resResults = await fetch(`/api/scan/${encodeURIComponent(jobId)}/results`);
+    if (!resResults.ok) return;
     const results = await resResults.json();
-    const graphData = await resGraph.json();
 
     const t = state.targets[username];
     t.profiles = results.profiles || [];
     t.rawData = results;
-    t.graphData = graphData;
+
+    // Graph may fail if scan had errors
+    try {
+      const resGraph = await fetch(`/api/scan/${encodeURIComponent(jobId)}/graph`);
+      if (resGraph.ok) {
+        t.graphData = await resGraph.json();
+      }
+    } catch (_) {}
+
     t.status = 'done';
 
     const countEl = document.getElementById(`tcount-${username}`);
@@ -234,7 +269,11 @@ function renderProfiles(profiles) {
   let list = profiles || [];
 
   if (filter) {
-    list = list.filter(p => p.site.toLowerCase().includes(filter) || (p.url || '').toLowerCase().includes(filter));
+    list = list.filter(p =>
+      p.site.toLowerCase().includes(filter) ||
+      (p.url || '').toLowerCase().includes(filter) ||
+      (p.tags || []).some(t => t.toLowerCase().includes(filter))
+    );
   }
   if (state.filterStarred) {
     list = list.filter(p => state.starred.has(p.site));
@@ -247,19 +286,61 @@ function renderProfiles(profiles) {
     return state.sortAsc ? cmp : -cmp;
   });
 
-  body.innerHTML = list.map(p => {
+  body.innerHTML = '';
+  list.forEach(p => {
     const starred = state.starred.has(p.site);
     const timeClass = p.response_time ? (p.response_time < 1 ? 'fast' : p.response_time > 3 ? 'slow' : '') : '';
     const timeText = p.response_time ? p.response_time + 's' : '-';
-    const tagsHtml = (p.tags || []).map(t => `<span class="profile-tag">${t}</span>`).join('');
-    return `<tr>
-      <td><button class="star-btn ${starred ? 'starred' : ''}" onclick="toggleStar('${p.site}')">${starred ? '★' : '☆'}</button></td>
-      <td>${p.site}</td>
-      <td><a href="${p.url}" target="_blank" rel="noopener">${p.url}</a></td>
-      <td><div class="profile-tags">${tagsHtml}</div></td>
-      <td><span class="response-time ${timeClass}">${timeText}</span></td>
-    </tr>`;
-  }).join('');
+
+    const tr = document.createElement('tr');
+
+    // Star
+    const tdStar = document.createElement('td');
+    const starBtn = document.createElement('button');
+    starBtn.className = 'star-btn' + (starred ? ' starred' : '');
+    starBtn.textContent = starred ? '\u2605' : '\u2606';
+    starBtn.onclick = () => toggleStar(p.site);
+    tdStar.appendChild(starBtn);
+    tr.appendChild(tdStar);
+
+    // Site
+    const tdSite = document.createElement('td');
+    tdSite.textContent = p.site;
+    tr.appendChild(tdSite);
+
+    // URL
+    const tdUrl = document.createElement('td');
+    const a = document.createElement('a');
+    a.href = p.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = p.url;
+    tdUrl.appendChild(a);
+    tr.appendChild(tdUrl);
+
+    // Tags
+    const tdTags = document.createElement('td');
+    const tagsDiv = document.createElement('div');
+    tagsDiv.className = 'profile-tags';
+    (p.tags || []).forEach(tag => {
+      const span = document.createElement('span');
+      span.className = 'profile-tag';
+      span.textContent = tag;
+      tagsDiv.appendChild(span);
+    });
+    tdTags.appendChild(tagsDiv);
+    tr.appendChild(tdTags);
+
+    // Response time
+    const tdTime = document.createElement('td');
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'response-time' + (timeClass ? ' ' + timeClass : '');
+    timeSpan.textContent = timeText;
+    tdTime.appendChild(timeSpan);
+    tr.appendChild(tdTime);
+
+    body.appendChild(tr);
+  });
 }
 
 function filterProfiles() {
@@ -407,14 +488,33 @@ function renderTagsHeatmap(profiles) {
   const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
   const max = sorted.length ? sorted[0][1] : 1;
   const grid = document.getElementById('tagsGrid');
-  grid.innerHTML = sorted.map(([tag, count]) => {
+  grid.innerHTML = '';
+  sorted.forEach(([tag, count]) => {
     const pct = Math.round((count / max) * 100);
-    return `<div class="tag-card" onclick="filterByTag('${tag}')">
-      <div class="tag-name">${tag}</div>
-      <div class="tag-count">${count}</div>
-      <div class="tag-bar"><div class="tag-bar-fill" style="width:${pct}%"></div></div>
-    </div>`;
-  }).join('');
+    const card = document.createElement('div');
+    card.className = 'tag-card';
+    card.onclick = () => filterByTag(tag);
+
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'tag-name';
+    nameDiv.textContent = tag;
+    card.appendChild(nameDiv);
+
+    const countDiv = document.createElement('div');
+    countDiv.className = 'tag-count';
+    countDiv.textContent = count;
+    card.appendChild(countDiv);
+
+    const barDiv = document.createElement('div');
+    barDiv.className = 'tag-bar';
+    const fillDiv = document.createElement('div');
+    fillDiv.className = 'tag-bar-fill';
+    fillDiv.style.width = pct + '%';
+    barDiv.appendChild(fillDiv);
+    card.appendChild(barDiv);
+
+    grid.appendChild(card);
+  });
 }
 
 function filterByTag(tag) {
@@ -427,14 +527,23 @@ function filterByTag(tag) {
 function exportReport(fmt) {
   const t = state.targets[state.activeTarget];
   if (!t) return;
-  window.open(`/api/scan/${t.jobId}/export/${fmt}`, '_blank');
+  window.open(`/api/scan/${encodeURIComponent(t.jobId)}/export/${encodeURIComponent(fmt)}`, '_blank');
 }
 
 /* ── Live hit flash ── */
 function showLiveHit(site, url) {
   const div = document.createElement('div');
   div.className = 'live-hit';
-  div.innerHTML = `<strong>${site}</strong><br><a href="${url}" target="_blank" style="color:inherit">${url}</a>`;
+  const strong = document.createElement('strong');
+  strong.textContent = site;
+  div.appendChild(strong);
+  div.appendChild(document.createElement('br'));
+  const a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.style.color = 'inherit';
+  a.textContent = url;
+  div.appendChild(a);
   document.body.appendChild(div);
   setTimeout(() => div.remove(), 3500);
 }

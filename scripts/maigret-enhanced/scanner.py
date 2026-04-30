@@ -72,9 +72,8 @@ class ProgressNotify(QueryNotify):
         asyncio.run_coroutine_threadsafe(self._queue.put(event), self._loop)
 
     def finish(self, message=None):
-        asyncio.run_coroutine_threadsafe(
-            self._queue.put({"type": "done"}), self._loop
-        )
+        # done event is sent by run_scan's finally block; avoid duplicate
+        pass
 
 
 # Global database — loaded once
@@ -85,15 +84,13 @@ def get_db() -> MaigretDatabase:
     global _db
     if _db is None:
         _db = MaigretDatabase()
-        _db.load_from_str(
-            open(
-                os.path.join(
-                    os.path.dirname(__import__("maigret").__file__),
-                    "resources",
-                    "data.json",
-                ),
-            ).read()
+        data_path = os.path.join(
+            os.path.dirname(__import__("maigret").__file__),
+            "resources",
+            "data.json",
         )
+        with open(data_path) as f:
+            _db.load_from_str(f.read())
     return _db
 
 
@@ -241,19 +238,22 @@ def generate_export(job: ScanJob, fmt: str) -> tuple[bytes, str, str]:
         import tempfile
         context = report.generate_report_context(job.general_results)
         with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as f:
-            report.save_pdf_report(f.name, context)
-            f.seek(0)
-            content = open(f.name, "rb").read()
-            os.unlink(f.name)
+            tmp_path = f.name
+        report.save_pdf_report(tmp_path, context)
+        with open(tmp_path, "rb") as f:
+            content = f.read()
+        os.unlink(tmp_path)
         return content, "application/pdf", f"{username}-maigret.pdf"
 
     elif fmt == "html":
         import tempfile
         context = report.generate_report_context(job.general_results)
         with tempfile.NamedTemporaryFile(suffix=".html", delete=False, mode="w") as f:
-            report.save_html_report(f.name, context)
-            content = open(f.name, "r").read().encode()
-            os.unlink(f.name)
+            tmp_path = f.name
+        report.save_html_report(tmp_path, context)
+        with open(tmp_path, "r") as f:
+            content = f.read().encode()
+        os.unlink(tmp_path)
         return content, "text/html", f"{username}-maigret.html"
 
     else:

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Video
+Comment=OSINT: video, stream, gallery download
+Categories=Network;OSINT;
+Exec=__HOME__/.local/share/speculator/scripts/video.sh
+Icon=__HOME__/.local/share/icons/speculator/speculator-video.png
+Terminal=false

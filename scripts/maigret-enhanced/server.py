@@ -9,6 +9,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, Response, StreamingResponse
 from pydantic import BaseModel
 
+import json
+
 from scanner import ScanJob, run_scan, get_db, get_all_tags, get_found_profiles, get_graph_json, generate_export
 
 
@@ -33,6 +35,13 @@ class ScanRequest(BaseModel):
     tags: list[str] | None = None
     excluded_tags: list[str] | None = None
     recursive: bool = False
+
+    def model_post_init(self, __context):
+        self.username = self.username.strip()
+        if not self.username or len(self.username) > 64:
+            raise ValueError("Username must be 1-64 characters")
+        if not all(c.isalnum() or c in "._-" for c in self.username):
+            raise ValueError("Username contains invalid characters")
 
 
 @app.get("/")
@@ -69,20 +78,19 @@ async def scan_progress(job_id: str):
             try:
                 event = await asyncio.wait_for(job.queue.get(), timeout=60)
             except asyncio.TimeoutError:
-                yield f"data: {{}}\n\n"
+                yield ": keepalive\n\n"
                 continue
 
             if event.get("type") == "done":
-                yield f"data: {{\"type\": \"done\", \"found\": {job.progress.found}}}\n\n"
+                yield f"data: {json.dumps({'type': 'done', 'found': job.progress.found})}\n\n"
                 break
             elif event.get("type") == "error":
-                yield f'data: {{"type": "error", "message": "{event["message"]}"}}\n\n'
+                yield f"data: {json.dumps({'type': 'error', 'message': event.get('message', 'Unknown error')})}\n\n"
                 break
             else:
                 job.progress.completed = event["completed"]
                 job.progress.total = event["total"]
                 job.progress.found = event["found"]
-                import json
                 yield f"data: {json.dumps(event)}\n\n"
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")

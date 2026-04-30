@@ -25,32 +25,39 @@ main() {
   printf "${C_CYAN}${BOLD}  Updating pipx packages...${RESET}\n"
   _line "-" 62 "$C_CYAN"
   if command -v pipx &>/dev/null; then
-    if pipx upgrade-all 2>&1 | tee /dev/stderr | grep -q "upgraded"; then
-      log_step "pipx upgrade-all" "ok"
-      ((updated++))
+    local pipx_out
+    if pipx_out=$(pipx upgrade-all 2>&1); then
+      if echo "$pipx_out" | grep -q "upgraded"; then
+        log_step "pipx upgrade-all" "ok" " (packages upgraded)"
+        ((updated++))
+      else
+        log_step "pipx upgrade-all" "ok" " (already up to date)"
+      fi
     else
-      log_step "pipx upgrade-all" "ok" " (already up to date)"
+      log_step "pipx upgrade-all" "fail" " (exit code $?)"
+      ((failed++))
     fi
+    $VERBOSE && echo "$pipx_out"
   else
     log_step "pipx" "skip"
     ((skipped++))
   fi
 
-  # 2. Update Go binaries
+  # 2. Update Go binaries (manual — go install requires knowing import paths)
   echo ""
   _line "-" 62 "$C_CYAN"
-  printf "${C_CYAN}${BOLD}  Updating Go binaries...${RESET}\n"
+  printf "${C_CYAN}${BOLD}  Go binaries${RESET}\n"
   _line "-" 62 "$C_CYAN"
   if command -v go &>/dev/null; then
     local go_tools=("amass" "subfinder" "httpx" "nuclei" "enola" "stalkie" "phoneinfoga")
     for tool in "${go_tools[@]}"; do
       if command -v "$tool" &>/dev/null; then
-        log_step "$tool" "info" "go install -u (skipped — manual update recommended)"
+        log_step "$tool" "info" " (go binary — update manually with go install)"
         ((skipped++))
       fi
     done
   else
-    log_step "go" "skip"
+    log_step "go" "skip" " (not installed)"
     ((skipped++))
   fi
 
@@ -64,23 +71,21 @@ main() {
     for dir in "$PROGRAMS_DIR"/*/; do
       [ ! -d "$dir/.git" ] && continue
       local name; name=$(basename "$dir")
-      (
-        cd "$dir" || exit 1
-        local before; before=$(git rev-parse HEAD 2>/dev/null)
-        git pull --ff-only 2>&1 | tail -1
-        local after; after=$(git rev-parse HEAD 2>/dev/null)
+      local before after pull_out
+      before=$(git -C "$dir" rev-parse HEAD 2>/dev/null)
+      if pull_out=$(git -C "$dir" pull --ff-only 2>&1); then
+        after=$(git -C "$dir" rev-parse HEAD 2>/dev/null)
         if [ "$before" != "$after" ]; then
-          echo "UPDATED"
+          log_step "$name" "ok" " (updated)"
+          ((updated++))
+        else
+          log_step "$name" "ok" " (already up to date)"
         fi
-      )
-      local rc=$?
-      if [ $rc -eq 0 ]; then
-        log_step "$name" "ok"
-        ((updated++))
       else
-        log_step "$name" "fail"
+        log_step "$name" "fail" " (git pull failed)"
         ((failed++))
       fi
+      $VERBOSE && echo "$pull_out"
     done
   else
     log_step "PROGRAMS_DIR" "skip" " (not found: $PROGRAMS_DIR)"
