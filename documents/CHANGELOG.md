@@ -61,6 +61,15 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   `git -C` with HEAD comparison.
 - **common.sh**: `log_step` "info" and "skip" ignored `$extra` parameter. Fixed: now
   displayed on screen.
+- **common.sh**: `run_manifest_tool` word splitting broke file paths with spaces.
+  Fixed: split command template before substituting placeholder values, then expand
+  each array element individually.
+- **Mr.Holmes**: disabled in `tools.conf` — fully interactive TUI with no CLI flags.
+  The `-u` and `--all` flags were non-existent; tool only works via `input()` prompts.
+- **`speculator_install.sh`**: added `scripts/lib/` and `scripts/maigret-enhanced/`
+  copy. Added `spiderfoot.png -> speculator-framework.png` to `_ICON_MAP`. Fixed
+  `_GNOME_FAVS`: replaced stale `speculator-metadata` and `speculator-api` with
+  `speculator-instagram` and `speculator-frameworks`.
 
 ---
 
