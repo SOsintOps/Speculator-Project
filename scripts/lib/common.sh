@@ -407,36 +407,50 @@ run_manifest_tool() {
   safe="${safe//[^a-zA-Z0-9._@+-]/}"
   local outfile="$session_dir/${safe}-${id}.${output_ext}"
 
-  # Expand known placeholders
-  local cmd="$cmd_tpl"
-  cmd="${cmd//\{target\}/$target}"
-  cmd="${cmd//\{outfile\}/$outfile}"
-  cmd="${cmd//\{outdir\}/$session_dir}"
-  cmd="${cmd//\{programs_dir\}/$PROGRAMS_DIR}"
-  cmd="${cmd//\$HOME/$HOME}"
-
-  # Prompt for any remaining {placeholder} values (e.g. {session_id})
-  while [[ "$cmd" =~ \{([a-z_]+)\} ]]; do
-    local ph="${BASH_REMATCH[0]}" label="${BASH_REMATCH[1]}"
-    local val
-    val=$(zenity --entry --title="$label" \
-      --text="Enter ${label} for ${target}:" \
-      --width=400 2>/dev/null) || { warn_unavailable "$name"; return 1; }
-    [ -z "$val" ] && { warn_unavailable "$name"; return 1; }
-    cmd="${cmd//$ph/$val}"
-  done
-
-  # Detect stdout redirection pattern: "cmd ... > path"
-  local rt_outfile="-"
-  if [[ "$cmd" =~ ^(.+)[[:space:]]\>[[:space:]](.+)$ ]]; then
-    cmd="${BASH_REMATCH[1]}"
-    rt_outfile="${BASH_REMATCH[2]}"
+  # Detect stdout redirection in template before expansion: "cmd ... > path"
+  local rt_tpl="-" cmd_work="$cmd_tpl"
+  if [[ "$cmd_work" =~ ^(.+)[[:space:]]\>[[:space:]](.+)$ ]]; then
+    cmd_work="${BASH_REMATCH[1]}"
+    rt_tpl="${BASH_REMATCH[2]}"
   fi
 
-  # Split into argument array
+  # Split template into array BEFORE substituting values (templates have no spaces
+  # in placeholders, so word splitting is safe on the template itself)
   local -a parts
-  read -ra parts <<< "$cmd"
+  read -ra parts <<< "$cmd_work"
   [ ${#parts[@]} -eq 0 ] && return 1
+
+  # Expand placeholders in each array element (preserves spaces in values)
+  local i
+  for i in "${!parts[@]}"; do
+    parts[$i]="${parts[$i]//\{target\}/$target}"
+    parts[$i]="${parts[$i]//\{outfile\}/$outfile}"
+    parts[$i]="${parts[$i]//\{outdir\}/$session_dir}"
+    parts[$i]="${parts[$i]//\{programs_dir\}/$PROGRAMS_DIR}"
+    parts[$i]="${parts[$i]//\$HOME/$HOME}"
+  done
+
+  # Expand redirection path
+  local rt_outfile="$rt_tpl"
+  if [ "$rt_outfile" != "-" ]; then
+    rt_outfile="${rt_outfile//\{target\}/$target}"
+    rt_outfile="${rt_outfile//\{outfile\}/$outfile}"
+    rt_outfile="${rt_outfile//\{outdir\}/$session_dir}"
+    rt_outfile="${rt_outfile//\$HOME/$HOME}"
+  fi
+
+  # Prompt for any remaining {placeholder} values (e.g. {session_id})
+  for i in "${!parts[@]}"; do
+    while [[ "${parts[$i]}" =~ \{([a-z_]+)\} ]]; do
+      local ph="${BASH_REMATCH[0]}" ph_label="${BASH_REMATCH[1]}"
+      local val
+      val=$(zenity --entry --title="$ph_label" \
+        --text="Enter ${ph_label} for ${target}:" \
+        --width=400 2>/dev/null) || { warn_unavailable "$name"; return 1; }
+      [ -z "$val" ] && { warn_unavailable "$name"; return 1; }
+      parts[$i]="${parts[$i]//$ph/$val}"
+    done
+  done
 
   local rc=0
 
