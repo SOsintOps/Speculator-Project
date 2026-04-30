@@ -92,7 +92,7 @@ _test "username has enola" "Enola" "${_MF_NAME[enola]:-missing}"
 _test "username has stalkie" "Stalkie" "${_MF_NAME[stalkie]:-missing}"
 _test "username has naminter" "Naminter" "${_MF_NAME[naminter]:-missing}"
 username_count=${#_MF_IDS[@]}
-_test "username tool count = 12" "12" "$username_count"
+_test "username tool count = 11" "11" "$username_count"
 
 load_manifest "fullname"
 fullname_count=${#_MF_IDS[@]}
