@@ -621,7 +621,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     echo "--- PHASE 4: Scripts and Launchers ---"
     echo "    [FIAT LUX] Scripturae appositae. Agens iam cliccare potest sine terminali."
 
-    # Install all Phase B scripts from repo
+    # Install all scripts from repo (top-level .sh files)
     echo "--> Installing scripts from repo..."
     for _sh in "$_REPO_DIR/scripts/"*.sh; do
         [ -f "$_sh" ] || continue
@@ -631,6 +631,28 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         chmod +x "$SCRIPTS_DIR/$_sname"
         echo "    Installed: $_sname"
     done
+
+    # Install shared library (scripts/lib/)
+    echo "--> Installing shared library..."
+    mkdir -p "$SCRIPTS_DIR/lib"
+    for _lib in "$_REPO_DIR/scripts/lib/"*.sh; do
+        [ -f "$_lib" ] || continue
+        cp "$_lib" "$SCRIPTS_DIR/lib/$(basename "$_lib")"
+        chown "$REAL_USER:$REAL_USER" "$SCRIPTS_DIR/lib/$(basename "$_lib")" 2>/dev/null || true
+        chmod +x "$SCRIPTS_DIR/lib/$(basename "$_lib")"
+        echo "    Installed: lib/$(basename "$_lib")"
+    done
+
+    # Install Maigret Enhanced web UI
+    if [ -d "$_REPO_DIR/scripts/maigret-enhanced" ]; then
+        echo "--> Installing Maigret Enhanced web UI..."
+        mkdir -p "$SCRIPTS_DIR/maigret-enhanced/static"
+        cp "$_REPO_DIR/scripts/maigret-enhanced/"*.py "$SCRIPTS_DIR/maigret-enhanced/" 2>/dev/null || true
+        cp "$_REPO_DIR/scripts/maigret-enhanced/"*.txt "$SCRIPTS_DIR/maigret-enhanced/" 2>/dev/null || true
+        cp "$_REPO_DIR/scripts/maigret-enhanced/static/"*.{html,css,js} "$SCRIPTS_DIR/maigret-enhanced/static/" 2>/dev/null || true
+        chown -R "$REAL_USER:$REAL_USER" "$SCRIPTS_DIR/maigret-enhanced" 2>/dev/null || true
+        echo "    Installed: maigret-enhanced/"
+    fi
 
     # Install icons from media/icons/ with speculator- naming convention.
     # Maps local icon filenames to the speculator-<name>.png convention.
@@ -644,7 +666,13 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         [recon-ng.png]=speculator-api.png
         [evidence.png]=speculator-evidence.png
         [maigret.png]=speculator-maigret.png
+        [spiderfoot.png]=speculator-framework.png
     )
+    # Icons not yet in media/icons/ (pending Gemini generation):
+    # archives.png -> speculator-archives.png
+    # reddit.png   -> speculator-reddit.png
+    # image.png    -> speculator-image.png
+    # update.png   -> speculator-update.png
     for _src_icon in "${!_ICON_MAP[@]}"; do
         _src_path="$_REPO_DIR/media/icons/$_src_icon"
         _dst_path="$ICONS_DIR/${_ICON_MAP[$_src_icon]}"
@@ -689,8 +717,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     sudo gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
 
     # Set GNOME dock favourites (best-effort; may fail outside a GUI session)
-    # speculator-search and speculator-framework removed: no local replacements yet.
-    _GNOME_FAVS="['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'speculator-evidence.desktop', 'org.gnome.Terminal.desktop', 'speculator-update.desktop', 'speculator-video.desktop', 'speculator-user.desktop', 'speculator-maigret.desktop', 'speculator-image.desktop', 'speculator-domain.desktop', 'speculator-metadata.desktop', 'speculator-api.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop']"
+    _GNOME_FAVS="['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'speculator-evidence.desktop', 'org.gnome.Terminal.desktop', 'speculator-update.desktop', 'speculator-video.desktop', 'speculator-user.desktop', 'speculator-maigret.desktop', 'speculator-image.desktop', 'speculator-domain.desktop', 'speculator-instagram.desktop', 'speculator-frameworks.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop']"
     run_as_user gsettings set org.gnome.shell favorite-apps "$_GNOME_FAVS" \
         || echo "INFO: Could not set GNOME favorites (expected if outside a GUI session)."
 
