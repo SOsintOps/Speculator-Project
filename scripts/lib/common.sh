@@ -42,7 +42,10 @@ declare -A TOOL_STATUS=()
 declare -A TOOL_DURATION=()
 _session_log() {
   [ -z "$SESSION_LOG_FILE" ] && return
-  printf "[%s] %s\n" "$(date +'%Y-%m-%d %H:%M:%S')" "$*" >> "$SESSION_LOG_FILE"
+  (
+    flock -x 9
+    printf "[%s] %s\n" "$(date +'%Y-%m-%d %H:%M:%S')" "$*"
+  ) 9>>"$SESSION_LOG_FILE"
 }
 
 ###############################################################################
@@ -200,8 +203,11 @@ run_tool() {
   t_end=$(date +%s); duration=$(( t_end - t_start ))
 
   if [ -n "${SESSION_LOG_FILE:-}" ]; then
-    [ -s "$out" ] && { printf "  [stdout]\n" >> "$SESSION_LOG_FILE"; cat "$out" >> "$SESSION_LOG_FILE"; printf "\n" >> "$SESSION_LOG_FILE"; }
-    [ -s "$err" ] && { printf "  [stderr]\n" >> "$SESSION_LOG_FILE"; cat "$err" >> "$SESSION_LOG_FILE"; printf "\n" >> "$SESSION_LOG_FILE"; }
+    (
+      flock -x 9
+      [ -s "$out" ] && { printf "  [stdout]\n"; cat "$out"; printf "\n"; }
+      [ -s "$err" ] && { printf "  [stderr]\n"; cat "$err"; printf "\n"; }
+    ) 9>>"$SESSION_LOG_FILE"
   fi
 
   if [ $rc -ne 0 ]; then
@@ -259,9 +265,11 @@ run_repo_python_tool() {
   fi
   local pybin="python3"
   repo_venv_python "$repo_dir" >/dev/null 2>&1 && pybin="$(repo_venv_python "$repo_dir")"
-  pushd "$repo_dir" >/dev/null 2>&1 || { log_step "$label" "fail" " (pushd failed)"; return 1; }
-  run_tool "$label" "$outfile" "$pybin" "$script" "$@"
-  local rc=$?; popd >/dev/null 2>&1 || true; return $rc
+  (
+    cd "$repo_dir" || { log_step "$label" "fail" " (cd failed)"; exit 1; }
+    run_tool "$label" "$outfile" "$pybin" "$script" "$@"
+  )
+  return $?
 }
 
 ###############################################################################
@@ -438,10 +446,11 @@ run_manifest_tool() {
       run_repo_python_tool "$name" "$repo_dir" "${parts[1]}" "$rt_outfile" "${parts[@]:2}"
       rc=$?
     else
-      pushd "$repo_dir" >/dev/null 2>&1 || { log_step "$name" "fail" " (pushd failed)"; return 1; }
-      run_tool "$name" "$rt_outfile" "${parts[@]}"
+      (
+        cd "$repo_dir" || { log_step "$name" "fail" " (cd failed)"; exit 1; }
+        run_tool "$name" "$rt_outfile" "${parts[@]}"
+      )
       rc=$?
-      popd >/dev/null 2>&1 || true
     fi
   else
     run_tool "$name" "$rt_outfile" "${parts[@]}"
@@ -465,6 +474,7 @@ run_manifest_tool() {
 ###############################################################################
 run_category() {
   local category="$1" target="$2" title="$3" color="$4"
+  local parallel="${5:-false}"
 
   ensure_base_dir
   local safe="${target// /_}"
@@ -487,11 +497,51 @@ run_category() {
   _session_log "Selected: ${selected[*]}"
   local total=${#selected[@]} cur=0
 
-  for id in "${selected[@]}"; do
-    ((cur++))
-    _progress $cur $total "${_MF_NAME[$id]}"
-    run_manifest_tool "$id" "$target" "$session_dir"
-  done
+  if [ "$parallel" = "true" ] && [ "$total" -gt 1 ]; then
+    _session_log "Parallel mode: launching $total tools"
+    local -a pids=()
+    local -a status_files=()
+    local status_dir; status_dir="$(mktemp -d /tmp/osint_parallel_XXXXXX)"
+
+    for id in "${selected[@]}"; do
+      ((cur++))
+      local name="${_MF_NAME[$id]}"
+      local sf="$status_dir/${id}.status"
+      log_step "$name" "run"
+      (
+        run_manifest_tool "$id" "$target" "$session_dir"
+        echo "$?|${TOOL_STATUS[$name]:-unknown}|${TOOL_DURATION[$name]:-0}" > "$sf"
+      ) &
+      pids+=($!)
+      status_files+=("$id:$sf")
+    done
+
+    printf "\n  ${C_GRAY}Waiting for %d tools to complete...${RESET}\n" "$total"
+
+    for pid in "${pids[@]}"; do
+      wait "$pid" 2>/dev/null || true
+    done
+
+    for entry in "${status_files[@]}"; do
+      local id="${entry%%:*}" sf="${entry#*:}"
+      local name="${_MF_NAME[$id]}"
+      if [ -f "$sf" ]; then
+        IFS='|' read -r _rc _st _dur < "$sf"
+        TOOL_STATUS["$name"]="${_st:-fail}"
+        TOOL_DURATION["$name"]="${_dur:-0}"
+      else
+        TOOL_STATUS["$name"]="fail"
+      fi
+    done
+
+    rm -rf "$status_dir"
+  else
+    for id in "${selected[@]}"; do
+      ((cur++))
+      _progress $cur $total "${_MF_NAME[$id]}"
+      run_manifest_tool "$id" "$target" "$session_dir"
+    done
+  fi
 
   status_bar "Done -> $session_dir"
   print_summary
