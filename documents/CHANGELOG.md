@@ -5,6 +5,65 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.9.0] - 2026-04-30
+
+### Hub-and-spoke architecture complete, Maigret Enhanced web UI, 21 bug fixes
+
+#### Added
+- **8 Phase B spoke scripts** (`domain.sh`, `instagram.sh`, `reddit.sh`, `video.sh`,
+  `archives.sh`, `image.sh`, `frameworks.sh`, `update.sh`): all manifest-driven via
+  `common.sh` + `config/tools.conf`. Each follows hub-and-spoke pattern with Zenity GUI.
+- **8 desktop shortcuts** for all new spoke scripts in `shortcuts/`.
+- **Maigret Enhanced web UI** (`scripts/maigret-enhanced/`): FastAPI server with SSE
+  real-time progress, D3.js force-directed graph (drag/zoom/fullscreen), multi-target
+  tabs, tag cloud filtering, profile table with sort/filter/star, export to
+  CSV/JSON/TXT/PDF/HTML, live hit flash notifications, investigation notes.
+- **Icon generation prompts** (`documents/icon-prompts.md`): 11 Gemini prompts for
+  coherent Elementary noir-style icon set (never showing full faces).
+- **`tests/test_refactor.sh`**: 87 automated tests covering manifest loading,
+  classify_input (14 cases incl. phone), function availability, no-duplication checks.
+
+#### Changed
+- **`scripts/user.sh`** (v0.4.1.0 -> v0.5.0): refactored from 718 to 119 lines.
+  Sources `common.sh`, all tool execution via `run_category()`. Keeps `classify_input()`
+  (with phone regex), `resolve_unknown_category()`, `main()`.
+- **`scripts/lib/common.sh`** (v0.1.0 -> v0.2.0): concurrency hardening:
+  `_session_log()` uses `flock` for atomic writes; `run_repo_python_tool()` uses
+  subshell+cd instead of pushd/popd (race-safe); `run_category()` gains parallel
+  execution support. `log_step` info/skip cases now display `$extra` parameter.
+
+#### Fixed — 21 bugs found and corrected via agent-driven code review
+- **scanner.py**: double "done" event (`finish()` + `finally` both sent done, could
+  mask errors). Fixed: `finish()` is now a no-op, only `finally` sends done.
+- **scanner.py**: file handle leaks in `get_db()` and `generate_export()`. Fixed: use
+  `with` statements.
+- **server.py**: broken JSON from unescaped error message in SSE stream. Fixed: use
+  `json.dumps()`.
+- **server.py**: keepalive `{}` caused NaN in client progress display. Fixed: send SSE
+  comment (`: keepalive`).
+- **server.py**: `import json` inside loop. Fixed: moved to module top.
+- **server.py**: no username validation (header injection risk). Fixed: 1-64 char,
+  alphanumeric + `._-` only.
+- **app.js**: XSS via innerHTML in 4 locations (renderProfiles, addTargetTab,
+  showLiveHit, renderTagsHeatmap). Fixed: DOM API with createElement/textContent.
+- **app.js**: tag heatmap filter searched site/url but not tags. Fixed: added tag check.
+- **app.js**: no `res.ok` checks on fetch responses. Fixed: error handling added.
+- **app.js**: SSE `onerror` called `fetchResults` unconditionally. Fixed: `done` flag
+  prevents double fetch.
+- **frameworks.sh**: empty `session_dir` caused broken output paths at `/`. Fixed:
+  calls `create_session_dir`.
+- **frameworks.sh**: showed raw IDs instead of display names. Fixed: uses `_MF_NAME`.
+- **frameworks.sh**: no availability check before launch. Fixed: `tool_available` check.
+- **6 spoke scripts**: duplicate empty `print_summary` (already called by
+  `run_category`). Fixed: removed redundant calls.
+- **update.sh**: pipx error detection never reported failures. Fixed: captures exit code.
+- **update.sh**: git pull detection broken (subshell echo uncaptured). Fixed: uses
+  `git -C` with HEAD comparison.
+- **common.sh**: `log_step` "info" and "skip" ignored `$extra` parameter. Fixed: now
+  displayed on screen.
+
+---
+
 ## [0.8.9] - 2026-04-29
 
 ### SpiderFoot removed, Maigret web UI, Firefox policies, project restructure

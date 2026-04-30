@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Domain
+Comment=OSINT: domain, subdomain, infrastructure
+Categories=Network;OSINT;
+Exec=__HOME__/.local/share/speculator/scripts/domain.sh
+Icon=__HOME__/.local/share/icons/speculator/speculator-domain.png
+Terminal=false

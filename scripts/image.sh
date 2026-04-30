@@ -35,8 +35,6 @@ main() {
       --title="New query?" --text="Analyze another file?" \
       --ok-label="Yes" --cancel-label="No" 2>/dev/null || break
   done
-
-  print_summary
 }
 
 main
