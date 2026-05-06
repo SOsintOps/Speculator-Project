@@ -22,6 +22,8 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   coherent Elementary noir-style icon set (never showing full faces).
 - **`tests/test_refactor.sh`**: 87 automated tests covering manifest loading,
   classify_input (14 cases incl. phone), function availability, no-duplication checks.
+- **Firefox bookmark**: added "Methodology & Ethics" start.me dashboard to
+  top-level managed bookmarks in `config/policies.json`.
 
 #### Changed
 - **`scripts/user.sh`** (v0.4.1.0 -> v0.5.0): refactored from 718 to 119 lines.
