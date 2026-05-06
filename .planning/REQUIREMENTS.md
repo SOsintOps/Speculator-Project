@@ -75,25 +75,25 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | Phase TBD | Pending |
-| INFRA-02 | Phase TBD | Pending |
-| INFRA-03 | Phase TBD | Pending |
-| INFRA-04 | Phase TBD | Pending |
-| TEST-01 | Phase TBD | Pending |
-| TEST-02 | Phase TBD | Pending |
-| TEST-03 | Phase TBD | Pending |
-| TEST-04 | Phase TBD | Pending |
-| TEST-05 | Phase TBD | Pending |
-| VM-01 | Phase TBD | Pending |
-| VM-02 | Phase TBD | Pending |
-| VM-03 | Phase TBD | Pending |
-| VM-04 | Phase TBD | Pending |
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Pending |
+| INFRA-04 | Phase 2 | Pending |
+| TEST-01 | Phase 2 | Pending |
+| TEST-02 | Phase 2 | Pending |
+| TEST-03 | Phase 3 | Pending |
+| TEST-04 | Phase 4 | Pending |
+| TEST-05 | Phase 4 | Pending |
+| VM-01 | Phase 5 | Pending |
+| VM-02 | Phase 5 | Pending |
+| VM-03 | Phase 5 | Pending |
+| VM-04 | Phase 5 | Pending |
 
 **Coverage:**
 - v1 requirements: 13 total
-- Mapped to phases: 0
-- Unmapped: 13
+- Mapped to phases: 13
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-05-06*
-*Last updated: 2026-05-06 after initial definition*
+*Last updated: 2026-05-06 after roadmap creation*
