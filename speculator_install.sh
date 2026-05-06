@@ -442,7 +442,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         archivebox
         xeuledoc
         internetarchive
-        maigret
         sherlock-project
         ignorant
         shodan
@@ -480,6 +479,16 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     install_py_tool_from_git "https://github.com/Greyjedix/Profil3r"
     # Aliens Eye: 841 siti, AI confidence scoring (0-100%), 3 livelli di scansione
     install_py_tool_from_git "https://github.com/arxhr007/Aliens_eye"
+
+    # Maigret: fork SOsintOps with custom web UI (maigret-enhanced)
+    install_py_tool_from_git "https://github.com/SOsintOps/maigret"
+    # Install maigret-enhanced dependencies into the same venv
+    local _maigret_venv="$PROGRAMS_DIR/maigret/maigretEnvironment"
+    if [ -d "$_maigret_venv" ] && [ -f "$_REPO_DIR/scripts/maigret-enhanced/requirements.txt" ]; then
+        echo "--> Installing maigret-enhanced dependencies..."
+        run_as_user "$_maigret_venv/bin/pip" install --quiet \
+            -r "$_REPO_DIR/scripts/maigret-enhanced/requirements.txt" || true
+    fi
 
     # -- 3c. h8mail configuration --
     echo "--> Configuring h8mail..."
