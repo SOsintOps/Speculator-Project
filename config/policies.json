@@ -15,6 +15,10 @@
     },
     "OverrideFirstRunPage": "",
     "OverridePostUpdatePage": "",
+    "Homepage": {
+      "URL": "file://__HOME__/Documents/Exploratores/launchme.html",
+      "StartPage": "homepage"
+    },
     "NoDefaultBookmarks": true,
     "DisplayBookmarksToolbar": "always",
     "SanitizeOnShutdown": {
@@ -186,6 +190,7 @@
     },
     "ManagedBookmarks": [
       { "toplevel_name": "OSINT" },
+      { "name": "Exploratores", "url": "file://__HOME__/Documents/Exploratores/launchme.html" },
       { "name": "AML Toolbox", "url": "https://start.me/p/rxeRqr/aml-toolbox" },
       { "name": "Nixintel OSINT", "url": "https://start.me/p/rx6Qj8/nixintel-s-osint-resource-list" },
       { "name": "Terrorism Research", "url": "https://start.me/p/OmExgb/terrorism-radicalisation-research-dashboard" },

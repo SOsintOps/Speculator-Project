@@ -362,8 +362,27 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     echo "--> Configuring Firefox ESR via policies.json..."
     _FF_POLICY_DIR="/usr/lib/firefox-esr/distribution"
     sudo mkdir -p "$_FF_POLICY_DIR"
-    sudo cp "$_REPO_DIR/config/policies.json" "$_FF_POLICY_DIR/policies.json"
+    # policies.json holds a local file:// URL (Exploratores homepage + bookmark) using a
+    # __HOME__ placeholder — substitute the real home at deploy time, the same mechanism
+    # used for the .desktop shortcuts below.
+    sed "s|__HOME__|$REAL_HOME|g" "$_REPO_DIR/config/policies.json" \
+        | sudo tee "$_FF_POLICY_DIR/policies.json" > /dev/null
     sudo chmod 644 "$_FF_POLICY_DIR/policies.json"
+
+    # -- Exploratores: browser-based OSINT toolkit (static HTML), opened in Firefox ESR --
+    echo "--> Installing Exploratores..."
+    _EXPLORATORES_DIR="$REAL_HOME/Documents/Exploratores"
+    run_as_user mkdir -p "$REAL_HOME/Documents"
+    if [ ! -d "$_EXPLORATORES_DIR/.git" ]; then
+        if run_as_user git clone "https://github.com/SOsintOps/Exploratores.git" "$_EXPLORATORES_DIR"; then
+            mark_ok "git:Exploratores"
+        else
+            echo "WARNING: Exploratores clone failed."
+            mark_fail "git:Exploratores"
+        fi
+    else
+        mark_ok "git:Exploratores"
+    fi
 
     # -- Brave Browser --
     echo "--> Installing Brave Browser..."
@@ -726,7 +745,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     sudo gtk-update-icon-cache -f -t /usr/share/icons/hicolor 2>/dev/null || true
 
     # Set GNOME dock favourites (best-effort; may fail outside a GUI session)
-    _GNOME_FAVS="['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'speculator-evidence.desktop', 'org.gnome.Terminal.desktop', 'speculator-update.desktop', 'speculator-video.desktop', 'speculator-user.desktop', 'speculator-maigret.desktop', 'speculator-image.desktop', 'speculator-domain.desktop', 'speculator-instagram.desktop', 'speculator-frameworks.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop']"
+    _GNOME_FAVS="['firefox-esr.desktop', 'org.torproject.torbrowser-launcher.desktop', 'org.gnome.Nautilus.desktop', 'speculator-evidence.desktop', 'org.gnome.Terminal.desktop', 'speculator-update.desktop', 'speculator-video.desktop', 'speculator-user.desktop', 'speculator-maigret.desktop', 'speculator-image.desktop', 'speculator-domain.desktop', 'speculator-instagram.desktop', 'speculator-frameworks.desktop', 'speculator-exploratores.desktop', 'google-earth-pro.desktop', 'kazam.desktop', 'org.gnome.Settings.desktop']"
     run_as_user gsettings set org.gnome.shell favorite-apps "$_GNOME_FAVS" \
         || echo "INFO: Could not set GNOME favorites (expected if outside a GUI session)."
 

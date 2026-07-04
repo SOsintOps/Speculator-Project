@@ -18,6 +18,7 @@ We took our name from the Speculatores, the scouts and spies of the Roman legion
 ## Features
 
   - **Comprehensive Tool Installation**: Offers a variety of tools for analysing usernames, social media, metadata, domains and more.
+  - **In-browser OSINT Dashboard**: Installs [Exploratores](https://github.com/SOsintOps/Exploratores), a browser-based OSINT toolkit, and sets it as the Firefox ESR start page and a bookmark for one-click access.
   - **Browser Setup**: Configures Firefox, Brave and Tor browsers to support secure research.
   - **Desktop Customisation**: Configures the GNOME desktop environment for OSINT workflows.
   - **Resilient Installation**: The script is designed to continue even if a single tool fails to install, ensuring the most complete setup possible.
@@ -128,6 +129,8 @@ MediaInfo -
 ### Browsers
 
 Brave - Firefox (configured for OSINT) - Tor
+
+Firefox ESR opens on [Exploratores](https://github.com/SOsintOps/Exploratores), a local browser-based OSINT toolkit that works offline as your investigation start page.
 
 ### Additional Utilities
 
