@@ -45,5 +45,6 @@ This is a pure Bash project. No Node.js, no Python frameworks, no external build
 
 The following files are local tooling configuration and must never be pushed to the repository:
 
-- 
+- local tooling and editor configuration directories and files
+- local working notes and project status files
 - `.env` or any file containing secrets or credentials

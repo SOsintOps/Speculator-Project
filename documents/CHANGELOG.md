@@ -398,9 +398,8 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - **`pgrep` availability guard** in Firefox wait loop with `sleep 3` fallback.
 - **Firefox profile detection via `profiles.ini`** (more reliable than glob),
   with glob fallback.
-- **`.gitignore`** created: excludes local tooling (
-  ), `pdf/`, `**/*.pdf`, `start.ps1`,
-  `*.log`, stray root artefacts.
+- **`.gitignore`** created: excludes local tooling and settings, `pdf/`,
+  `**/*.pdf`, `start.ps1`, `*.log`, and stray root artefacts.
 
 #### Fixed
 - `local` keyword used outside a function in the results block → removed.
