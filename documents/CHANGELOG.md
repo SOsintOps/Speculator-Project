@@ -19,7 +19,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   tabs, tag cloud filtering, profile table with sort/filter/star, export to
   CSV/JSON/TXT/PDF/HTML, live hit flash notifications, investigation notes.
 - **Icon generation prompts** (`documents/icon-prompts.md`): 11 prompts for
-  coherent Elementary noir-style icon set (never showing full faces).
+  coherent detective noir-style icon set (never showing full faces).
 - **`tests/test_refactor.sh`**: 87 automated tests covering manifest loading,
   classify_input (14 cases incl. phone), function availability, no-duplication checks.
 - **Firefox bookmark**: added "Methodology & Ethics" start.me dashboard to
