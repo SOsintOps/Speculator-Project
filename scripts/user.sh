@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ################################################################################
 ## OSINT Unified Input Script — Hub
-## Version 0.5.0 - Refactored to source common.sh; manifest-driven via tools.conf
+## Version 0.6.0 - Main menu (hub-and-spoke) and share-link category
 ##
 ## This is the hub of the hub-and-spoke architecture.
 ## Person tracking categories (email, username, fullname, hash, phone) are
@@ -12,7 +12,7 @@
 set -uo pipefail
 
 SCRIPT_NAME="OSINT UNIFIED TOOL"
-SCRIPT_VERSION="0.5.0"
+SCRIPT_VERSION="0.6.0"
 VERBOSE=false
 [[ "${1:-}" == "-v" || "${1:-}" == "--verbose" ]] && VERBOSE=true
 
@@ -30,6 +30,7 @@ advanced_hash_detection() {
 
 classify_input() {
   local v="$1"
+  [[ "$v" =~ ^https?://[^[:space:]]+$ ]] && { echo "sharelink"; return; }
   [[ "$v" =~ ^[^@]+@[^@]+\.[^@]+$ ]] && { echo "email"; return; }
   [[ "$v" =~ ^\+?[0-9]{7,15}$ ]] && { echo "phone"; return; }
   if advanced_hash_detection "$v"; then echo "hash"; return; fi
@@ -68,24 +69,39 @@ resolve_unknown_category() {
     "Email")    echo "email" ;;
     "Hash")     echo "hash" ;;
     "Phone")    echo "phone" ;;
+    "Share link") echo "sharelink" ;;
     *)          echo "cancel" ;;
   esac
 }
 
 ###############################################################################
-# Main
+# Main menu (hub): person tracking here, every other investigation in its spoke
 ###############################################################################
-main() {
-  print_banner "email · username · fullname · hash · phone"
-  check_required_tools holehe socialscan sherlock maigret nth sth
-  ensure_base_dir
+main_menu() {
+  zenity --list \
+    --title="Speculator v${SCRIPT_VERSION}" \
+    --text="Choose the type of investigation:" \
+    --column="ID" --column="Investigation" --column="Tools" \
+    person     "Person"               "email, username, full name, phone, hash, share link" \
+    domain     "Domain"               "subdomains, hosts, documents" \
+    instagram  "Instagram"            "profiles and posts" \
+    reddit     "Reddit"               "user archive" \
+    video      "Video"                "download, comments, subtitles" \
+    archives   "Archives"             "Wayback Machine, Internet Archive" \
+    image      "Image and metadata"   "EXIF, documents, media info" \
+    frameworks "Frameworks"           "Recon-NG, sn0int, Maigret Web, Mr.Holmes" \
+    update     "Update tools"         "pipx, Go and git tools" \
+    --print-column=1 --hide-column=1 --width=620 --height=440 2>/dev/null
+}
 
+person_search() {
+  check_required_tools holehe socialscan sherlock nth sth
   while true; do
-    print_banner "email · username · fullname · hash · phone"
+    print_banner "email · username · fullname · hash · phone · share link"
     local inputValue
     inputValue=$(zenity --entry \
-      --title="OSINT Unified Tool v${SCRIPT_VERSION}" \
-      --text="Enter username, email, full name, phone or hash:\n(launch with -v for live output)" \
+      --title="Person search v${SCRIPT_VERSION}" \
+      --text="Enter username, email, full name, phone, hash or share link:\n(launch with -v for live output)" \
       --width=460 2>/dev/null) || break
     [ -z "${inputValue:-}" ] && break
 
@@ -113,11 +129,28 @@ main() {
       "phone")
         printf "\n  ${COL_PHONE}${BOLD}>  PHONE${RESET}  ${C_GRAY}%s${RESET}\n" "$inputValue"
         run_category "phone" "$inputValue" "PHONE TOOLS" "$COL_PHONE" ;;
+      "sharelink")
+        printf "\n  ${COL_DOMAIN}${BOLD}>  SHARE LINK${RESET}  ${C_GRAY}%s${RESET}\n" "$inputValue"
+        run_category "sharelink" "$inputValue" "SHARE LINK TOOLS" "$COL_DOMAIN" ;;
     esac
 
     zenity --question \
       --title="New query?" --text="Run another search?" \
       --ok-label="Yes" --cancel-label="No" 2>/dev/null || break
+  done
+}
+
+main() {
+  ensure_base_dir
+  local choice
+  while true; do
+    print_banner "choose an investigation"
+    choice=$(main_menu) || break
+    case "$choice" in
+      "")     break ;;
+      person) person_search ;;
+      *)      [ -x "$SCRIPT_DIR/$choice.sh" ] && "$SCRIPT_DIR/$choice.sh" "$@" ;;
+    esac
   done
 
   [ -n "$SESSION_LOG_FILE" ] && {
@@ -129,4 +162,5 @@ main() {
   _line "=" 62 "$C_PURPLE"; echo ""
 }
 
-main
+# Run only when executed, so tests can source this file.
+[[ "${BASH_SOURCE[0]}" == "$0" ]] && main "$@"

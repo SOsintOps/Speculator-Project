@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ###############################################################################
 ## scripts/lib/common.sh — Shared library for Speculator OSINT launchers
-## Version 0.1.0
+## Version 0.2.0
 ## Source this file at the top of every launcher script.
 ## Set SCRIPT_NAME and SCRIPT_VERSION before sourcing.
 ###############################################################################
@@ -10,11 +10,11 @@
 _COMMON_SH_LOADED=1
 
 [ "${XDG_SESSION_TYPE:-}" = "wayland" ] && export GDK_BACKEND=x11
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/go/bin:$PATH"
 
 EVIDENCE_DIR="$HOME/Downloads/evidence"
 PROGRAMS_DIR="$HOME/.local/share/speculator/programs"
-COMMON_VERSION="0.1.0"
+COMMON_VERSION="0.2.0"
 
 _REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 TOOLS_CONF="${_REPO_DIR}/config/tools.conf"
@@ -44,7 +44,7 @@ _session_log() {
   [ -z "$SESSION_LOG_FILE" ] && return
   (
     flock -x 9
-    printf "[%s] %s\n" "$(date +'%Y-%m-%d %H:%M:%S')" "$*"
+    printf "[%s] %s\n" "$(date +'%Y-%m-%d %H:%M:%S')" "$*" >&9
   ) 9>>"$SESSION_LOG_FILE"
 }
 
@@ -205,8 +205,9 @@ run_tool() {
   if [ -n "${SESSION_LOG_FILE:-}" ]; then
     (
       flock -x 9
-      [ -s "$out" ] && { printf "  [stdout]\n"; cat "$out"; printf "\n"; }
-      [ -s "$err" ] && { printf "  [stderr]\n"; cat "$err"; printf "\n"; }
+      { [ -s "$out" ] && { printf "  [stdout]\n"; cat "$out"; printf "\n"; }
+        [ -s "$err" ] && { printf "  [stderr]\n"; cat "$err"; printf "\n"; }
+      } >&9
     ) 9>>"$SESSION_LOG_FILE"
   fi
 
@@ -307,13 +308,34 @@ check_required_tools() {
   zenity --warning --title="Missing Tools" --text="$msg" --width=440 2>/dev/null
 }
 
+# manifest_tool_ready ID: true when the tool of a loaded manifest entry is installed
+manifest_tool_ready() {
+  local cv="${_MF_CHECK_VAL[$1]}"
+  case "${_MF_CHECK_TYPE[$1]}" in
+    repo) [ -d "$PROGRAMS_DIR/$cv" ] ;;
+    *)    tool_available "$cv" ;;
+  esac
+}
+
 ###############################################################################
 # Session directory
 ###############################################################################
+# safe_name TEXT: TEXT reduced to characters that are safe in a file name
+safe_name() {
+  local s="${1// /_}"
+  printf '%s' "${s//[^a-zA-Z0-9._@+-]/}"
+}
+
 ensure_base_dir() { [ ! -d "$EVIDENCE_DIR" ] && mkdir -p "$EVIDENCE_DIR"; }
 
+# create_session_dir TARGET: evidence folder for TARGET and a new session log.
+# Sets SESSION_DIR, SESSION_LOG_DIR and SESSION_LOG_FILE, so call it directly,
+# not inside $( ): a subshell would lose them and nothing would be logged.
+SESSION_DIR=""
 create_session_dir() {
-  local target="$1" d="$EVIDENCE_DIR/$target"
+  local target="$1"
+  local d="$EVIDENCE_DIR/$target"
+  SESSION_DIR="$d"
   [ ! -d "$d" ] && mkdir -p "$d"
   SESSION_LOG_DIR="$d/logs"
   [ ! -d "$SESSION_LOG_DIR" ] && mkdir -p "$SESSION_LOG_DIR"
@@ -370,11 +392,8 @@ zenity_checklist() {
   local title="$1" text="$2"
   local -a zargs=()
   for id in "${_MF_IDS[@]}"; do
-    local ct="${_MF_CHECK_TYPE[$id]}" cv="${_MF_CHECK_VAL[$id]}" status
-    case "$ct" in
-      repo) status="$(_avail "$PROGRAMS_DIR/$cv" dir)" ;;
-      *)    status="$(_avail "$cv")" ;;
-    esac
+    local status="not installed"
+    manifest_tool_ready "$id" && status="ready"
     zargs+=(FALSE "$id" "${_MF_NAME[$id]}" "$status")
   done
   zenity --list --checklist \
@@ -397,14 +416,10 @@ run_manifest_tool() {
   local output_ext="${_MF_OUTPUT_EXT[$id]}"
 
   # Availability check
-  case "$check_type" in
-    repo) [ ! -d "$PROGRAMS_DIR/$check_val" ] && { warn_unavailable "$name"; return 1; } ;;
-    *)    command -v "$check_val" &>/dev/null || { warn_unavailable "$name"; return 1; } ;;
-  esac
+  manifest_tool_ready "$id" || { warn_unavailable "$name"; return 1; }
 
   # Build output file path
-  local safe="${target// /_}"
-  safe="${safe//[^a-zA-Z0-9._@+-]/}"
+  local safe; safe="$(safe_name "$target")"
   local outfile="$session_dir/${safe}-${id}.${output_ext}"
 
   # Detect stdout redirection in template before expansion: "cmd ... > path"
@@ -491,9 +506,9 @@ run_category() {
   local parallel="${5:-false}"
 
   ensure_base_dir
-  local safe="${target// /_}"
-  local session_dir
-  session_dir="$(create_session_dir "$safe")"
+  local safe; safe="$(safe_name "$target")"
+  create_session_dir "$safe" >/dev/null
+  local session_dir="$SESSION_DIR"
   print_section_header "$title" "Target: $target" "$color"
 
   load_manifest "$category"

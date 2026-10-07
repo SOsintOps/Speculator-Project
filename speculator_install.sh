@@ -324,7 +324,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         vlc ffmpeg
         # OSINT system tools
         default-jre httrack webhttrack libimage-exiftool-perl
-        mediainfo-gui mat2 subversion
+        mediainfo mediainfo-gui mat2 subversion
         # Desktop / utilities
         zenity kazam bleachbit libxcb-cursor0 docker.io evince
         # GNOME extensions
@@ -411,9 +411,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     # -- Google Earth Pro --
     echo "--> Installing Google Earth Pro..."
-    curl -fsSL "https://dl.google.com/linux/linux_signing_key.pub" \
-        | gpg --dearmor \
-        | sudo tee /etc/apt/trusted.gpg.d/google-linux-signing-key.gpg > /dev/null
+    # A local .deb needs no signing key: the package adds its own update source.
     run_as_user wget -q -O "$REAL_HOME/Downloads/google-earth-stable_current_amd64.deb" \
         "https://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb" \
         || echo "WARNING: Google Earth download failed."
@@ -502,7 +500,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     # Maigret: fork SOsintOps with custom web UI (maigret-enhanced)
     install_py_tool_from_git "https://github.com/SOsintOps/maigret"
     # Install maigret-enhanced dependencies into the same venv
-    local _maigret_venv="$PROGRAMS_DIR/maigret/maigretEnvironment"
+    _maigret_venv="$PROGRAMS_DIR/maigret/maigretEnvironment"
     if [ -d "$_maigret_venv" ] && [ -f "$_REPO_DIR/scripts/maigret-enhanced/requirements.txt" ]; then
         echo "--> Installing maigret-enhanced dependencies..."
         run_as_user "$_maigret_venv/bin/pip" install --quiet \
@@ -520,14 +518,17 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     # -- 3d. sn0int (signed APT repo, with sq/gpg fallback) --
     echo "--> Installing sn0int..."
+    # The key goes in /etc/apt/keyrings so apt trusts it for this repository only.
+    sudo install -d -m 755 /etc/apt/keyrings
+    sudo rm -f /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg
     if command -v sq >/dev/null 2>&1; then
         curl -sSLf "https://apt.vulns.sexy/kpcyrd.pgp" | sq packet dearmor \
-            | sudo tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg > /dev/null
+            | sudo tee /etc/apt/keyrings/apt-vulns-sexy.gpg > /dev/null
     else
         curl -sSLf "https://apt.vulns.sexy/kpcyrd.pgp" | gpg --dearmor \
-            | sudo tee /etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg > /dev/null
+            | sudo tee /etc/apt/keyrings/apt-vulns-sexy.gpg > /dev/null
     fi
-    echo "deb [signed-by=/etc/apt/trusted.gpg.d/apt-vulns-sexy.gpg] https://apt.vulns.sexy stable main" \
+    echo "deb [signed-by=/etc/apt/keyrings/apt-vulns-sexy.gpg] https://apt.vulns.sexy stable main" \
         | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list > /dev/null
     sudo apt update
     if sudo apt install -y sn0int; then
@@ -600,18 +601,11 @@ exec > >(tee -a "$LOG_FILE") 2>&1
             "$_PROFILE_MARKER" >> "$REAL_HOME/.profile"
     fi
 
-    # -- 3g. Mr.Holmes (git clone, no deps to install) --
-    echo "--> Cloning Mr.Holmes..."
-    if [ ! -d "$PROGRAMS_DIR/Mr.Holmes" ]; then
-        if run_as_user git clone "https://github.com/Lucksi/Mr.Holmes" "$PROGRAMS_DIR/Mr.Holmes"; then
-            mark_ok "git:Mr.Holmes"
-        else
-            echo "WARNING: Mr.Holmes clone failed."
-            mark_fail "git:Mr.Holmes"
-        fi
-    else
-        mark_ok "git:Mr.Holmes"
-    fi
+    # -- 3g. Mr.Holmes (interactive menus: launched in a terminal from Frameworks) --
+    install_py_tool_from_git "https://github.com/Lucksi/Mr.Holmes"
+
+    # -- 3g-bis. ShareTrace (who is behind a share link: TikTok, Instagram, Discord...) --
+    install_py_tool_from_git "https://github.com/hondling/sharetrace"
 
     # -- 3h. WireTapper (wireless/cellular network OSINT, requires API keys) --
     install_py_tool_from_git "https://github.com/h9zdev/WireTapper" "WireTapper.txt"
@@ -769,8 +763,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     GNOME_VERSION=$(gnome-shell --version 2>/dev/null | grep -o '[0-9]*' | head -1 || echo "0")
     if [ "$GNOME_VERSION" -ge 40 ]; then
         echo "--> GNOME $GNOME_VERSION detected. Applying configuration..."
-
-        sudo apt install -y gnome-extensions-cli || true
 
         # Remove dash-to-dock if present — incompatible with GNOME 47 and causes the
         # top panel to disappear entirely.

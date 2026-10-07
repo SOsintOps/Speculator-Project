@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 ################################################################################
 ## Update All OSINT Tools
-## Version 0.1.0 - Updates pipx packages and git repos
+## Version 0.2.0 - Updates pipx packages, Go binaries and git repos
 ################################################################################
 
 set -uo pipefail
 
 SCRIPT_NAME="OSINT TOOL UPDATER"
-SCRIPT_VERSION="0.1.0"
+SCRIPT_VERSION="0.2.0"
 VERBOSE=false
 [[ "${1:-}" == "-v" || "${1:-}" == "--verbose" ]] && VERBOSE=true
 
@@ -43,18 +43,37 @@ main() {
     ((skipped++))
   fi
 
-  # 2. Update Go binaries (manual — go install requires knowing import paths)
+  # 2. Update Go binaries (same module paths as speculator_install.sh)
   echo ""
   _line "-" 62 "$C_CYAN"
-  printf "${C_CYAN}${BOLD}  Go binaries${RESET}\n"
+  printf "${C_CYAN}${BOLD}  Updating Go binaries...${RESET}
+"
   _line "-" 62 "$C_CYAN"
   if command -v go &>/dev/null; then
-    local go_tools=("amass" "subfinder" "httpx" "nuclei" "enola" "stalkie" "phoneinfoga")
-    for tool in "${go_tools[@]}"; do
-      if command -v "$tool" &>/dev/null; then
-        log_step "$tool" "info" " (go binary — update manually with go install)"
-        ((skipped++))
+    local -a go_modules=(
+      "amass|github.com/owasp-amass/amass/v4/...@latest"
+      "subfinder|github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest"
+      "httpx|github.com/projectdiscovery/httpx/cmd/httpx@latest"
+      "nuclei|github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest"
+      "enola|github.com/theyahya/enola/cmd/enola@latest"
+      "stalkie|github.com/ashendilantha/stalkie@latest"
+      "investigo|github.com/tdh8316/Investigo/cmd/investigo@latest"
+    )
+    local entry tool module go_out
+    for entry in "${go_modules[@]}"; do
+      tool="${entry%%|*}"; module="${entry#*|}"
+      if ! command -v "$tool" &>/dev/null; then
+        log_step "$tool" "skip" " (not installed)"
+        ((skipped++)); continue
       fi
+      if go_out=$(GOTOOLCHAIN=auto go install "$module" 2>&1); then
+        log_step "$tool" "ok" " (latest)"
+        ((updated++))
+      else
+        log_step "$tool" "fail" " (go install failed)"
+        ((failed++))
+      fi
+      $VERBOSE && echo "$go_out"
     done
   else
     log_step "go" "skip" " (not installed)"
