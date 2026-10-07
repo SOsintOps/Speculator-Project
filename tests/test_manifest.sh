@@ -54,6 +54,8 @@ while IFS='|' read -r _ id _ ctype cval _; do
   esac
 done < <(entries)
 
+_test "every apt call is non-interactive" "0" "$(grep -c 'sudo apt ' "$INSTALLER")"
+
 _section "4. Every category has a launcher"
 for c in $CATEGORIES; do
   _test "category $c has tools" "true" "$(_true grep -q "^[^#][^|]*|[^|]*|$c|" "$CONF")"

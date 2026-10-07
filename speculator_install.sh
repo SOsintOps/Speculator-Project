@@ -282,7 +282,10 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     echo "--- PHASE 1: System Preparation and Dependencies ---"
     echo "    [ALEA IACTA EST] Machina configuratur. Hostes ignorant. Bene."
 
-    sudo apt update
+    # Every apt call runs with DEBIAN_FRONTEND=noninteractive: some packages
+    # (keyboard-configuration, for example) would otherwise stop the installer
+    # with a question nobody sees, since the output goes to the log.
+    sudo DEBIAN_FRONTEND=noninteractive apt update
 
     # ---------------------------------------------------------------
     # VirtualBox Guest Additions — PREREQUISITE (manual install)
@@ -332,7 +335,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         gnome-shell-extension-dash-to-panel
     )
     for pkg in "${PACKAGES[@]}"; do
-        sudo apt install -y "$pkg" || echo "WARNING: Failed to install '$pkg', continuing..."
+        sudo DEBIAN_FRONTEND=noninteractive apt install -y "$pkg" || echo "WARNING: Failed to install '$pkg', continuing..."
     done
 
     # Set system default locale to British English.
@@ -341,7 +344,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     sudo update-locale LANG=en_GB.UTF-8 LC_MESSAGES=en_GB.UTF-8 || true
 
     # sq (sequoia-sq) — used for GPG key dearmoring; fall back to gpg if unavailable
-    sudo apt install -y sq || echo "INFO: 'sq' not available; sn0int install will use gpg --dearmor fallback."
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y sq || echo "INFO: 'sq' not available; sn0int install will use gpg --dearmor fallback."
 
     # Refresh shell's command hash table so newly installed binaries are found
     hash -r 2>/dev/null || true
@@ -390,8 +393,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         "https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg"
     echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main" \
         | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-    sudo apt update
-    if sudo apt install -y brave-browser; then
+    sudo DEBIAN_FRONTEND=noninteractive apt update
+    if sudo DEBIAN_FRONTEND=noninteractive apt install -y brave-browser; then
         mark_ok "app:brave-browser"
     else
         echo "WARNING: Brave Browser install failed."
@@ -416,7 +419,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         "https://dl.google.com/dl/earth/client/current/google-earth-stable_current_amd64.deb" \
         || echo "WARNING: Google Earth download failed."
     if [ -f "$REAL_HOME/Downloads/google-earth-stable_current_amd64.deb" ]; then
-        if sudo apt install -y "$REAL_HOME/Downloads/google-earth-stable_current_amd64.deb"; then
+        if sudo DEBIAN_FRONTEND=noninteractive apt install -y "$REAL_HOME/Downloads/google-earth-stable_current_amd64.deb"; then
             mark_ok "app:google-earth-pro"
         else
             echo "WARNING: Google Earth install failed."
@@ -437,7 +440,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     echo "--> Installing tools via pipx..."
     # archivebox requires native deps that must be present before the pipx install
     echo "    Pre-installing archivebox native dependencies..."
-    sudo apt install -y python3-dev libxml2-dev libxslt1-dev zlib1g-dev \
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y python3-dev libxml2-dev libxslt1-dev zlib1g-dev \
         ripgrep wget curl chromium nodejs npm || true
 
     PIPX_PACKAGES=(
@@ -530,8 +533,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     fi
     echo "deb [signed-by=/etc/apt/keyrings/apt-vulns-sexy.gpg] https://apt.vulns.sexy stable main" \
         | sudo tee /etc/apt/sources.list.d/apt-vulns-sexy.list > /dev/null
-    sudo apt update
-    if sudo apt install -y sn0int; then
+    sudo DEBIAN_FRONTEND=noninteractive apt update
+    if sudo DEBIAN_FRONTEND=noninteractive apt install -y sn0int; then
         mark_ok "apt:sn0int"
     else
         echo "WARNING: sn0int install failed."
@@ -745,7 +748,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
         # Remove dash-to-dock if present — incompatible with GNOME 47 and causes the
         # top panel to disappear entirely.
-        sudo apt remove -y gnome-shell-extension-dash-to-dock 2>/dev/null || true
+        sudo DEBIAN_FRONTEND=noninteractive apt remove -y gnome-shell-extension-dash-to-dock 2>/dev/null || true
 
         # gnome-extensions enable requires a running gnome-shell session
         if command -v pgrep >/dev/null 2>&1 && pgrep -x gnome-shell >/dev/null 2>&1; then
@@ -809,9 +812,9 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     echo "--- PHASE 6: Finalizing and Cleaning Up ---"
     echo "    [VALE] Operatio finita. Nunc speculate... vel somnum cape. Melius speculate."
 
-    sudo apt update
-    sudo apt upgrade -y
-    sudo apt --fix-broken install -y
+    sudo DEBIAN_FRONTEND=noninteractive apt update
+    sudo DEBIAN_FRONTEND=noninteractive apt upgrade -y -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold
+    sudo DEBIAN_FRONTEND=noninteractive apt --fix-broken install -y
 
     # ---------------------------------------------------------------
     # Debloat: remove default GNOME applications useless for OSINT
@@ -829,9 +832,9 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         shotwell
         gnome-software
     )
-    sudo apt purge -y "${_BLOAT[@]}" 2>/dev/null || true
+    sudo DEBIAN_FRONTEND=noninteractive apt purge -y "${_BLOAT[@]}" 2>/dev/null || true
 
-    sudo apt autoremove -y
+    sudo DEBIAN_FRONTEND=noninteractive apt autoremove -y
 
     rm -f "$REAL_HOME/Downloads/google-earth-stable_current_amd64.deb" 2>/dev/null || true
 
