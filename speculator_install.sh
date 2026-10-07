@@ -963,5 +963,7 @@ RESULT_FILE="$LOG_DIR/install_results_$(date +%Y-%m-%d_%H-%M-%S).txt"
     for item in "${_INSTALL_FAIL[@]}"; do echo "$item"; done
 } > "$RESULT_FILE"
 echo "Results file: $RESULT_FILE"
+# The log and the results file are written by root: hand them to the user.
+[ "$(id -u)" -eq 0 ] && chown "$REAL_USER:$REAL_USER" "$LOG_FILE" "$RESULT_FILE" 2>/dev/null
 
 exit 0
