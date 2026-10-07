@@ -29,7 +29,7 @@ while IFS= read -r line; do
 done < <(entries)
 _test "every entry has 9 fields" "0" "$bad_fields"
 _test "ids are unique" "" "$(entries | cut -d'|' -f2 | sort | uniq -d)"
-_test "tool count = 57" "57" "$(entries | wc -l | tr -d ' ')"
+_test "tool count = 56" "56" "$(entries | wc -l | tr -d ' ')"
 
 _section "2. Field values"
 while IFS='|' read -r name id cat ctype cval cmd ext venv vname; do
@@ -54,6 +54,10 @@ while IFS='|' read -r _ id _ ctype cval _; do
   esac
 done < <(entries)
 
+# common.sh reads scripts/lib/../../config/tools.conf, so the installed copy of
+# the scripts needs the manifest in ~/.local/share/speculator/config/.
+_test "installer installs the manifest next to the scripts" "true"   "$(_true grep -q 'cp "$_REPO_DIR/config/tools.conf" "$REAL_HOME/.local/share/speculator/config/tools.conf"' "$INSTALLER")"
+_test "installed scripts are in .local/share/speculator/scripts" "true"   "$(_true grep -q 'SCRIPTS_DIR="$REAL_HOME/.local/share/speculator/scripts"' "$INSTALLER")"
 _test "every apt call is non-interactive" "0" "$(grep -c 'sudo apt ' "$INSTALLER")"
 
 _section "4. Every category has a launcher"

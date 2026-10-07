@@ -83,9 +83,8 @@ _test "email has ghunt" "GHunt" "${_MF_NAME[ghunt]:-missing}"
 _test "email has h8mail" "H8Mail" "${_MF_NAME[h8mail]:-missing}"
 _test "email has eyes" "Eyes" "${_MF_NAME[eyes]:-missing}"
 _test "email has mailcat" "Mailcat" "${_MF_NAME[mailcat]:-missing}"
-_test "email has profil3r" "Profil3r" "${_MF_NAME[profil3r]:-missing}"
 email_count=${#_MF_IDS[@]}
-_test "email tool count = 8" "8" "$email_count"
+_test "email tool count = 7" "7" "$email_count"
 
 load_manifest "username"
 _test "username category loads tools" "true" "$([ ${#_MF_IDS[@]} -gt 0 ] && echo true || echo false)"
@@ -118,7 +117,7 @@ _test "domain tool count = 9" "9" "$domain_count"
 
 load_manifest "frameworks"
 fw_count=${#_MF_IDS[@]}
-_test "frameworks tool count = 5" "5" "$fw_count"
+_test "frameworks tool count = 6" "6" "$fw_count"
 _test "frameworks has mrholmes" "Mr.Holmes" "${_MF_NAME[mrholmes]:-missing}"
 
 load_manifest "sharelink"

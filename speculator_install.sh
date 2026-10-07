@@ -188,9 +188,15 @@ install_py_tool_from_git() {
         echo "    $tool_name already cloned, skipping clone."
     fi
 
-    # Locate requirements file (up to 3 levels deep)
-    local full_req_path
-    full_req_path=$(find "$tool_dir" -maxdepth 3 -name "$req_filename" -print -quit 2>/dev/null)
+    # Requirements file at the top of the repository; a project that has none
+    # but is a Python package (pyproject.toml or setup.py) is installed as a
+    # package, so a requirements file of its docs or tests is never picked up.
+    local full_req_path=""
+    if [ -f "$tool_dir/$req_filename" ]; then
+        full_req_path="$tool_dir/$req_filename"
+    elif [ ! -f "$tool_dir/setup.py" ] && [ ! -f "$tool_dir/pyproject.toml" ]; then
+        full_req_path=$(find "$tool_dir" -maxdepth 3 -name "$req_filename" -print -quit 2>/dev/null)
+    fi
 
     if [ -z "$full_req_path" ]; then
         # Fallback: if setup.py exists, install via pip install -e .
@@ -234,7 +240,8 @@ install_py_tool_from_git() {
         return 0
     fi
 
-    if run_as_user "$venv_dir/bin/pip" install --quiet -r "$full_req_path"; then
+    # Run pip from the tool folder: some requirements files contain "-e .".
+    if (cd "$tool_dir" && run_as_user "$venv_dir/bin/pip" install --quiet -r "$full_req_path"); then
         mark_ok "git:$tool_name"
     else
         echo "WARNING: pip install failed for $tool_name (non-fatal)."
@@ -471,6 +478,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         # social-analyzer: 999 siti, web UI, OCR detection. NOTE: lo stato 'maybe'
         # genera falsi positivi — usare con filtro --threshold o esaminare i soli 'found'.
         social-analyzer
+        # Aliens Eye: 841 sites, confidence scoring; published on PyPI as aliens-eye
+        aliens-eye
     )
     for pkg in "${PIPX_PACKAGES[@]}"; do
         if run_as_user pipx install "$pkg"; then
@@ -480,6 +489,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
             mark_fail "pipx:$pkg"
         fi
     done
+    # BDFR 2.6 does not start with praw 7.8 or later (BaseTokenManager was removed).
+    run_as_user pipx runpip bdfr install --quiet "praw<7.8" || echo "WARNING: could not pin praw<7.8 for bdfr."
 
     # Refresh PATH after pipx installs
     export PATH="$REAL_HOME/.local/bin:$PATH"
@@ -496,9 +507,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     install_py_tool_from_git "https://github.com/opsdisk/metagoofil"
     install_py_tool_from_git "https://github.com/lanmaster53/recon-ng" "REQUIREMENTS"
     install_py_tool_from_git "https://github.com/sharsil/mailcat"
-    install_py_tool_from_git "https://github.com/Greyjedix/Profil3r"
-    # Aliens Eye: 841 siti, AI confidence scoring (0-100%), 3 livelli di scansione
-    install_py_tool_from_git "https://github.com/arxhr007/Aliens_eye"
 
     # Maigret: fork SOsintOps with custom web UI (maigret-enhanced)
     install_py_tool_from_git "https://github.com/SOsintOps/maigret"
@@ -606,6 +614,33 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
     # -- 3g. Mr.Holmes (interactive menus: launched in a terminal from Frameworks) --
     install_py_tool_from_git "https://github.com/Lucksi/Mr.Holmes"
+    # Mr.Holmes reads Configuration/Configuration.ini and Display/Display.txt,
+    # which its own installer writes after a series of questions; these are its
+    # "auto" defaults for a desktop system.
+    if [ -d "$PROGRAMS_DIR/Mr.Holmes/Display" ]; then
+        echo "Desktop" | run_as_user tee "$PROGRAMS_DIR/Mr.Holmes/Display/Display.txt" > /dev/null
+    fi
+    if [ -d "$PROGRAMS_DIR/Mr.Holmes/Configuration" ] && [ ! -f "$PROGRAMS_DIR/Mr.Holmes/Configuration/Configuration.ini" ]; then
+        run_as_user tee "$PROGRAMS_DIR/Mr.Holmes/Configuration/Configuration.ini" > /dev/null <<'HOLMES_INI'
+[Smtp]
+status = Disabled
+email = None
+password = None
+destination = None
+server= None
+port= None
+
+[Settings]
+password = Holmes
+api_key = None
+proxy_list = Proxies/Proxy_list.txt
+useragent_list = Useragents/Useragent.txt
+show_logs = False
+database = False
+language = english
+date_format = eu
+HOLMES_INI
+    fi
 
     # -- 3g-bis. ShareTrace (who is behind a share link: TikTok, Instagram, Discord...) --
     install_py_tool_from_git "https://github.com/hondling/sharetrace"
@@ -654,6 +689,13 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         chmod +x "$SCRIPTS_DIR/lib/$(basename "$_lib")"
         echo "    Installed: lib/$(basename "$_lib")"
     done
+
+    # Install the tool manifest where common.sh looks for it
+    # (scripts/lib/../../config/tools.conf = ~/.local/share/speculator/config/).
+    echo "--> Installing tool manifest..."
+    mkdir -p "$REAL_HOME/.local/share/speculator/config"
+    cp "$_REPO_DIR/config/tools.conf" "$REAL_HOME/.local/share/speculator/config/tools.conf"
+    chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.local/share/speculator/config" 2>/dev/null || true
 
     # Install Maigret Enhanced web UI
     if [ -d "$_REPO_DIR/scripts/maigret-enhanced" ]; then
