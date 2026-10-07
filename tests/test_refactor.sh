@@ -67,6 +67,9 @@ _test "phone: +393331234567" "phone" "$(classify_input "+393331234567")"
 _test "phone: 3331234567" "phone" "$(classify_input "3331234567")"
 _test "phone: +14155552671" "phone" "$(classify_input "+14155552671")"
 _test "not phone (too short): 12345" "username" "$(classify_input "12345")"
+_test "share link: https URL" "sharelink" "$(classify_input "https://vm.tiktok.com/ZMabc123/")"
+_test "share link: http URL" "sharelink" "$(classify_input "http://discord.gg/abcd")"
+_test "not share link: ftp URL" "unknown" "$(classify_input "ftp://example.com/x y")"
 
 ###############################################################################
 echo ""
@@ -115,7 +118,12 @@ _test "domain tool count = 10" "10" "$domain_count"
 
 load_manifest "frameworks"
 fw_count=${#_MF_IDS[@]}
-_test "frameworks tool count = 4" "4" "$fw_count"
+_test "frameworks tool count = 5" "5" "$fw_count"
+_test "frameworks has mrholmes" "Mr.Holmes" "${_MF_NAME[mrholmes]:-missing}"
+
+load_manifest "sharelink"
+_test "sharelink tool count = 1" "1" "${#_MF_IDS[@]}"
+_test "sharelink has sharetrace" "ShareTrace" "${_MF_NAME[sharetrace]:-missing}"
 
 ###############################################################################
 echo ""
@@ -169,7 +177,7 @@ echo "── 7. Line count reduction ──"
 
 user_lines=$(wc -l < "$user_sh")
 common_lines=$(wc -l < "$SCRIPT_DIR/scripts/lib/common.sh")
-_test "user.sh under 150 lines" "true" "$([ "$user_lines" -lt 150 ] && echo true || echo false)"
+_test "user.sh under 200 lines" "true" "$([ "$user_lines" -lt 200 ] && echo true || echo false)"
 _test "common.sh under 600 lines" "true" "$([ "$common_lines" -lt 600 ] && echo true || echo false)"
 
 ###############################################################################

@@ -7,29 +7,17 @@ on:
     branches: [main]
 
 jobs:
-  lint:
-    name: Shell syntax, lint and config validation
+  checks:
+    name: Syntax, ShellCheck, tests and config validation
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Bash syntax check (bash -n)
-        run: |
-          fail=0
-          while IFS= read -r -d '' f; do
-            echo "==> bash -n $f"
-            bash -n "$f" || fail=1
-          done < <(find . -type f -name '*.sh' -not -path './node_modules/*' -print0)
-          exit $fail
-
-      - name: ShellCheck (errors block; warnings are advisory)
+      - name: Syntax gate, ShellCheck gate and tests
         run: |
           shellcheck --version
-          # Only error-severity findings fail the build; lower severities are
-          # reported for information without breaking the pipeline.
-          find . -type f -name '*.sh' -not -path './node_modules/*' -print0 \
-            | xargs -0 shellcheck --severity=error
+          bash tests/run_all.sh
 
       - name: Validate JSON config files
         run: |
