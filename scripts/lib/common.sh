@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 ###############################################################################
 ## scripts/lib/common.sh — Shared library for Speculator OSINT launchers
-## Version 0.2.0
+## Version 0.3.0
 ## Source this file at the top of every launcher script.
 ## Set SCRIPT_NAME and SCRIPT_VERSION before sourcing.
 ###############################################################################
@@ -14,7 +14,7 @@ export PATH="$HOME/.local/bin:$HOME/go/bin:$PATH"
 
 EVIDENCE_DIR="$HOME/Downloads/evidence"
 PROGRAMS_DIR="$HOME/.local/share/speculator/programs"
-COMMON_VERSION="0.2.0"
+COMMON_VERSION="0.3.0"
 
 _REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 TOOLS_CONF="${_REPO_DIR}/config/tools.conf"

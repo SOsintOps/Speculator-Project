@@ -18,6 +18,8 @@
     * [Why does Firefox take a long time to start the first time after installation?](#why-does-firefox-take-a-long-time-to-start-the-first-time-after-installation)
     * [What tools are included in the Speculator Project?](#what-tools-are-included-in-the-speculator-project)
     * [How can I learn to use the installed tools?](#how-can-i-learn-to-use-the-installed-tools)
+    * [Where are the results saved?](#where-are-the-results-saved)
+    * [Why does Mr.Holmes open in a terminal?](#why-does-mrholmes-open-in-a-terminal)
     * [Can I modify the script for my own needs?](#can-i-modify-the-script-for-my-own-needs)
     * [Can I propose other scripts for OSINT?](#can-i-propose-other-scripts-for-osint)
     * [Where can I learn about customising Zenity scripts?](#where-can-i-learn-about-customising-zenity-scripts)
@@ -42,7 +44,7 @@ The Speculator Project is designed for OSINT practitioners, researchers, analyst
 ## Legal and Disclaimer
 
 ### What is the license for this project?
-The Speculator Project script is currently under licence review. The individual tools it installs are subject to their own licences. Review the licensing terms for each tool on its official repository. The Speculator Project does not modify or take responsibility for third-party licensing terms.
+The Speculator Project is released under the MIT licence. The media files and the few third-party files in the repository are listed, with their licences, in `media/CREDITS.md`. The individual tools it installs are downloaded from their own projects and are subject to their own licences. Review the licensing terms for each tool on its official repository. The Speculator Project does not modify or take responsibility for third-party licensing terms.
 
 ## Getting Started and Resources
 
@@ -56,7 +58,7 @@ Yes, it can be used for investigations. However, functionality is not guaranteed
 No, we do not provide pre-configured virtual machines.
 
 ### How can I prepare a Debian virtual machine?
-Use VirtualBox. Create a new VM with at least 4 GB of RAM and 50 GB of disk space, then install Debian 13 "Trixie" (amd64). The script installs VirtualBox Guest Additions automatically, which enables shared folders, clipboard sharing and display auto-resize. For detailed VM setup instructions, refer to Chapter 8 of *OSINT Techniques, 11th Edition* by Michael Bazzell.
+Use VirtualBox. Create a new VM with at least 4 GB of RAM and 50 GB of disk space, then install Debian 13 "Trixie" (amd64) with the GNOME desktop. Install the VirtualBox Guest Additions before running the script (VirtualBox menu > Devices > Insert Guest Additions CD image): they enable shared folders, clipboard sharing and display auto-resize. The installer only checks that they are present. For detailed VM setup instructions, refer to Chapter 8 of *OSINT Techniques, 11th Edition* by Michael Bazzell.
 
 ### Is this project designed for digital forensics too?
 No, this project focuses on OSINT. It does not include tools for digital forensic investigations.
@@ -78,6 +80,12 @@ See the `Tools Included` section of the README for a full and current list of in
 
 ### How can I learn to use the installed tools?
 Refer to each tool's official documentation. Practical usage examples are covered in Michael Bazzell's *OSINT Techniques, 11th Edition* and Rae Baker's *Deep Dive: Exploring the Real-world Value of OSINT*.
+
+### Where are the results saved?
+In `~/Downloads/evidence/<target>/`, one folder per target (a shortcut called `evidence` is placed on the Desktop). Each search adds a session log in `logs/` with the tools selected, the exact commands and their output; errors are saved there too. The report templates are in `~/Documents/Speculator/templates`.
+
+### Why does Mr.Holmes open in a terminal?
+Mr.Holmes asks its questions through its own menus and has no command-line options, so it cannot be run from a Zenity form. Open **Frameworks** and choose Mr.Holmes: it starts in the terminal with its own environment. Recon-ng and Sn0int work the same way.
 
 ### Can I modify the script for my own needs?
 Yes. Modify, adapt or expand the script to suit your workflow. If you develop customisations that others would find useful, open an issue or submit a pull request. We may include them in future versions.
@@ -115,7 +123,7 @@ You can contribute by:
 Yes, AI tools were used to assist in creating this project. Rest assured, no AI was overworked during this process.
 
 ### Who were the Speculatores?
-The Speculatores were ancient Roman scouts and reconnaissance officers who gathered intelligence for military operations. After installation, you will find *A Travelling Speculator* in your Documents folder. Read it to understand the historical background and the thinking behind this project. Further detail is also available in the `Speculatores Historical Background` document included in the repository.
+The Speculatores were ancient Roman scouts and reconnaissance officers who gathered intelligence for military operations. After installation, you will find *A Travelling Speculator* in your Documents folder. Read it to understand the historical background and the thinking behind this project. Further detail is also available in [The Speculatores](speculatores.md), included in the repository.
 
 ### Why did you choose this name?
-The name "Speculatores" was chosen to honour the intelligence and reconnaissance traditions of the Roman Empire. See the Speculatores Historical Background document for more detail.
+The name "Speculatores" was chosen to honour the intelligence and reconnaissance traditions of the Roman Empire. See [The Speculatores](speculatores.md) for more detail.

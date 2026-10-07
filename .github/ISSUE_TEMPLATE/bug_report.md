@@ -18,7 +18,7 @@ What should happen.
 
 **Environment**
 - OS: [e.g. Debian 13 Trixie amd64]
-- Speculator version: [e.g. 0.8.8]
+- Speculator version: [e.g. 0.10.0]
 - Install method: [fresh install / upgrade]
 
 **Install log**

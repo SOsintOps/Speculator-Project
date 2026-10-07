@@ -6,7 +6,7 @@ The Speculator installer runs with `sudo` privileges. It modifies system package
 
 ## Reporting Vulnerabilities
 
-If you discover a security vulnerability, open a GitHub issue with a description of the problem and steps to reproduce it. We will respond as quickly as possible.
+If you discover a security vulnerability, open a GitHub issue saying that you have found one, without the details, and we will arrange a private channel. Problems that are not sensitive can be reported in the issue directly, with steps to reproduce them.
 
 ## Credential Handling
 
