@@ -60,6 +60,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - The previous report templates and sample case folder (they came from a
   CC BY-NC-SA template pack, incompatible with the MIT licence) and the
   previous PNG icons (third-party or of unknown origin).
+- **TLDSweep**: its repository (`DarkWebInformer/TLDSweep`) no longer exists.
 - `documents/icon-prompts.md` and `todo/todo.md`.
 
 ---

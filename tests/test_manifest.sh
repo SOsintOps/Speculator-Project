@@ -29,7 +29,7 @@ while IFS= read -r line; do
 done < <(entries)
 _test "every entry has 9 fields" "0" "$bad_fields"
 _test "ids are unique" "" "$(entries | cut -d'|' -f2 | sort | uniq -d)"
-_test "tool count = 58" "58" "$(entries | wc -l | tr -d ' ')"
+_test "tool count = 57" "57" "$(entries | wc -l | tr -d ' ')"
 
 _section "2. Field values"
 while IFS='|' read -r name id cat ctype cval cmd ext venv vname; do

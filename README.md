@@ -58,7 +58,7 @@ Open **Speculator** from the application menu and choose an investigation:
 | Investigation | Input | Tools |
 |---|---|---|
 | Person | email, username, full name, phone number, hash or share link (detected automatically) | see *Person* below |
-| Domain | domain name | Amass, Subfinder, HTTPX, Nuclei, Sublist3r, theHarvester, Photon, Metagoofil, TLDSweep, Fierce |
+| Domain | domain name | Amass, Subfinder, HTTPX, Nuclei, Sublist3r, theHarvester, Photon, Metagoofil, Fierce |
 | Instagram | username | Instaloader, Toutatis, Osintgram |
 | Reddit | username | BDFR (submissions and comments) |
 | Video | URL | yt-dlp, Streamlink, Gallery-dl |
@@ -90,7 +90,7 @@ See the [FAQ](documents/FAQ.md) for common questions.
 [Maigret](https://github.com/SOsintOps/maigret) (SOsintOps fork) -
 [Mailcat](https://github.com/sharsil/mailcat) -
 [Name-That-Hash](https://github.com/HashPals/Name-That-Hash) -
-[Naminter](https://github.com/sifrfrederik/naminter) -
+[Naminter](https://github.com/3xp0rt/Naminter) -
 [PhoneInfoga](https://github.com/sundowndev/phoneinfoga) -
 [Profil3r](https://github.com/Greyjedix/Profil3r) -
 [Search-That-Hash](https://github.com/HashPals/Search-That-Hash) -
@@ -122,7 +122,6 @@ See the [FAQ](documents/FAQ.md) for common questions.
 [Subfinder](https://github.com/projectdiscovery/subfinder) -
 [Sublist3r](https://github.com/aboul3la/Sublist3r) -
 [theHarvester](https://github.com/laramies/theHarvester) -
-[TLDSweep](https://github.com/DarkWebInformer/TLDSweep) -
 [WireTapper](https://github.com/h9zdev/WireTapper) (command line only, needs API keys)
 
 ### Metadata and images

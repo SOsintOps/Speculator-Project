@@ -610,19 +610,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     # -- 3h. WireTapper (wireless/cellular network OSINT, requires API keys) --
     install_py_tool_from_git "https://github.com/h9zdev/WireTapper" "WireTapper.txt"
 
-    # -- 3i. TLDSweep (domain TLD sweep, stdlib only — no requirements) --
-    echo "--> Cloning TLDSweep..."
-    if [ ! -d "$PROGRAMS_DIR/TLDSweep" ]; then
-        if run_as_user git clone "https://github.com/DarkWebInformer/TLDSweep.git" "$PROGRAMS_DIR/TLDSweep"; then
-            mark_ok "git:TLDSweep"
-        else
-            echo "WARNING: TLDSweep clone failed."
-            mark_fail "git:TLDSweep"
-        fi
-    else
-        mark_ok "git:TLDSweep"
-    fi
-
     # -- 3j. Turbolehe (email variant generator for holehe; stdlib only — no requirements) --
     echo "--> Cloning Turbolehe..."
     if [ ! -d "$PROGRAMS_DIR/Turbolehe" ]; then

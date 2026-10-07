@@ -114,7 +114,7 @@ _test "phone has phoneinfoga" "PhoneInfoga" "${_MF_NAME[phoneinfoga]:-missing}"
 
 load_manifest "domain"
 domain_count=${#_MF_IDS[@]}
-_test "domain tool count = 10" "10" "$domain_count"
+_test "domain tool count = 9" "9" "$domain_count"
 
 load_manifest "frameworks"
 fw_count=${#_MF_IDS[@]}
