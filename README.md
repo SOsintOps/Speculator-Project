@@ -58,18 +58,20 @@ Open **Speculator** from the application menu and choose an investigation:
 | Investigation | Input | Tools |
 |---|---|---|
 | Person | email, username, full name, phone number, hash or share link (detected automatically) | see *Person* below |
-| Domain | domain name | Amass, Subfinder, HTTPX, Nuclei, Sublist3r, theHarvester, Photon, Metagoofil, Fierce |
-| Instagram | username | Instaloader, Toutatis, Osintgram |
+| Domain | domain name | Amass, Subfinder, HTTPX, Nuclei, theHarvester, Photon, Metagoofil, Fierce |
+| Instagram | username | Instaloader, Toutatis (Osintgram is under Frameworks) |
 | Reddit | username | BDFR (submissions and comments) |
 | Video | URL | yt-dlp, Streamlink, Gallery-dl |
 | Archives | URL or domain | WaybackPy, Waybackpack, Internet Archive CLI, ArchiveBox |
 | Image and metadata | file or folder | ExifTool, MAT2, Xeuledoc, Carbon14, MediaInfo |
-| Frameworks | none: they open in the terminal | Recon-ng, Sn0int, Changedetection.io, Maigret Web, Mr.Holmes |
+| Frameworks | none: they open in the terminal | Recon-ng, Sn0int, Changedetection.io, Maigret Web, Mr.Holmes, Osintgram |
 | Update tools | none | updates the pipx, Go and Git tools |
 
-Each investigation also has its own entry in the application menu. Launch a script with `-v` (for example `~/.local/share/speculator/scripts/user.sh -v`) to see the live output of every tool in the terminal.
+Each investigation also has its own entry in the application menu. YouTube may ask some networks to sign in ("confirm you're not a bot"); yt-dlp then needs cookies from a logged-in browser (`--cookies-from-browser firefox`), which you can add by hand.
 
-Frameworks are interactive, so they run in a terminal window: Recon-ng and Sn0int open their consoles, Changedetection.io serves its web interface on `http://127.0.0.1:5000`, Maigret Web on `http://127.0.0.1:5001`, and Mr.Holmes shows its own menus.
+Launch a script with `-v` (for example `~/.local/share/speculator/scripts/user.sh -v`) to see the live output of every tool in the terminal.
+
+Frameworks are interactive, so they run in a terminal window: Recon-ng and Sn0int open their consoles, Changedetection.io serves its web interface on `http://127.0.0.1:5000`, Maigret Web on `http://127.0.0.1:5001` (it opens the browser), Osintgram on `http://127.0.0.1:8000`, and Mr.Holmes shows its own menus. Close a framework with Ctrl+C in its terminal.
 
 See the [FAQ](documents/FAQ.md) for common questions.
 
@@ -92,7 +94,6 @@ See the [FAQ](documents/FAQ.md) for common questions.
 [Name-That-Hash](https://github.com/HashPals/Name-That-Hash) -
 [Naminter](https://github.com/3xp0rt/Naminter) -
 [PhoneInfoga](https://github.com/sundowndev/phoneinfoga) -
-[Profil3r](https://github.com/Greyjedix/Profil3r) -
 [Search-That-Hash](https://github.com/HashPals/Search-That-Hash) -
 [ShareTrace](https://github.com/hondling/sharetrace) -
 [Sherlock](https://github.com/sherlock-project/sherlock) -
@@ -105,7 +106,6 @@ See the [FAQ](documents/FAQ.md) for common questions.
 ### Social media
 
 [Instaloader](https://github.com/instaloader/instaloader) -
-[Osintgram](https://github.com/Datalux/Osintgram) -
 [Toutatis](https://github.com/megadose/toutatis)
 
 ### Domain and web
@@ -120,7 +120,6 @@ See the [FAQ](documents/FAQ.md) for common questions.
 [Photon](https://github.com/s0md3v/Photon) -
 [Shodan CLI](https://github.com/achillean/shodan-python) (command line only) -
 [Subfinder](https://github.com/projectdiscovery/subfinder) -
-[Sublist3r](https://github.com/aboul3la/Sublist3r) -
 [theHarvester](https://github.com/laramies/theHarvester) -
 [WireTapper](https://github.com/h9zdev/WireTapper) (command line only, needs API keys)
 
@@ -137,6 +136,7 @@ See the [FAQ](documents/FAQ.md) for common questions.
 [Changedetection.io](https://github.com/dgtlmoon/changedetection.io) -
 [Maigret Web](scripts/maigret-enhanced) (web interface for Maigret, included in this repository) -
 [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes) -
+[Osintgram](https://github.com/Datalux/Osintgram) (web interface) -
 [Recon-ng](https://github.com/lanmaster53/recon-ng) -
 [Sn0int](https://github.com/kpcyrd/sn0int)
 

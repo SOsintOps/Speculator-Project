@@ -16,8 +16,11 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - **Share links**: a URL typed in the person search goes to the new `sharelink`
   category, run by [ShareTrace](https://github.com/hondling/sharetrace) (who is
   behind a TikTok, Instagram, Discord, Pinterest... share link).
-- **Mr.Holmes** is installed with its dependencies and launched from
-  **Frameworks** in the terminal (it only works through its own menus).
+- **Mr.Holmes** is installed with its dependencies and the configuration its own
+  installer would write, and is launched from **Frameworks** in the terminal (it
+  only works through its own menus).
+- **Osintgram** is now a web interface upstream: it moved to **Frameworks**
+  (`http://127.0.0.1:8000`).
 - **Exploratores** (added in 0.9.0, missing from that entry): cloned to
   `~/Documents/Exploratores` and set as the Firefox ESR start page and bookmark.
 - **Report templates** in `~/Documents/Speculator/templates`: case cover sheet,
@@ -43,6 +46,24 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - `common.sh` (v0.3.0) puts `$HOME/go/bin` on the PATH of the launchers.
 
 #### Fixed
+- **Launchers showed no tools**: the installer never copied `config/tools.conf`
+  next to the installed scripts, where `common.sh` looks for it.
+- **Installer stopped on a question**: apt now runs non-interactively (a debconf
+  question about the keyboard layout waited forever, hidden in the log).
+- **`./speculator_install.sh` failed on a fresh clone**: the scripts were not
+  executable in git.
+- **Tools updated to their current releases**, after starting every tool on
+  Debian 13.5: Maigret (missing dependency), Carbon14 and mailcat (now Python
+  packages), Aliens Eye (now `aliens-eye` on PyPI, installed with pipx), BDFR
+  (needs praw older than 7.8), Stalkie (its site list is now downloaded), and
+  the command lines of Enola, Naminter, Stalkie, Social-Analyzer, theHarvester
+  and BDFR comments.
+- **YouTube**: yt-dlp is installed with its optional extras and the deno
+  JavaScript runtime (from PyPI, injected with pipx), which YouTube now
+  requires; comments are limited to 1000 per video, otherwise a popular video
+  never got past its comments. `update.sh` also updates deno.
+- **Repository tools missing from the summary**: their status was set in a
+  subshell and lost; they now run in their folder without one.
 - **Session log**: entries and tool output were printed on the screen instead of
   the log file, and the log variables were lost in a subshell, so session logs
   only had their header.
@@ -61,6 +82,9 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   CC BY-NC-SA template pack, incompatible with the MIT licence) and the
   previous PNG icons (third-party or of unknown origin).
 - **TLDSweep**: its repository (`DarkWebInformer/TLDSweep`) no longer exists.
+- **Profil3r**: it crashes on start with its default configuration.
+- **Sublist3r**: it crashes on every run (one of its search engines changed;
+  the project has not been updated since 2024). Subfinder and Amass cover it.
 - `documents/icon-prompts.md` and `todo/todo.md`.
 
 ---

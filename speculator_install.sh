@@ -451,7 +451,9 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         ripgrep wget curl chromium nodejs npm || true
 
     PIPX_PACKAGES=(
-        yt-dlp
+        # yt-dlp with its optional extras (browser impersonation, YouTube
+        # JavaScript challenge solver); deno is injected below
+        "yt-dlp[default,curl-cffi]"
         streamlink
         socialscan
         bdfr
@@ -489,6 +491,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
             mark_fail "pipx:$pkg"
         fi
     done
+    # YouTube needs a JavaScript runtime: deno, from PyPI, next to yt-dlp.
+    run_as_user pipx inject --include-apps yt-dlp deno || echo "WARNING: could not add deno to yt-dlp."
     # BDFR 2.6 does not start with praw 7.8 or later (BaseTokenManager was removed).
     run_as_user pipx runpip bdfr install --quiet "praw<7.8" || echo "WARNING: could not pin praw<7.8 for bdfr."
 
@@ -502,7 +506,6 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     install_py_tool_from_git "https://github.com/N0rz3/Eyes"
     install_py_tool_from_git "https://github.com/Datalux/Osintgram"
     install_py_tool_from_git "https://github.com/s0md3v/Photon"
-    install_py_tool_from_git "https://github.com/aboul3la/Sublist3r"
     install_py_tool_from_git "https://github.com/Lazza/Carbon14"
     install_py_tool_from_git "https://github.com/opsdisk/metagoofil"
     install_py_tool_from_git "https://github.com/lanmaster53/recon-ng" "REQUIREMENTS"
@@ -590,6 +593,11 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     # Stalkie: 13 siti, confidence scoring multi-segnale, headless browser go-rod,
     # login wall detection, supporto Tor/SOCKS5
     tracked "go:stalkie"     run_as_user go install -v "github.com/ashendilantha/stalkie@latest"
+    # go install does not ship Stalkie's site list, which it reads at run time.
+    tracked "data:stalkie-sites" run_as_user bash -c '
+        mkdir -p "$HOME/.local/share/speculator/stalkie" &&
+        curl -fsSL -o "$HOME/.local/share/speculator/stalkie/sites.json" \
+            "https://raw.githubusercontent.com/ashendilantha/stalkie/main/sites.json"'
     # Investigo: riscrittura Go di Sherlock con download contenuti profili,
     # 32 goroutine concorrenti, supporto Tor, usa DB Sherlock (~479 siti)
     tracked "go:investigo"   run_as_user go install -v "github.com/tdh8316/Investigo/cmd/investigo@latest"

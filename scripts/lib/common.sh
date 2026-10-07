@@ -253,7 +253,7 @@ run_tool() {
 # Repo venv helpers
 ###############################################################################
 repo_venv_python() {
-  local d="$1" base; base="$(basename "$d")"
+  local d="$1" base c; base="$(basename "$d")"
   for c in "$d/${base}Environment/bin/python" "$d/venv/bin/python" "$d/.venv/bin/python"; do
     [ -x "$c" ] && { echo "$c"; return 0; }
   done
@@ -266,11 +266,17 @@ run_repo_python_tool() {
   fi
   local pybin="python3"
   repo_venv_python "$repo_dir" >/dev/null 2>&1 && pybin="$(repo_venv_python "$repo_dir")"
-  (
-    cd "$repo_dir" || { log_step "$label" "fail" " (cd failed)"; exit 1; }
-    run_tool "$label" "$outfile" "$pybin" "$script" "$@"
-  )
-  return $?
+  run_in_dir "$repo_dir" run_tool "$label" "$outfile" "$pybin" "$script" "$@"
+}
+
+# run_in_dir DIR COMMAND...: run COMMAND in DIR, then come back. No subshell,
+# so the TOOL_STATUS and TOOL_DURATION set by run_tool reach the summary.
+run_in_dir() {
+  local dir="$1" back="$PWD" rc; shift
+  cd "$dir" || { log_step "$dir" "fail" " (cd failed)"; return 1; }
+  "$@"; rc=$?
+  cd "$back" || true
+  return $rc
 }
 
 ###############################################################################
@@ -475,10 +481,7 @@ run_manifest_tool() {
       run_repo_python_tool "$name" "$repo_dir" "${parts[1]}" "$rt_outfile" "${parts[@]:2}"
       rc=$?
     else
-      (
-        cd "$repo_dir" || { log_step "$name" "fail" " (cd failed)"; exit 1; }
-        run_tool "$name" "$rt_outfile" "${parts[@]}"
-      )
+      run_in_dir "$repo_dir" run_tool "$name" "$rt_outfile" "${parts[@]}"
       rc=$?
     fi
   else

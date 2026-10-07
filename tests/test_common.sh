@@ -16,6 +16,7 @@ mkdir -p "$HOME" "$TMP/bin"
 export PATH="$TMP/bin:$PATH"
 
 SCRIPT_NAME="TEST"; SCRIPT_VERSION="0.0.0"; VERBOSE=false
+cd "$ROOT" || exit 1
 source "$ROOT/scripts/lib/common.sh"
 source "$ROOT/tests/helpers/mock_zenity.sh"
 xdg-open() { :; }
@@ -89,6 +90,8 @@ _test "binary tool writes {outfile}" "fake result for bob smith" "$(cat "$SESSIO
 run_manifest_tool fakerepo "bob" "$SESSION_DIR" >/dev/null
 _test "repo tool runs with its venv, in its folder" \
   "venv python in $PROGRAMS_DIR/FakeRepo with tool.py -u bob" "$(cat "$SESSION_DIR/bob-fakerepo.txt" 2>/dev/null)"
+_test "repo tool status reaches the summary" "ok" "${TOOL_STATUS[Fake Repo]:-lost}"
+_test "working folder restored after a repo tool" "$ROOT" "$PWD"
 run_manifest_tool missing "bob" "$SESSION_DIR" >/dev/null
 _test "missing tool is skipped" "skip" "${TOOL_STATUS[Missing]}"
 

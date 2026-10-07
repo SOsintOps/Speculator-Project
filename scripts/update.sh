@@ -26,7 +26,7 @@ main() {
   _line "-" 62 "$C_CYAN"
   if command -v pipx &>/dev/null; then
     local pipx_out
-    if pipx_out=$(pipx upgrade-all 2>&1); then
+    if pipx_out=$(pipx upgrade-all --include-injected 2>&1); then
       if echo "$pipx_out" | grep -q "upgraded"; then
         log_step "pipx upgrade-all" "ok" " (packages upgraded)"
         ((updated++))

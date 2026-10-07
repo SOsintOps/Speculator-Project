@@ -85,7 +85,7 @@ Refer to each tool's official documentation. Practical usage examples are covere
 In `~/Downloads/evidence/<target>/`, one folder per target (a shortcut called `evidence` is placed on the Desktop). Each search adds a session log in `logs/` with the tools selected, the exact commands and their output; errors are saved there too. The report templates are in `~/Documents/Speculator/templates`.
 
 ### Why does Mr.Holmes open in a terminal?
-Mr.Holmes asks its questions through its own menus and has no command-line options, so it cannot be run from a Zenity form. Open **Frameworks** and choose Mr.Holmes: it starts in the terminal with its own environment. Recon-ng and Sn0int work the same way.
+Mr.Holmes asks its questions through its own menus and has no command-line options, so it cannot be run from a Zenity form. Open **Frameworks** and choose Mr.Holmes: it starts in the terminal with its own environment. Recon-ng and Sn0int work the same way; Osintgram, Maigret Web and Changedetection.io open a web interface on your machine.
 
 ### Can I modify the script for my own needs?
 Yes. Modify, adapt or expand the script to suit your workflow. If you develop customisations that others would find useful, open an issue or submit a pull request. We may include them in future versions.
