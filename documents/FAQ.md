@@ -94,7 +94,7 @@ Yes. Modify, adapt or expand the script to suit your workflow. If you develop cu
 Yes, contributions are welcome. Please note that not all suggestions can be added immediately.
 
 ### Where can I learn about customising Zenity scripts?
-Customising Zenity scripts is covered in *OSINT Techniques, 11th Edition* by Michael Bazzell (page 137). The official Zenity documentation is available at [https://help.gnome.org/users/zenity/stable/](https://help.gnome.org/users/zenity/stable/).
+Customising Zenity scripts is covered in *OSINT Techniques, 11th Edition* by Michael Bazzell (page 137). The Zenity reference is installed with it (`man zenity`, `zenity --help-all`); the source and documentation are on the [GNOME GitLab](https://gitlab.gnome.org/GNOME/zenity).
 
 If you are serious about OSINT, reading the book and following Michael Bazzell's courses and podcast are strongly recommended. His material is among the most practical and consistently updated available in the field.
 
