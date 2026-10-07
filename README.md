@@ -49,7 +49,7 @@ sudo ./speculator_install.sh
 
 The installer logs everything to `~/Downloads/install_<date>.log` and writes a results file next to it. Reboot when it finishes. To see what it would do without changing anything, run `sudo ./speculator_install.sh --dry-run`.
 
-> **Status:** the installer was last run end to end on Debian 13.5 (see the [changelog](documents/CHANGELOG.md)). The GNOME desktop settings are only applied in a real desktop session; please report problems in the issues.
+> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
 
 ## Usage
 
