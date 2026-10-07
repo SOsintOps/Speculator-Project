@@ -74,4 +74,11 @@ for d in "$ROOT"/shortcuts/*.desktop; do
   fi
 done
 
+_section "6. Scripts are executable in git (README runs ./speculator_install.sh)"
+if git -C "$ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  while read -r mode _ _ path; do
+    _test "$path is 755" "100755" "$mode"
+  done < <(git -C "$ROOT" ls-files -s -- speculator_install.sh 'scripts/*.sh' ':!scripts/lib/*')
+fi
+
 _test_summary
