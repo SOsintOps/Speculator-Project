@@ -4,5 +4,5 @@ Name=Archives
 Comment=OSINT: Wayback Machine, Internet Archive
 Categories=Network;OSINT;
 Exec=__HOME__/.local/share/speculator/scripts/archives.sh
-Icon=__HOME__/.local/share/icons/speculator/speculator-archives.png
+Icon=__HOME__/.local/share/icons/speculator/speculator-archives.svg
 Terminal=false

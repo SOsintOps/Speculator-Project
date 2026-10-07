@@ -4,5 +4,5 @@ Name=Frameworks
 Comment=OSINT: Recon-NG, Sn0int, Changedetection, Maigret Web, Mr.Holmes
 Categories=Network;OSINT;
 Exec=__HOME__/.local/share/speculator/scripts/frameworks.sh
-Icon=__HOME__/.local/share/icons/speculator/speculator-framework.png
+Icon=__HOME__/.local/share/icons/speculator/speculator-framework.svg
 Terminal=true

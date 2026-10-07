@@ -4,5 +4,5 @@ Name=Reddit
 Comment=OSINT: Reddit user analysis
 Categories=Network;OSINT;
 Exec=__HOME__/.local/share/speculator/scripts/reddit.sh
-Icon=__HOME__/.local/share/icons/speculator/speculator-reddit.png
+Icon=__HOME__/.local/share/icons/speculator/speculator-reddit.svg
 Terminal=false

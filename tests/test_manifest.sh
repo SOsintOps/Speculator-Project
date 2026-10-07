@@ -61,4 +61,17 @@ for c in $CATEGORIES; do
     "$(_true grep -rqE "run_category \"$c\"|load_manifest \"$c\"" "$ROOT/scripts")"
 done
 
+_section "5. Desktop shortcuts"
+for d in "$ROOT"/shortcuts/*.desktop; do
+  n="$(basename "$d")"
+  icon="$(sed -n 's|^Icon=.*/||p' "$d")"
+  if [ -n "$icon" ]; then
+    _test "$n: icon $icon is in media/icons" "true" "$(_true test -f "$ROOT/media/icons/$icon")"
+  fi
+  script="$(sed -n 's|^Exec=__HOME__/.local/share/speculator/scripts/||p' "$d")"
+  if [ -n "$script" ]; then
+    _test "$n: script $script exists" "true" "$(_true test -f "$ROOT/scripts/$script")"
+  fi
+done
+
 _test_summary

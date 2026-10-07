@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=Person
-Comment=OSINT: email, username, name
+Name=Speculator
+Comment=OSINT: all investigations (person, domain, social media, video, archives, images, frameworks)
 Categories=Network;OSINT;
 Exec=__HOME__/.local/share/speculator/scripts/user.sh
-Icon=__HOME__/.local/share/icons/speculator/speculator-user.png
+Icon=__HOME__/.local/share/icons/speculator/speculator-user.svg
 Terminal=false

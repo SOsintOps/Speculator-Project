@@ -4,5 +4,5 @@ Name=Maigret Web
 Comment=OSINT: username search across 2500+ sites (web UI)
 Categories=Network;OSINT;
 Exec=__HOME__/.local/share/speculator/scripts/maigret-web.sh
-Icon=__HOME__/.local/share/icons/speculator/speculator-maigret.png
+Icon=__HOME__/.local/share/icons/speculator/speculator-maigret.svg
 Terminal=true

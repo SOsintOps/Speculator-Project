@@ -676,33 +676,25 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         echo "    Installed: maigret-enhanced/"
     fi
 
-    # Install icons from media/icons/ with speculator- naming convention.
-    # Maps local icon filenames to the speculator-<name>.png convention.
+    # Install the launcher icons (media/icons/speculator-*.svg, built by
+    # media/src/build_icons.py).
     echo "--> Installing icons from repo..."
-    declare -A _ICON_MAP=(
-        [user.png]=speculator-user.png
-        [domains.png]=speculator-domain.png
-        [instagram.png]=speculator-instagram.png
-        [youtube-dl.png]=speculator-video.png
-        [metagoofil.png]=speculator-metadata.png
-        [recon-ng.png]=speculator-api.png
-        [evidence.png]=speculator-evidence.png
-        [maigret.png]=speculator-maigret.png
-        [spiderfoot.png]=speculator-framework.png
-    )
-    # Icons not yet in media/icons/ (pending):
-    # archives.png -> speculator-archives.png
-    # reddit.png   -> speculator-reddit.png
-    # image.png    -> speculator-image.png
-    # update.png   -> speculator-update.png
-    for _src_icon in "${!_ICON_MAP[@]}"; do
-        _src_path="$_REPO_DIR/media/icons/$_src_icon"
-        _dst_path="$ICONS_DIR/${_ICON_MAP[$_src_icon]}"
-        if [ -f "$_src_path" ]; then
-            cp "$_src_path" "$_dst_path"
-            chown "$REAL_USER:$REAL_USER" "$_dst_path" 2>/dev/null || true
-        fi
+    for _src_path in "$_REPO_DIR/media/icons/"speculator-*.svg; do
+        [ -f "$_src_path" ] || continue
+        _dst_path="$ICONS_DIR/$(basename "$_src_path")"
+        cp "$_src_path" "$_dst_path"
+        chown "$REAL_USER:$REAL_USER" "$_dst_path" 2>/dev/null || true
     done
+
+    # Install the report templates (built by templates/src/build_templates.py).
+    echo "--> Installing report templates..."
+    _TEMPLATES_DIR="$REAL_HOME/Documents/Speculator/templates"
+    run_as_user mkdir -p "$_TEMPLATES_DIR"
+    for _tpl in "$_REPO_DIR/templates/"Speculator_*; do
+        [ -f "$_tpl" ] || continue
+        cp "$_tpl" "$_TEMPLATES_DIR/"
+    done
+    chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/Documents/Speculator" 2>/dev/null || true
 
     # Install shortcuts from repo.
     # Each shortcuts/*.desktop is installed as speculator-<name>.desktop

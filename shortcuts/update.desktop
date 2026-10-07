@@ -4,5 +4,5 @@ Name=Update Tools
 Comment=Update all installed OSINT tools
 Categories=Network;OSINT;
 Exec=__HOME__/.local/share/speculator/scripts/update.sh
-Icon=__HOME__/.local/share/icons/speculator/speculator-update.png
+Icon=__HOME__/.local/share/icons/speculator/speculator-update.svg
 Terminal=true

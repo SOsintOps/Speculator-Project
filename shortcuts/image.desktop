@@ -4,5 +4,5 @@ Name=Image & Metadata
 Comment=OSINT: EXIF, metadata, image forensics
 Categories=Network;OSINT;
 Exec=__HOME__/.local/share/speculator/scripts/image.sh
-Icon=__HOME__/.local/share/icons/speculator/speculator-image.png
+Icon=__HOME__/.local/share/icons/speculator/speculator-image.svg
 Terminal=false
