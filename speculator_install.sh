@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 0.10.0
+# # Version: 0.11.0
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -272,7 +272,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
 {
     echo "#################################################################"
-    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.10.0    #"
+    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.11.0    #"
     echo "# Target: Debian 13 Trixie (amd64)                             #"
     echo "#################################################################"
     echo "# Real user : $REAL_USER"
@@ -336,7 +336,13 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         default-jre httrack webhttrack libimage-exiftool-perl
         mediainfo mediainfo-gui mat2 subversion
         # Desktop / utilities
-        zenity kazam bleachbit libxcb-cursor0 docker.io evince
+        zenity kazam bleachbit libxcb-cursor0 docker.io docker-compose evince
+        # OCR of the document sources in Quaesitor: engine plus the language packs
+        # (English is built in; Italian, Chinese, Russian and Arabic read accents and
+        # other scripts), and ICU for the transliteration of non-Latin names (the
+        # venv is created with --system-site-packages, so Quaesitor picks it up).
+        tesseract-ocr tesseract-ocr-ita tesseract-ocr-chi-sim tesseract-ocr-rus tesseract-ocr-ara
+        python3-icu
         # GNOME extensions
         gnome-shell-extensions gnome-shell-extension-manager
         gnome-shell-extension-dash-to-panel
@@ -349,6 +355,11 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     # locales-all installs all locale definitions but does not set the system default.
     echo "--> Setting system locale to en_GB.UTF-8..."
     sudo update-locale LANG=en_GB.UTF-8 LC_MESSAGES=en_GB.UTF-8 || true
+
+    # Docker runs Flowsint. The user joins the docker group: active from the
+    # next login, so the images are pulled as root further down.
+    sudo systemctl enable --now docker || echo "WARNING: the docker service could not be started."
+    sudo usermod -aG docker "$REAL_USER" || echo "WARNING: could not add $REAL_USER to the docker group."
 
     # sq (sequoia-sq) — used for GPG key dearmoring; fall back to gpg if unavailable
     sudo DEBIAN_FRONTEND=noninteractive apt install -y sq || echo "INFO: 'sq' not available; sn0int install will use gpg --dearmor fallback."
@@ -655,6 +666,63 @@ HOLMES_INI
 
     # -- 3h. WireTapper (wireless/cellular network OSINT, requires API keys) --
     install_py_tool_from_git "https://github.com/h9zdev/WireTapper" "WireTapper.txt"
+
+    # -- 3i. Quaesitor (SOsintOps fork of OSInt Graph: the case as a graph in the browser) --
+    install_py_tool_from_git "https://github.com/SOsintOps/quaesitor"
+    # Settings files next to the program, from the examples; never overwritten.
+    for _conf in chatbot.conf services.conf; do
+        [ -f "$PROGRAMS_DIR/quaesitor/$_conf.example" ] && [ ! -f "$PROGRAMS_DIR/quaesitor/$_conf" ] \
+            && run_as_user cp "$PROGRAMS_DIR/quaesitor/$_conf.example" "$PROGRAMS_DIR/quaesitor/$_conf"
+    done
+
+    # -- 3j-bis. Flowsint (graph-based investigation platform, Docker images) --
+    # The containers (API, worker, web app, PostgreSQL, Redis, Neo4j) come from
+    # ghcr.io at the latest release. The passwords are generated once in
+    # ~/.config/speculator/flowsint.env: the databases are initialised with them,
+    # so the file must never be deleted. Launched from Frameworks.
+    echo "--> Installing Flowsint..."
+    _FLOWSINT_DIR="$PROGRAMS_DIR/flowsint"
+    _FLOWSINT_ENV="$CONFIG_DIR/flowsint.env"
+    # Tag of the latest release, from the redirect of /releases/latest (no API call).
+    _FLOWSINT_TAG=$(curl -fsSLI -o /dev/null -w '%{url_effective}' "https://github.com/reconurge/flowsint/releases/latest" 2>/dev/null | sed 's|.*/||')
+    if [ -z "$_FLOWSINT_TAG" ] || [ "$_FLOWSINT_TAG" = "latest" ]; then
+        echo "WARNING: could not read the latest Flowsint release."
+        mark_fail "docker:flowsint"
+    else
+        if [ -d "$_FLOWSINT_DIR/.git" ]; then
+            run_as_user git -C "$_FLOWSINT_DIR" fetch -q --depth 1 origin "refs/tags/$_FLOWSINT_TAG:refs/tags/$_FLOWSINT_TAG" \
+                && run_as_user git -C "$_FLOWSINT_DIR" checkout -q "$_FLOWSINT_TAG"
+        else
+            run_as_user git clone --depth 1 -b "$_FLOWSINT_TAG" "https://github.com/reconurge/flowsint.git" "$_FLOWSINT_DIR"
+        fi
+        if [ -f "$_FLOWSINT_DIR/docker-compose.prod.yml" ]; then
+            if [ -f "$_FLOWSINT_ENV" ]; then
+                sed -i "s/^FLOWSINT_VERSION=.*/FLOWSINT_VERSION=$_FLOWSINT_TAG/" "$_FLOWSINT_ENV"
+            else
+                _rand() { tr -dc 'A-Za-z0-9' < /dev/urandom | head -c 32; }
+                {
+                    echo "NEO4J_USERNAME=neo4j"
+                    echo "NEO4J_PASSWORD=$(_rand)"
+                    echo "POSTGRES_PASSWORD=$(_rand)"
+                    echo "AUTH_SECRET=$(_rand)"
+                    echo "MASTER_VAULT_KEY_V1=base64:$(head -c 32 /dev/urandom | base64 -w0)"
+                    echo "FLOWSINT_VERSION=$_FLOWSINT_TAG"
+                } > "$_FLOWSINT_ENV"
+                chmod 600 "$_FLOWSINT_ENV"
+                chown "$REAL_USER:$REAL_USER" "$_FLOWSINT_ENV" 2>/dev/null || true
+            fi
+            # The images (a few GB) are pulled as root: the docker group is not active yet.
+            if sudo docker compose --env-file "$_FLOWSINT_ENV" -f "$_FLOWSINT_DIR/docker-compose.prod.yml" pull --quiet; then
+                mark_ok "docker:flowsint"
+            else
+                echo "WARNING: Flowsint images could not be pulled."
+                mark_fail "docker:flowsint"
+            fi
+        else
+            echo "WARNING: Flowsint clone failed."
+            mark_fail "git:flowsint"
+        fi
+    fi
 
     # -- 3j. Turbolehe (email variant generator for holehe; stdlib only — no requirements) --
     echo "--> Cloning Turbolehe..."

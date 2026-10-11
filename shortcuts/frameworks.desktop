@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Frameworks
-Comment=OSINT: Recon-NG, Sn0int, Changedetection, Maigret Web, Mr.Holmes
+Comment=OSINT: Recon-NG, Sn0int, Changedetection, Maigret Web, Mr.Holmes, Quaesitor, Flowsint
 Categories=Network;OSINT;
 Exec=__HOME__/.local/share/speculator/scripts/frameworks.sh
 Icon=__HOME__/.local/share/icons/speculator/speculator-framework.svg

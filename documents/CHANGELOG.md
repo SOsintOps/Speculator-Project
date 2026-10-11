@@ -5,6 +5,33 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.11.0] - 2026-10-10
+
+### Quaesitor and Flowsint under Frameworks
+
+#### Added
+- **Quaesitor**: the SOsintOps fork of OSInt Graph (the case as a graph in the
+  browser), cloned into its own venv and launched
+  from **Frameworks** on `http://127.0.0.1:5002` (`scripts/quaesitor.sh`); the
+  archive goes to `~/Downloads/evidence/quaesitor`. `tesseract-ocr` with the
+  Italian, Chinese, Russian and Arabic language packs is installed for its
+  document OCR, and `python3-icu` for the transliteration of non-Latin names
+  (the venv sees it through `--system-site-packages`), as the Quaesitor
+  README's Linux section asks. The launcher opens the browser only once the
+  server answers (up to 40 s), so the first page is never a connection error.
+- **Flowsint**: graph-based investigation platform run from its Docker images at
+  the latest release (`docker-compose` from Debian next to `docker.io`). The
+  installer generates the passwords once in `~/.config/speculator/flowsint.env`,
+  pulls the images and adds the user to the `docker` group. **Frameworks** starts
+  the containers, opens `http://127.0.0.1:5173` and stops them when the window
+  closes (`scripts/flowsint.sh`); the data stays in the Docker volumes. Port 5001
+  is shared with Maigret Web: the script refuses to start while it is in use.
+
+#### Changed
+- `update.sh` skips repositories checked out at a release tag (Flowsint) instead
+  of reporting a failed pull.
+- `config/tools.conf` 1.2.0: 57 tools.
+
 ## [0.10.0] - 2026-10-07
 
 ### Bug fixes, main menu, share links, test suite, new templates and icons

@@ -1,6 +1,6 @@
 # Speculator Project
 
-![Version](https://img.shields.io/badge/version-0.10.0-blue)
+![Version](https://img.shields.io/badge/version-0.11.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![OS](https://img.shields.io/badge/OS-Debian%2013%20Trixie-red)
 ![Shell](https://img.shields.io/badge/shell-bash-yellow)
@@ -24,6 +24,7 @@ We took our name from the Speculatores, the scouts and spies of the Roman legion
 
   - **Tool installation**: username, email, phone, domain, social media, video, archive, metadata and framework tools, each in its own environment.
   - **Launchers**: a main menu (**Speculator** in the application menu) and one launcher per investigation type. You type the target, tick the tools, and every result lands in `~/Downloads/evidence/<target>/`, with a session log of the commands and their output in `logs/`.
+  - **Case graphs**: [Quaesitor](https://github.com/SOsintOps/quaesitor) (people, phones, e-mails, profiles, companies and documents as a graph, everything kept on the computer) and [Flowsint](https://github.com/reconurge/flowsint) (graph investigation platform with enrichers, in Docker), both under **Frameworks**.
   - **In-browser OSINT dashboard**: installs [Exploratores](https://github.com/SOsintOps/Exploratores) in `~/Documents/Exploratores` and opens it as the Firefox ESR start page (local file, no web server).
   - **Browsers**: Firefox ESR with enterprise policies (privacy settings, OSINT extensions and bookmarks), Brave and Tor Browser.
   - **Report templates**: case cover sheet, full and executive reports, subject profile, event assessment, threat notice, OSINT policy, research log and case notebook, in `~/Documents/Speculator/templates`.
@@ -49,7 +50,7 @@ sudo ./speculator_install.sh
 
 The installer logs everything to `~/Downloads/install_<date>.log` and writes a results file next to it. Reboot when it finishes. To see what it would do without changing anything, run `sudo ./speculator_install.sh --dry-run`.
 
-> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
+> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Version 0.11.0 adds Quaesitor and Flowsint, still to be tested on a virtual machine. The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
 
 ## Usage
 
@@ -64,14 +65,16 @@ Open **Speculator** from the application menu and choose an investigation:
 | Video | URL | yt-dlp, Streamlink, Gallery-dl |
 | Archives | URL or domain | WaybackPy, Waybackpack, Internet Archive CLI, ArchiveBox |
 | Image and metadata | file or folder | ExifTool, MAT2, Xeuledoc, Carbon14, MediaInfo |
-| Frameworks | none: they open in the terminal | Recon-ng, Sn0int, Changedetection.io, Maigret Web, Mr.Holmes, Osintgram |
+| Frameworks | none: they open in the terminal | Recon-ng, Sn0int, Changedetection.io, Maigret Web, Mr.Holmes, Osintgram, Quaesitor, Flowsint |
 | Update tools | none | updates the pipx, Go and Git tools |
 
 Each investigation also has its own entry in the application menu. YouTube may ask some networks to sign in ("confirm you're not a bot"); yt-dlp then needs cookies from a logged-in browser (`--cookies-from-browser firefox`), which you can add by hand.
 
 Launch a script with `-v` (for example `~/.local/share/speculator/scripts/user.sh -v`) to see the live output of every tool in the terminal.
 
-Frameworks are interactive, so they run in a terminal window: Recon-ng and Sn0int open their consoles, Changedetection.io serves its web interface on `http://127.0.0.1:5000`, Maigret Web on `http://127.0.0.1:5001` (it opens the browser), Osintgram on `http://127.0.0.1:8000`, and Mr.Holmes shows its own menus. Close a framework with Ctrl+C in its terminal.
+Frameworks are interactive, so they run in a terminal window: Recon-ng and Sn0int open their consoles, Changedetection.io serves its web interface on `http://127.0.0.1:5000`, Maigret Web on `http://127.0.0.1:5001` (it opens the browser), Quaesitor on `http://127.0.0.1:5002` (archive in `~/Downloads/evidence/quaesitor`), Osintgram on `http://127.0.0.1:8000`, Flowsint on `http://127.0.0.1:5173` (Docker containers, started and stopped by the script; create your account at `/register` on the first visit), and Mr.Holmes shows its own menus. Close a framework with Ctrl+C in its terminal.
+
+Flowsint needs Docker: the installer adds your user to the `docker` group (active after the reboot) and keeps the generated passwords in `~/.config/speculator/flowsint.env`; never delete that file, the databases are initialised with it. Its containers mount the Docker socket, as its own `docker-compose.prod.yml` requires.
 
 See the [FAQ](documents/FAQ.md) for common questions.
 
@@ -134,9 +137,11 @@ See the [FAQ](documents/FAQ.md) for common questions.
 ### Frameworks
 
 [Changedetection.io](https://github.com/dgtlmoon/changedetection.io) -
+[Flowsint](https://github.com/reconurge/flowsint) (Docker) -
 [Maigret Web](scripts/maigret-enhanced) (web interface for Maigret, included in this repository) -
 [Mr.Holmes](https://github.com/Lucksi/Mr.Holmes) -
 [Osintgram](https://github.com/Datalux/Osintgram) (web interface) -
+[Quaesitor](https://github.com/SOsintOps/quaesitor) (fork of [OSInt Graph](https://github.com/tingon11/OsintGraph)) -
 [Recon-ng](https://github.com/lanmaster53/recon-ng) -
 [Sn0int](https://github.com/kpcyrd/sn0int)
 
@@ -161,7 +166,7 @@ Firefox ESR (configured for OSINT, start page [Exploratores](https://github.com/
 
 ### Other utilities
 
-BleachBit - FFmpeg - Google Earth Pro - Kazam - VLC
+BleachBit - Docker (for Flowsint) - FFmpeg - Google Earth Pro - Kazam - Tesseract OCR (Italian, Chinese, Russian and Arabic language packs, for Quaesitor) - VLC
 
 ## Documentation
 

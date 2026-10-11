@@ -39,7 +39,7 @@ launch_framework() {
 }
 
 main() {
-  print_banner "recon-ng · sn0int · changedetection · maigret web · mr.holmes"
+  print_banner "recon-ng · sn0int · changedetection · maigret web · mr.holmes · quaesitor · flowsint"
   ensure_base_dir
 
   load_manifest "frameworks"

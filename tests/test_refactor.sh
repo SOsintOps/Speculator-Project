@@ -117,7 +117,7 @@ _test "domain tool count = 8" "8" "$domain_count"
 
 load_manifest "frameworks"
 fw_count=${#_MF_IDS[@]}
-_test "frameworks tool count = 6" "6" "$fw_count"
+_test "frameworks tool count = 8" "8" "$fw_count"
 _test "frameworks has mrholmes" "Mr.Holmes" "${_MF_NAME[mrholmes]:-missing}"
 
 load_manifest "sharelink"
