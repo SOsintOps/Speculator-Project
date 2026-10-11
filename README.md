@@ -12,7 +12,7 @@
 
 The Speculator Project turns a Debian 13 "Trixie" virtual machine into an Open Source Intelligence (OSINT) workstation. One Bash script installs the tools, configures the browsers and the GNOME desktop, and adds Zenity launchers that run the tools against a target and keep the results in one evidence folder per target.
 
-It is the sister project of [Argos](https://github.com/SOsintOps/Argos): Argos targets Ubuntu, Speculator targets Debian.
+It is the sister project of [Argos](https://github.com/SOsintOps/Argos): Argos targets Ubuntu Budgie, Speculator targets Debian.
 
 ### The Speculatores
 
