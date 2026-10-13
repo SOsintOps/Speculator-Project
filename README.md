@@ -1,6 +1,6 @@
 # Speculator Project
 
-![Version](https://img.shields.io/badge/version-0.11.0-blue)
+![Version](https://img.shields.io/badge/version-0.11.1-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![OS](https://img.shields.io/badge/OS-Debian%2013%20Trixie-red)
 ![Shell](https://img.shields.io/badge/shell-bash-yellow)
@@ -27,7 +27,7 @@ We took our name from the Speculatores, the scouts and spies of the Roman legion
   - **Case graphs**: [Quaesitor](https://github.com/SOsintOps/quaesitor) (people, phones, e-mails, profiles, companies and documents as a graph, everything kept on the computer) and [Flowsint](https://github.com/reconurge/flowsint) (graph investigation platform with enrichers, in Docker), both under **Frameworks**.
   - **In-browser OSINT dashboard**: installs [Exploratores](https://github.com/SOsintOps/Exploratores) in `~/Documents/Exploratores` and opens it as the Firefox ESR start page (local file, no web server).
   - **Browsers**: Firefox ESR with enterprise policies (privacy settings, OSINT extensions and bookmarks), Brave and Tor Browser.
-  - **Report templates**: case cover sheet, full and executive reports, subject profile, event assessment, threat notice, OSINT policy, research log and case notebook, in `~/Documents/Speculator/templates`.
+  - **Report templates**: case cover sheet, full and executive reports, subject profile, event assessment, threat notice, OSINT policy, research log and case notebook, in `~/Documents/Speculator/templates`. Sources are graded on the UNODC 4 x 4 scale; see [Writing the report](documents/report-writing.md).
   - **Resilient installation**: the installer carries on when a single tool fails and lists every failure in a summary at the end.
 
 ## System Requirements
@@ -50,7 +50,7 @@ sudo ./speculator_install.sh
 
 The installer logs everything to `~/Downloads/install_<date>.log` and writes a results file next to it. Reboot when it finishes. To see what it would do without changing anything, run `sudo ./speculator_install.sh --dry-run`.
 
-> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Version 0.11.0 adds Quaesitor and Flowsint, still to be tested on a virtual machine. The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
+> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Version 0.11.0 added Quaesitor and Flowsint, still to be tested on a virtual machine. Version 0.11.1 aligns the analysis guidelines and the report templates with the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes) (UNODC 4 x 4 source grading, one ICD 203 likelihood row). The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
 
 ## Usage
 
@@ -171,6 +171,9 @@ BleachBit - Docker (for Flowsint) - FFmpeg - Google Earth Pro - Kazam - Tesserac
 ## Documentation
 
   - [FAQ](documents/FAQ.md): common questions and answers
+  - [Analysis guidelines](documents/guidelines.md): the method applied to a Speculator investigation
+  - [Writing the report](documents/report-writing.md): which template to use and how to fill it
+  - [Intelligence Field Notes](documents/field-notes/README.md): offline copy of the shared notes on analytic standards, OSINT method, source evaluation and report writing
   - [Changelog](documents/CHANGELOG.md): version history
   - [The Speculatores](documents/speculatores.md): historical background
   - [Contributing](CONTRIBUTING.md): how to report bugs, suggest features and run the tests

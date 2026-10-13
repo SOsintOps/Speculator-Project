@@ -5,6 +5,37 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.11.1] - 2026-10-13
+
+### Analysis guidelines and report templates aligned with the Intelligence Field Notes
+
+#### Changed
+- **Source grading on the UNODC 4 x 4 scale** (source A, B, C, X; information
+  1 to 4) in every report template, replacing the 6 x 6 Admiralty scale; new
+  *Grade* column in `Speculator_Report_Plain.md` and *Grade (4 x 4)* field in
+  the threat notice. The confidence note names the one ICD 203 likelihood row
+  to use and forbids a confidence level and a likelihood word in one sentence.
+- `documents/speculatores.md`: the Latin quotations of Livy, Seneca and Tacitus
+  were not the ancient texts; replaced with the real passages (Caesar added),
+  with translations and links to the Latin. The claim about the *Historia
+  Augusta* and the Strasbourg stele, which do not mention speculatores, are
+  removed; the Viminacium stele (CIL III 1650) is described from Pilipović
+  (2016), the article shipped as *A Travelling Speculator*; full references.
+- FAQ: book titles corrected and linked (*Deep Dive: Exploring the Real-World
+  Value of Open Source Intelligence*; *OSINT Techniques* by Bazzell and Edison;
+  the UNODC manual by Howard Atkin).
+
+#### Added
+- `documents/guidelines.md`: the method applied to a Speculator investigation
+  (standards mapped to the evidence folder, session log, notebook and
+  templates; hashing what you cite; tool output as leads; OPSEC on the VM).
+- `documents/report-writing.md`: which template for which product.
+- `documents/field-notes/`: offline copy of the
+  [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes) 0.1.0.
+- FAQ: "Analysis and Reporting" section, with the related SOsintOps projects.
+
+---
+
 ## [0.11.0] - 2026-10-10
 
 ### Quaesitor and Flowsint under Frameworks

@@ -21,12 +21,17 @@ ACCENT = RGBColor(0x0F, 0x76, 0x6E)
 CONFIDENCE = (
     "Confidence: High = several independent, reliable sources agree; "
     "Moderate = credible but not fully corroborated; Low = single or "
-    "questionable source, treat as a lead. Likelihood words: almost no chance, "
-    "very unlikely, unlikely, roughly even chance, likely, very likely, almost certain."
+    "questionable source, treat as a lead. Likelihood words (ICD 203, one row "
+    "only): almost no chance, very unlikely, unlikely, roughly even chance, "
+    "likely, very likely, almost certain. Never put a confidence level and a "
+    "likelihood word in the same sentence."
 )
-ADMIRALTY = (
-    "Source reliability A (reliable) to F (cannot be judged); information "
-    "credibility 1 (confirmed by other sources) to 6 (cannot be judged)."
+GRADING = (
+    "Grade (UNODC 4 x 4): source A = no doubt about reliability, B = mostly "
+    "reliable, C = mostly unreliable, X = cannot be judged; information 1 = no "
+    "doubt about accuracy, 2 = known personally to the source, 3 = not known "
+    "personally but corroborated, 4 = not known personally and not corroborated. "
+    "Grade the source and the information separately, e.g. B2."
 )
 
 
@@ -105,9 +110,9 @@ def sources_annex(doc):
     note(doc, "One row per source. The evidence folder is the Speculator folder for "
               "the target (~/Downloads/evidence/<target>/, session log in logs/); "
               "compute the SHA-256 of each file with sha256sum, so every statement "
-              "can be traced back to the exact capture. " + ADMIRALTY)
+              "can be traced back to the exact capture. " + GRADING)
     grid(doc, ["Ref", "Description", "URL / origin", "Captured (UTC)",
-               "Evidence folder", "SHA-256", "Rel./Cred."], rows=6)
+               "Evidence folder", "SHA-256", "Grade"], rows=6)
 
 
 def save(doc, name):
@@ -225,7 +230,7 @@ def threat_notice():
     note(doc, "Write it so it can be pasted as plain text: WHAT was found, WHERE, "
               "WHEN, WHO is involved, HOW credible it is, WHAT you recommend. "
               "Keep it under 150 words.")
-    fields(doc, ["What", "Where", "When", "Who", "Credibility", "Recommendation"])
+    fields(doc, ["What", "Where", "When", "Who", "Grade (4 x 4)", "Recommendation"])
     save(doc, "Speculator_Threat_Notice.docx")
 
 

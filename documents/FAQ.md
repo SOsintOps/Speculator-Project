@@ -23,6 +23,13 @@
     * [Can I modify the script for my own needs?](#can-i-modify-the-script-for-my-own-needs)
     * [Can I propose other scripts for OSINT?](#can-i-propose-other-scripts-for-osint)
     * [Where can I learn about customising Zenity scripts?](#where-can-i-learn-about-customising-zenity-scripts)
+* [Analysis and Reporting](#analysis-and-reporting)
+    * [Where is the analysis method explained?](#where-is-the-analysis-method-explained)
+    * [Which report template should I use?](#which-report-template-should-i-use)
+    * [How do I grade a source?](#how-do-i-grade-a-source)
+    * [How do I say how sure I am?](#how-do-i-say-how-sure-i-am)
+    * [Is a Maigret or Sherlock hit a finding?](#is-a-maigret-or-sherlock-hit-a-finding)
+    * [Are there other SOsintOps projects that work with Speculator?](#are-there-other-sosintops-projects-that-work-with-speculator)
 * [Affiliation and Development](#affiliation-and-development)
     * [Is this project affiliated with Michael Bazzell?](#is-this-project-affiliated-with-michael-bazzell)
     * [Are you affiliated with any organisations?](#are-you-affiliated-with-any-organisations)
@@ -58,7 +65,7 @@ Yes, it can be used for investigations. However, functionality is not guaranteed
 No, we do not provide pre-configured virtual machines.
 
 ### How can I prepare a Debian virtual machine?
-Use VirtualBox. Create a new VM with at least 4 GB of RAM and 50 GB of disk space, then install Debian 13 "Trixie" (amd64) with the GNOME desktop. Install the VirtualBox Guest Additions before running the script (VirtualBox menu > Devices > Insert Guest Additions CD image): they enable shared folders, clipboard sharing and display auto-resize. The installer only checks that they are present. For detailed VM setup instructions, refer to Chapter 8 of *OSINT Techniques, 11th Edition* by Michael Bazzell.
+Use VirtualBox. Create a new VM with at least 4 GB of RAM and 50 GB of disk space, then install Debian 13 "Trixie" (amd64) with the GNOME desktop. Install the VirtualBox Guest Additions before running the script (VirtualBox menu > Devices > Insert Guest Additions CD image): they enable shared folders, clipboard sharing and display auto-resize. The installer only checks that they are present. For detailed VM setup instructions, refer to Chapter 8 of [*OSINT Techniques, 11th Edition*](https://inteltechniques.com/book1.html) by Michael Bazzell and Jason Edison.
 
 ### Is this project designed for digital forensics too?
 No, this project focuses on OSINT. It does not include tools for digital forensic investigations.
@@ -66,9 +73,10 @@ No, this project focuses on OSINT. It does not include tools for digital forensi
 ### I don't know anything about OSINT. Where should I start?
 Resources for beginners:
 
-* **Criminal Intelligence: Manual for Analysts**: covers the basics of criminal intelligence analysis and investigative method.
-* **Deep Dive: Exploring the Real-world Value of OSINT** by Rae Baker: covers practical OSINT tools and techniques with real-world examples.
-* **OSINT Techniques, 11th Edition** by Michael Bazzell: step-by-step instructions for OSINT tools and investigation strategies.
+* **[Criminal Intelligence: Manual for Analysts](https://www.unodc.org/documents/organized-crime/Law-Enforcement/Criminal_Intelligence_for_Analysts.pdf)** by Howard Atkin (UNODC, 2011, free): the basics of criminal intelligence analysis, source evaluation and investigative method.
+* **[Deep Dive: Exploring the Real-World Value of Open Source Intelligence](https://www.wiley.com/en-us/Deep+Dive%3A+Exploring+the+Real+world+Value+of+Open+Source+Intelligence-p-9781119933243)** by Rae L. Baker (Wiley, 2023): practical OSINT with real-world case studies.
+* **[OSINT Techniques, 11th Edition](https://inteltechniques.com/book1.html)** by Michael Bazzell and Jason Edison: step-by-step instructions for OSINT tools and investigation strategies.
+* **[Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes)**: our notes on analytic standards, OSINT method, source evaluation and report writing, with a linked reading list. A copy is in [`documents/field-notes`](field-notes/README.md).
 
 ## Tools: Usage and Customisation
 
@@ -79,7 +87,7 @@ This is normal. On the first launch after a fresh installation, Firefox performs
 See the `Tools Included` section of the README for a full and current list of installed software.
 
 ### How can I learn to use the installed tools?
-Refer to each tool's official documentation. Practical usage examples are covered in Michael Bazzell's *OSINT Techniques, 11th Edition* and Rae Baker's *Deep Dive: Exploring the Real-world Value of OSINT*.
+Refer to each tool's official documentation. Practical usage examples are covered in [*OSINT Techniques, 11th Edition*](https://inteltechniques.com/book1.html) by Michael Bazzell and Jason Edison and in [*Deep Dive: Exploring the Real-World Value of Open Source Intelligence*](https://www.wiley.com/en-us/Deep+Dive%3A+Exploring+the+Real+world+Value+of+Open+Source+Intelligence-p-9781119933243) by Rae L. Baker.
 
 ### Where are the results saved?
 In `~/Downloads/evidence/<target>/`, one folder per target (a shortcut called `evidence` is placed on the Desktop). Each search adds a session log in `logs/` with the tools selected, the exact commands and their output; errors are saved there too. The report templates are in `~/Documents/Speculator/templates`.
@@ -94,16 +102,48 @@ Yes. Modify, adapt or expand the script to suit your workflow. If you develop cu
 Yes, contributions are welcome. Please note that not all suggestions can be added immediately.
 
 ### Where can I learn about customising Zenity scripts?
-Customising Zenity scripts is covered in *OSINT Techniques, 11th Edition* by Michael Bazzell (page 137). The Zenity reference is installed with it (`man zenity`, `zenity --help-all`); the source and documentation are on the [GNOME GitLab](https://gitlab.gnome.org/GNOME/zenity).
+Customising Zenity scripts is covered in [*OSINT Techniques, 11th Edition*](https://inteltechniques.com/book1.html) by Michael Bazzell and Jason Edison (page 137). The Zenity reference is installed with it (`man zenity`, `zenity --help-all`); the source and documentation are on the [GNOME GitLab](https://gitlab.gnome.org/GNOME/zenity).
 
 If you are serious about OSINT, reading the book and following Michael Bazzell's courses and podcast are strongly recommended. His material is among the most practical and consistently updated available in the field.
+
+## Analysis and Reporting
+
+### Where is the analysis method explained?
+In the [analysis guidelines](guidelines.md), which cover what is specific to Speculator, and in the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes), the notes on analytic standards, OSINT method, estimative language, source evaluation and report writing shared by all the SOsintOps tools. A copy for offline reading is in [`documents/field-notes`](field-notes/README.md).
+
+### Which report template should I use?
+See [Writing the report with Speculator](report-writing.md): full report, executive summary, plain Markdown report, subject profile, event assessment, threat notice, case cover sheet and investigations policy, with what each is for.
+
+### How do I grade a source?
+With the UNODC 4 x 4 system printed in every template: the source A, B, C or X, the information 1 to 4, written together as `B2`. The platform is not the source: grade the person or body that produced the information. See [Source Evaluation](field-notes/source-evaluation.md). Templates installed before 0.11.1 used the 6 x 6 scale.
+
+### How do I say how sure I am?
+Use one of the ICD 203 likelihood terms printed in the templates (almost no chance, very unlikely, unlikely, roughly even chance, likely, very likely, almost certain) for events, and High, Moderate or Low confidence for your judgements, never both in the same sentence. See [Estimative Language](field-notes/estimative-language.md).
+
+### Is a Maigret or Sherlock hit a finding?
+No. It is a lead: a site answered for that username. Open the profile, capture it, and decide with stated confidence whether it belongs to your subject. The same holds for every tool that returns matches or scores.
+
+### Are there other SOsintOps projects that work with Speculator?
+Yes:
+- [Argos](https://github.com/SOsintOps/Argos) is the sister workstation for Ubuntu Budgie, with the same templates.
+- [Wukong](https://github.com/SOsintOps/Wukong) is the China-focused spin-off of Speculator.
+- [Quaesitor](https://github.com/SOsintOps/quaesitor), the case graph, runs under **Frameworks**.
+- [Exploratores](https://github.com/SOsintOps/Exploratores), the browser toolkit, is the Firefox start page.
+
+For particular cases:
+- [Elementary CTI](https://github.com/SOsintOps/elementary-CTI) tracks ransomware victims and actors.
+- [Aethelburg](https://github.com/SOsintOps/Aethelburg-project) analyses UK company registers for shell companies.
+- [TelEgrapherX](https://github.com/SOsintOps/TelEgrapherX) collects Telegram groups and channels.
+- [Acta Diurna](https://github.com/SOsintOps/acta-diurna) monitors Italian law-enforcement news.
+
+[Codex Machinae](https://github.com/SOsintOps/codex-machinae) is the playbook the projects are built with.
 
 ## Affiliation and Development
 
 ### Is this project affiliated with Michael Bazzell?
 No. There is no affiliation, partnership or endorsement of any kind with Michael Bazzell or IntelTechniques.
 
-The Speculator Project is an independent initiative inspired by his book, *OSINT Techniques, 11th Edition*. We recommend it as the primary reference for the tools included in this script.
+The Speculator Project is an independent initiative inspired by his book, [*OSINT Techniques, 11th Edition*](https://inteltechniques.com/book1.html), written with Jason Edison. We recommend it as the primary reference for the tools included in this script.
 
 ### Are you affiliated with any organisations?
 Yes. We are affiliated with osintops.com.
@@ -123,7 +163,7 @@ You can contribute by:
 Yes, AI tools were used to assist in creating this project. Rest assured, no AI was overworked during this process.
 
 ### Who were the Speculatores?
-The Speculatores were ancient Roman scouts and reconnaissance officers who gathered intelligence for military operations. After installation, you will find *A Travelling Speculator* in your Documents folder. Read it to understand the historical background and the thinking behind this project. Further detail is also available in [The Speculatores](speculatores.md), included in the repository.
+The Speculatores were ancient Roman scouts and reconnaissance officers who gathered intelligence for military operations. After installation, you will find *A Travelling Speculator* in your Documents folder. Read it to understand the historical background and the thinking behind this project. *A Travelling Speculator* is Sanja Pilipović's article on the stele of the speculator Lucius Blassius Nigellio (*Balcanica* 47, 2016). Further detail is also available in [The Speculatores](speculatores.md), included in the repository.
 
 ### Why did you choose this name?
 The name "Speculatores" was chosen to honour the intelligence and reconnaissance traditions of the Roman Empire. See [The Speculatores](speculatores.md) for more detail.
