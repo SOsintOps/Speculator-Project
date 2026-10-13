@@ -1,12 +1,14 @@
 # Frequently Asked Questions (FAQ)
 
+Frequently asked questions about the Speculator Project — installation, the tools, analysis and reporting, and the project itself.
+
 ## Table of Contents
 
 * [Introduction](#introduction)
     * [What is the Speculator Project?](#what-is-the-speculator-project)
     * [Who is this project for?](#who-is-this-project-for)
 * [Legal and Disclaimer](#legal-and-disclaimer)
-    * [What is the license for this project?](#what-is-the-license-for-this-project)
+    * [What is the licence for this project?](#what-is-the-licence-for-this-project)
 * [Getting Started and Resources](#getting-started-and-resources)
     * [What operating system is required?](#what-operating-system-is-required)
     * [Can the Speculator Project be used for investigations?](#can-the-speculator-project-be-used-for-investigations)
@@ -40,6 +42,8 @@
     * [Who were the Speculatores?](#who-were-the-speculatores)
     * [Why did you choose this name?](#why-did-you-choose-this-name)
 
+---
+
 ## Introduction
 
 ### What is the Speculator Project?
@@ -48,10 +52,14 @@ It is a Bash script for customising Debian-based virtual machines for OSINT acti
 ### Who is this project for?
 The Speculator Project is designed for OSINT practitioners, researchers, analysts, and professionals in related fields who need a pre-configured and reliable environment for efficient intelligence gathering.
 
+---
+
 ## Legal and Disclaimer
 
-### What is the license for this project?
+### What is the licence for this project?
 The Speculator Project is released under the MIT licence. The media files and the few third-party files in the repository are listed, with their licences, in `media/CREDITS.md`. The individual tools it installs are downloaded from their own projects and are subject to their own licences. Review the licensing terms for each tool on its official repository. The Speculator Project does not modify or take responsibility for third-party licensing terms.
+
+---
 
 ## Getting Started and Resources
 
@@ -77,6 +85,8 @@ Resources for beginners:
 * **[Deep Dive: Exploring the Real-World Value of Open Source Intelligence](https://www.wiley.com/en-us/Deep+Dive%3A+Exploring+the+Real+world+Value+of+Open+Source+Intelligence-p-9781119933243)** by Rae L. Baker (Wiley, 2023): practical OSINT with real-world case studies.
 * **[OSINT Techniques, 11th Edition](https://inteltechniques.com/book1.html)** by Michael Bazzell and Jason Edison: step-by-step instructions for OSINT tools and investigation strategies.
 * **[Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes)**: our notes on analytic standards, OSINT method, source evaluation and report writing, with a linked reading list. A copy is in [`documents/field-notes`](field-notes/README.md).
+
+---
 
 ## Tools: Usage and Customisation
 
@@ -106,37 +116,42 @@ Customising Zenity scripts is covered in [*OSINT Techniques, 11th Edition*](http
 
 If you are serious about OSINT, reading the book and following Michael Bazzell's courses and podcast are strongly recommended. His material is among the most practical and consistently updated available in the field.
 
+---
+
 ## Analysis and Reporting
 
 ### Where is the analysis method explained?
 In the [analysis guidelines](guidelines.md), which cover what is specific to Speculator, and in the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes), the notes on analytic standards, OSINT method, estimative language, source evaluation and report writing shared by all the SOsintOps tools. A copy for offline reading is in [`documents/field-notes`](field-notes/README.md).
 
 ### Which report template should I use?
-See [Writing the report with Speculator](report-writing.md): full report, executive summary, plain Markdown report, subject profile, event assessment, threat notice, case cover sheet and investigations policy, with what each is for.
+See [Writing the report with Speculator](report-writing.md): full report, executive summary, plain Markdown report, subject profile, event assessment, threat notice, case cover sheet and investigations policy, with what each is for. The full and plain reports keep the key judgements apart from the findings, as the field notes ask.
 
 ### How do I grade a source?
-With the UNODC 4 x 4 system printed in every template: the source A, B, C or X, the information 1 to 4, written together as `B2`. The platform is not the source: grade the person or body that produced the information. See [Source Evaluation](field-notes/source-evaluation.md). Templates installed before 0.11.1 used the 6 x 6 scale.
+With the [UNODC](https://www.unodc.org/documents/organized-crime/Law-Enforcement/Criminal_Intelligence_for_Analysts.pdf) 4 x 4 system printed in every template: the source A, B, C or X, the information 1 to 4, written together as `B2`. The platform is not the source: grade the person or body that produced the information. See [Source Evaluation](field-notes/source-evaluation.md). Templates installed before 0.11.1 used the 6 x 6 scale.
 
 ### How do I say how sure I am?
-Use one of the ICD 203 likelihood terms printed in the templates (almost no chance, very unlikely, unlikely, roughly even chance, likely, very likely, almost certain) for events, and High, Moderate or Low confidence for your judgements, never both in the same sentence. See [Estimative Language](field-notes/estimative-language.md).
+Use one of the [ICD 203](https://www.dni.gov/files/documents/ICD/ICD-203.pdf) likelihood terms printed in the templates (almost no chance, very unlikely, unlikely, roughly even chance, likely, very likely, almost certain) for events, and High, Moderate or Low confidence for your judgements, never both in the same sentence. Facts in the findings table take neither. See [Estimative Language](field-notes/estimative-language.md).
 
 ### Is a Maigret or Sherlock hit a finding?
-No. It is a lead: a site answered for that username. Open the profile, capture it, and decide with stated confidence whether it belongs to your subject. The same holds for every tool that returns matches or scores.
+No. It is a lead: a site answered for that username. Open the profile, capture it, and decide with stated confidence whether it belongs to your subject. The same holds for every tool that returns matches or scores. Speculator installs Maigret from the [SOsintOps fork](https://github.com/SOsintOps/maigret), which adds the Maigret Web interface: its results are leads in the same way.
 
 ### Are there other SOsintOps projects that work with Speculator?
 Yes:
-- [Argos](https://github.com/SOsintOps/Argos) is the sister workstation for Ubuntu Budgie, with the same templates.
+- [Argos](https://github.com/SOsintOps/Argos) is the sister workstation for Ubuntu Budgie 24.04 or 26.04 LTS, with the same templates.
 - [Wukong](https://github.com/SOsintOps/Wukong) is the China-focused spin-off of Speculator.
 - [Quaesitor](https://github.com/SOsintOps/quaesitor), the case graph, runs under **Frameworks**.
-- [Exploratores](https://github.com/SOsintOps/Exploratores), the browser toolkit, is the Firefox start page.
+- [Exploratores](https://github.com/SOsintOps/Exploratores), the browser toolkit, is the Firefox start page; [Claudii Exploratores](https://github.com/SOsintOps/claudii-exploratores) offers its catalogue as an agent skill and an MCP server for Claude (alpha).
 
 For particular cases:
 - [Elementary CTI](https://github.com/SOsintOps/elementary-CTI) tracks ransomware victims and actors.
 - [Aethelburg](https://github.com/SOsintOps/Aethelburg-project) analyses UK company registers for shell companies.
-- [TelEgrapherX](https://github.com/SOsintOps/TelEgrapherX) collects Telegram groups and channels.
+- [TelEgrapherX](https://github.com/SOsintOps/TelEgrapherX) collects Telegram groups and channels; [TGchat-analytics](https://github.com/SOsintOps/TGchat-analytics), the SOsintOps fork of chat-analytics, builds statistical reports from a chat exported from Telegram Desktop (HTML), Chinese, Japanese, Korean and Russian chats included.
 - [Acta Diurna](https://github.com/SOsintOps/acta-diurna) monitors Italian law-enforcement news.
+- [Il Conclave](https://github.com/SOsintOps/il-conclave), a Claude Code skill in Italian, puts a question through forced analytic procedures (ACH, premortem, steelman) before you commit to a key judgement.
 
 [Codex Machinae](https://github.com/SOsintOps/codex-machinae) is the playbook the projects are built with.
+
+---
 
 ## Affiliation and Development
 
@@ -148,6 +163,8 @@ The Speculator Project is an independent initiative inspired by his book, [*OSIN
 ### Are you affiliated with any organisations?
 Yes. We are affiliated with osintops.com.
 
+---
+
 ## Contribution
 
 ### How can I contribute to the Speculator Project?
@@ -156,6 +173,8 @@ You can contribute by:
 * Reporting bugs or issues
 * Submitting pull requests for improvements or fixes
 * Suggesting new features or tools
+
+---
 
 ## Additional Information
 

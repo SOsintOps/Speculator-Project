@@ -5,6 +5,38 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.11.2] - 2026-10-13
+
+### Report templates follow the structure of Report Writing
+
+#### Changed
+- `Speculator_Report_Full.docx`: numbered sections in the order of the
+  [Report Writing](field-notes/report-writing.md) page: header with version and
+  handling, bottom line, tasking, **key judgements** (numbered, each with a
+  likelihood or a confidence level and what it rests on), **findings** (facts
+  with source references and 4 x 4 grades, no confidence column: facts take no
+  qualifier), subject overview, narrative, timeline, analysis, **gaps and next
+  steps**, recommendations only if requested, sources, method and limitations,
+  **annexes**. The bottom line no longer asks for a recommendation.
+- `Speculator_Report_Executive.docx`: bottom line, key judgements, key findings
+  without a confidence column, recommended action only if requested.
+- `Speculator_Report_Plain.md`: header with reference, version and handling;
+  key judgements, analysis and gaps and next steps added; findings graded.
+- `documents/report-writing.md` describes the new templates and says where to
+  find the Speculator version (installation log banner, README badge).
+- FAQ, guidelines and README: ICD 203 and UNODC linked at first mention;
+  Argos named with its Ubuntu Budgie 24.04 / 26.04 LTS target; British
+  "licence" (FAQ question, README heading); "email" throughout.
+
+#### Added
+- FAQ: the SOsintOps Maigret fork, TGchat-analytics, Il Conclave and Claudii
+  Exploratores; an introduction line and separators between the groups.
+- README: the plain Markdown report in the template list; the Bazzell and
+  Edison book linked; alt text for the mascot.
+- `documents/field-notes/`: copy of the Intelligence Field Notes 0.1.2.
+
+---
+
 ## [0.11.1] - 2026-10-13
 
 ### Analysis guidelines and report templates aligned with the Intelligence Field Notes

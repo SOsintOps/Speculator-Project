@@ -1,15 +1,15 @@
 # Analysis Guidelines
 
-How the analytic method applies to an investigation run on Speculator. The method itself (analytic standards, OSINT methodology, analytic techniques, estimative language, source evaluation and report writing) is kept in one place for all the SOsintOps tools, the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes): personal notes, shared for convenience and with no claim to be exhaustive. A copy for offline use is in [`documents/field-notes/`](field-notes/README.md). This page covers only what is specific to Speculator; its sister project [Argos](https://github.com/SOsintOps/Argos) follows the same rules on Ubuntu Budgie.
+How the analytic method applies to an investigation run on Speculator. The method itself (analytic standards, OSINT methodology, analytic techniques, estimative language, source evaluation and report writing) is kept in one place for all the SOsintOps tools, the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes): personal notes, shared for convenience and with no claim to be exhaustive. A copy for offline use is in [`documents/field-notes/`](field-notes/README.md). This page covers only what is specific to Speculator; its sister project [Argos](https://github.com/SOsintOps/Argos) follows the same rules on Ubuntu Budgie 24.04 or 26.04 LTS.
 
 ## The Common Method
 | Read | For |
 | :--- | :--- |
-| [Analytic Standards](field-notes/analytic-standards.md) | The intelligence cycle and the ICD 203 standards every product must meet |
+| [Analytic Standards](field-notes/analytic-standards.md) | The intelligence cycle and the [ICD 203](https://www.dni.gov/files/documents/ICD/ICD-203.pdf) standards every product must meet |
 | [OSINT Methodology](field-notes/osint-methodology.md) | The OSINT cycle, the 5W1H method, collection discipline and OPSEC |
 | [Analytic Techniques](field-notes/analytic-techniques.md) | Biases, key assumptions check, ACH, deception |
 | [Estimative Language](field-notes/estimative-language.md) | Likelihood terms and confidence levels, and how not to mix them |
-| [Source Evaluation](field-notes/source-evaluation.md) | The UNODC 4 x 4 grading used in the Speculator templates |
+| [Source Evaluation](field-notes/source-evaluation.md) | The [UNODC](https://www.unodc.org/documents/organized-crime/Law-Enforcement/Criminal_Intelligence_for_Analysts.pdf) 4 x 4 grading used in the Speculator templates |
 | [Report Writing](field-notes/report-writing.md) | BLUF, structure, prose, checklist; see also [Writing the report with Speculator](report-writing.md) |
 
 ## The Standards in a Speculator Investigation
@@ -36,7 +36,7 @@ sha256sum -c SHA256SUMS      # later: proves nothing has changed
 
 ## Tool Output Is a Lead, Not a Source
 Most Speculator tools return pointers, not facts. Grade what the pointer leads to, after you have opened and captured it:
-- **Username and e-mail tools** (Maigret, Sherlock, Blackbird, Holehe, Social Analyzer, WhatsMyName and the rest of *Person*): a "found" is a site that answered; it says nothing about who owns the account. Open the profile, capture it, then decide whether it is the same person and with what confidence.
+- **Username and email tools** (Maigret, Sherlock, Blackbird, Holehe, Social Analyzer, WhatsMyName and the rest of *Person*): a "found" is a site that answered; it says nothing about who owns the account. Open the profile, capture it, then decide whether it is the same person and with what confidence.
 - **Breach lookups** (h8mail and similar): third-party claims about a leak. Grade the service as the source and the data as information it does not know personally (`4` unless corroborated).
 - **Domain tools** (Amass, Subfinder, theHarvester, Fierce): records from registries, DNS and scanners. The registry is usually a reliable source; what a registrant declared about themselves is their claim.
 - **Media and metadata** (yt-dlp, Gallery-dl, Instaloader, ExifTool, Carbon14): the file is first-hand, its metadata can be stripped or forged. Corroborate dates and places before using them.

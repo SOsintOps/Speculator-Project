@@ -1,6 +1,6 @@
 # Speculator Project
 
-![Version](https://img.shields.io/badge/version-0.11.1-blue)
+![Version](https://img.shields.io/badge/version-0.11.2-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![OS](https://img.shields.io/badge/OS-Debian%2013%20Trixie-red)
 ![Shell](https://img.shields.io/badge/shell-bash-yellow)
@@ -8,11 +8,11 @@
 
 ## Overview
 
-<img align="left" width="142" height="248" src="media/speculator.png">
+<img align="left" width="142" height="248" src="media/speculator.png" alt="Speculator mascot: a hooded Roman scout writing on a wax tablet">
 
 The Speculator Project turns a Debian 13 "Trixie" virtual machine into an Open Source Intelligence (OSINT) workstation. One Bash script installs the tools, configures the browsers and the GNOME desktop, and adds Zenity launchers that run the tools against a target and keep the results in one evidence folder per target.
 
-It is the sister project of [Argos](https://github.com/SOsintOps/Argos): Argos targets Ubuntu Budgie, Speculator targets Debian.
+It is the sister project of [Argos](https://github.com/SOsintOps/Argos): Argos targets Ubuntu Budgie 24.04 or 26.04 LTS, Speculator targets Debian 13.
 
 ### The Speculatores
 
@@ -24,10 +24,10 @@ We took our name from the Speculatores, the scouts and spies of the Roman legion
 
   - **Tool installation**: username, email, phone, domain, social media, video, archive, metadata and framework tools, each in its own environment.
   - **Launchers**: a main menu (**Speculator** in the application menu) and one launcher per investigation type. You type the target, tick the tools, and every result lands in `~/Downloads/evidence/<target>/`, with a session log of the commands and their output in `logs/`.
-  - **Case graphs**: [Quaesitor](https://github.com/SOsintOps/quaesitor) (people, phones, e-mails, profiles, companies and documents as a graph, everything kept on the computer) and [Flowsint](https://github.com/reconurge/flowsint) (graph investigation platform with enrichers, in Docker), both under **Frameworks**.
+  - **Case graphs**: [Quaesitor](https://github.com/SOsintOps/quaesitor) (people, phones, emails, profiles, companies and documents as a graph, everything kept on the computer) and [Flowsint](https://github.com/reconurge/flowsint) (graph investigation platform with enrichers, in Docker), both under **Frameworks**.
   - **In-browser OSINT dashboard**: installs [Exploratores](https://github.com/SOsintOps/Exploratores) in `~/Documents/Exploratores` and opens it as the Firefox ESR start page (local file, no web server).
   - **Browsers**: Firefox ESR with enterprise policies (privacy settings, OSINT extensions and bookmarks), Brave and Tor Browser.
-  - **Report templates**: case cover sheet, full and executive reports, subject profile, event assessment, threat notice, OSINT policy, research log and case notebook, in `~/Documents/Speculator/templates`. Sources are graded on the UNODC 4 x 4 scale; see [Writing the report](documents/report-writing.md).
+  - **Report templates**: case cover sheet, full and executive reports, a plain Markdown report, subject profile, event assessment, threat notice, OSINT policy, research log and case notebook, in `~/Documents/Speculator/templates`. Sources are graded on the [UNODC](https://www.unodc.org/documents/organized-crime/Law-Enforcement/Criminal_Intelligence_for_Analysts.pdf) 4 x 4 scale and the reports keep key judgements apart from findings; see [Writing the report](documents/report-writing.md).
   - **Resilient installation**: the installer carries on when a single tool fails and lists every failure in a summary at the end.
 
 ## System Requirements
@@ -50,7 +50,7 @@ sudo ./speculator_install.sh
 
 The installer logs everything to `~/Downloads/install_<date>.log` and writes a results file next to it. Reboot when it finishes. To see what it would do without changing anything, run `sudo ./speculator_install.sh --dry-run`.
 
-> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Version 0.11.0 added Quaesitor and Flowsint, still to be tested on a virtual machine. Version 0.11.1 aligns the analysis guidelines and the report templates with the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes) (UNODC 4 x 4 source grading, one ICD 203 likelihood row). The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
+> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Version 0.11.0 added Quaesitor and Flowsint, still to be tested on a virtual machine. Version 0.11.1 aligned the analysis guidelines and the report templates with the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes) (UNODC 4 x 4 source grading, one [ICD 203](https://www.dni.gov/files/documents/ICD/ICD-203.pdf) likelihood row). Version 0.11.2 adds key judgements, gaps and annexes to the report templates, separate from the findings. The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
 
 ## Usage
 
@@ -191,12 +191,12 @@ The suite runs without a display or any OSINT tool: it checks the syntax of ever
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on reporting bugs, suggesting features and submitting pull requests.
 
-## License
+## Licence
 
 This project is licensed under the [MIT License](LICENSE). The licences of the media files and the few third-party files are listed in [media/CREDITS.md](media/CREDITS.md). The tools that the installer downloads keep their own licences.
 
 ## Disclaimer
 
-The Speculator Project draws on techniques described in *OSINT Techniques, 11th Edition* by Michael Bazzell. This project is not affiliated with, endorsed by, or connected to Michael Bazzell or IntelTechniques in any way.
+The Speculator Project draws on techniques described in [*OSINT Techniques, 11th Edition*](https://inteltechniques.com/book1.html) by Michael Bazzell and Jason Edison. This project is not affiliated with, endorsed by, or connected to Michael Bazzell or IntelTechniques in any way.
 
 This script is provided "as-is" without any warranties. It is intended solely for educational and testing purposes. Please use it responsibly and at your own risk.
