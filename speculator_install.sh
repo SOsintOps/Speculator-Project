@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 0.12.0
+# # Version: 0.12.1
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -272,7 +272,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
 {
     echo "#################################################################"
-    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.12.0    #"
+    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.12.1    #"
     echo "# Target: Debian 13 Trixie (amd64)                             #"
     echo "#################################################################"
     echo "# Real user : $REAL_USER"
@@ -413,6 +413,12 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
     sudo DEBIAN_FRONTEND=noninteractive apt update
     if sudo DEBIAN_FRONTEND=noninteractive apt install -y brave-browser; then
+        # Chromium policies: force-install the OSINT extensions that exist only
+        # on the Chrome Web Store (Vortimo, Sputnik, EXIF Viewer Pro). Brave reads
+        # /etc/brave/policies/managed/*.json; the package does not create the dir.
+        sudo install -d -m 755 /etc/brave/policies/managed
+        sudo install -m 644 "$_REPO_DIR/config/brave-policies.json" \
+            /etc/brave/policies/managed/osint.json
         mark_ok "app:brave-browser"
     else
         echo "WARNING: Brave Browser install failed."

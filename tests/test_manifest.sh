@@ -61,6 +61,9 @@ _test "installed scripts are in .local/share/speculator/scripts" "true"   "$(_tr
 _test "every apt call is non-interactive" "0" "$(grep -c 'sudo apt ' "$INSTALLER")"
 _test "installer installs ONLYOFFICE Desktop Editors" "true" "$(_true grep -q 'apt install -y onlyoffice-desktopeditors' "$INSTALLER")"
 _test "ONLYOFFICE repository is signed-by a dedicated keyring" "true" "$(_true grep -q 'signed-by=/etc/apt/keyrings/onlyoffice.gpg' "$INSTALLER")"
+_test "Firefox policies install 18 extensions" "18" "$(grep -c '"installation_mode": "normal_installed"' "$ROOT/config/policies.json")"
+_test "installer deploys the Brave extension policy" "true" "$(_true grep -q 'config/brave-policies.json' "$INSTALLER")"
+_test "Brave policy force-installs 3 extensions" "3" "$(grep -c 'clients2.google.com/service/update2/crx' "$ROOT/config/brave-policies.json")"
 
 _section "4. Every category has a launcher"
 for c in $CATEGORIES; do

@@ -5,6 +5,35 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.12.1] - 2026-10-17
+
+### Browser extensions revised
+
+#### Added
+- Firefox ESR (`config/policies.json`): Exify (EXIF and GPS data), Sputnik,
+  Wappalyzer, IP Address and Domain Information (DNSlytics), Hunter,
+  User-Agent Switcher and Manager, SingleFile (saves the whole page as one
+  HTML file), Web Archives (looks the page up on the Wayback Machine,
+  archive.today, Ghostarchive and the search engine caches) and ArchiveBox
+  (sends the page to the local ArchiveBox). 18 extensions in all.
+- Brave: `config/brave-policies.json`, deployed to
+  `/etc/brave/policies/managed/osint.json`, force-installs Vortimo, Sputnik
+  and EXIF Viewer Pro, which exist only on the Chrome Web Store.
+- `tests/test_manifest.sh`: checks the extension counts and the Brave policy
+  deployment.
+
+#### Removed
+- Firefox ESR: GPSDetect and Nimbus Screen Capture (last releases in 2020)
+  and Exif Viewer (code unchanged for years, only re-signed in 2024).
+  Full-page screenshots use the one built into Firefox (Ctrl+Shift+S).
+
+#### Changed
+- README: the Browsers section lists the extensions. Hunter needs an account
+  and sends the visited domains to its service; Wappalyzer is closed source
+  since 2023.
+
+---
+
 ## [0.12.0] - 2026-10-17
 
 ### ONLYOFFICE Desktop Editors opens the report templates
