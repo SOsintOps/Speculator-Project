@@ -64,6 +64,8 @@ _test "ONLYOFFICE repository is signed-by a dedicated keyring" "true" "$(_true g
 _test "Firefox policies install 18 extensions" "18" "$(grep -c '"installation_mode": "normal_installed"' "$ROOT/config/policies.json")"
 _test "installer deploys the Brave extension policy" "true" "$(_true grep -q 'config/brave-policies.json' "$INSTALLER")"
 _test "Brave policy force-installs 3 extensions" "3" "$(grep -c 'clients2.google.com/service/update2/crx' "$ROOT/config/brave-policies.json")"
+_test "Firefox policies set EnableTrackingProtection" "true" "$(_true grep -q '"EnableTrackingProtection"' "$ROOT/config/policies.json")"
+_test "Firefox Preferences policy has no entries Firefox rejects" "0" "$(grep -c 'resistFingerprinting\|beacon.enabled\|toolkit.telemetry\|datareporting.healthreport\|privacy.trackingprotection' "$ROOT/config/policies.json")"
 
 _section "4. Every category has a launcher"
 for c in $CATEGORIES; do

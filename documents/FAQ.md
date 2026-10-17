@@ -18,6 +18,7 @@ Frequently asked questions about the Speculator Project — installation, the to
     * [I don't know anything about OSINT. Where should I start?](#i-dont-know-anything-about-osint-where-should-i-start)
 * [Tools: Usage and Customisation](#tools-usage-and-customisation)
     * [Why does Firefox take a long time to start the first time after installation?](#why-does-firefox-take-a-long-time-to-start-the-first-time-after-installation)
+    * [How is Firefox hardened, and can I change it?](#how-is-firefox-hardened-and-can-i-change-it)
     * [What tools are included in the Speculator Project?](#what-tools-are-included-in-the-speculator-project)
     * [How can I learn to use the installed tools?](#how-can-i-learn-to-use-the-installed-tools)
     * [Where are the results saved?](#where-are-the-results-saved)
@@ -92,6 +93,9 @@ Resources for beginners:
 
 ### Why does Firefox take a long time to start the first time after installation?
 This is normal. On the first launch after a fresh installation, Firefox performs initial profile setup, compiles shader caches and indexes extensions. Subsequent launches are fast. If Firefox appears to hang, wait up to two minutes before closing it.
+
+### How is Firefox hardened, and can I change it?
+The installer deploys an enterprise policy (`config/policies.json`) to `/usr/lib/firefox-esr/distribution/policies.json`; Firefox ESR reads it at every start and `about:policies` shows what is active. The policy disables telemetry, Studies, Pocket, Firefox Accounts, form history and the password manager; sets Enhanced Tracking Protection to strict and locks it (trackers, cryptominers, fingerprinters, email trackers and suspected fingerprinting); locks the fingerprinting protection (`privacy.fingerprintingProtection`); disables WebRTC, geolocation, camera and microphone, the battery API, DNS prefetching and link prefetching; turns off Google Safe Browsing (every visited address would otherwise be checked against Google); blocks the camera, microphone, location and notification permissions and autoplay; and clears cache, cookies, history and sessions on shutdown. The 18 extensions and the OSINT bookmarks come from the same file. Locked settings cannot be changed in the Settings page or in `about:config`; the Exploratores start page is not locked. Two settings are deliberately absent because Firefox does not let a policy set them: `privacy.resistFingerprinting` (enable it yourself in `about:config` if you want it; it forces the UTC time zone and a fixed window size, which some sites notice) and `beacon.enabled` (uBlock Origin and strict tracking protection block the tracker beacons). To change a locked setting, edit the deployed file and restart Firefox. Brave has its own policy, `/etc/brave/policies/managed/osint.json`, which only force-installs its three extensions; `brave://policy` shows it.
 
 ### What tools are included in the Speculator Project?
 See the `Tools Included` section of the README for a full and current list of installed software.
