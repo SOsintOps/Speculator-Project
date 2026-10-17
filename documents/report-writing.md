@@ -3,7 +3,7 @@
 The rules of the report (bottom line up front, structure, facts versus judgements, estimative language, prose, release checklist) are in [Report Writing](field-notes/report-writing.md), the copy shipped with Speculator of the page in the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes). This page says which Speculator template to use and how to fill it.
 
 ## Which Template
-The installer copies the templates to `~/Documents/Speculator/templates`; the sources are in [`templates/`](../templates/).
+The installer copies the templates to `~/Documents/Speculator/templates`; the sources are in [`templates/`](../templates/). Open the `.docx` ones with ONLYOFFICE Desktop Editors, which the installer adds from its official APT repository.
 
 | Product | Template | When |
 | :--- | :--- | :--- |

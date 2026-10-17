@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 0.11.2
+# # Version: 0.12.0
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -272,7 +272,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
 {
     echo "#################################################################"
-    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.11.2    #"
+    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.12.0    #"
     echo "# Target: Debian 13 Trixie (amd64)                             #"
     echo "#################################################################"
     echo "# Real user : $REAL_USER"
@@ -417,6 +417,23 @@ exec > >(tee -a "$LOG_FILE") 2>&1
     else
         echo "WARNING: Brave Browser install failed."
         mark_fail "app:brave-browser"
+    fi
+
+    # -- ONLYOFFICE Desktop Editors (opens the .docx report templates) --
+    # The official APT repository is still named "squeeze"; it serves every
+    # Debian derivative. The key is ASCII-armored, hence the dearmor step.
+    echo "--> Installing ONLYOFFICE Desktop Editors..."
+    sudo install -d -m 755 /etc/apt/keyrings
+    curl -fsSL "https://download.onlyoffice.com/GPG-KEY-ONLYOFFICE" | gpg --dearmor \
+        | sudo tee /etc/apt/keyrings/onlyoffice.gpg > /dev/null
+    echo "deb [signed-by=/etc/apt/keyrings/onlyoffice.gpg] https://download.onlyoffice.com/repo/debian squeeze main" \
+        | sudo tee /etc/apt/sources.list.d/onlyoffice.list > /dev/null
+    sudo DEBIAN_FRONTEND=noninteractive apt update
+    if sudo DEBIAN_FRONTEND=noninteractive apt install -y onlyoffice-desktopeditors; then
+        mark_ok "app:onlyoffice"
+    else
+        echo "WARNING: ONLYOFFICE Desktop Editors install failed."
+        mark_fail "app:onlyoffice"
     fi
 
     # -- Tor Browser (Flatpak) --

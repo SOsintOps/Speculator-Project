@@ -59,6 +59,8 @@ done < <(entries)
 _test "installer installs the manifest next to the scripts" "true"   "$(_true grep -q 'cp "$_REPO_DIR/config/tools.conf" "$REAL_HOME/.local/share/speculator/config/tools.conf"' "$INSTALLER")"
 _test "installed scripts are in .local/share/speculator/scripts" "true"   "$(_true grep -q 'SCRIPTS_DIR="$REAL_HOME/.local/share/speculator/scripts"' "$INSTALLER")"
 _test "every apt call is non-interactive" "0" "$(grep -c 'sudo apt ' "$INSTALLER")"
+_test "installer installs ONLYOFFICE Desktop Editors" "true" "$(_true grep -q 'apt install -y onlyoffice-desktopeditors' "$INSTALLER")"
+_test "ONLYOFFICE repository is signed-by a dedicated keyring" "true" "$(_true grep -q 'signed-by=/etc/apt/keyrings/onlyoffice.gpg' "$INSTALLER")"
 
 _section "4. Every category has a launcher"
 for c in $CATEGORIES; do

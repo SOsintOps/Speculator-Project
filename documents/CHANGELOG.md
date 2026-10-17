@@ -5,6 +5,25 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.12.0] - 2026-10-17
+
+### ONLYOFFICE Desktop Editors opens the report templates
+
+#### Added
+- Installer: ONLYOFFICE Desktop Editors (`onlyoffice-desktopeditors`) from the
+  official ONLYOFFICE APT repository, signed with its key in
+  `/etc/apt/keyrings/onlyoffice.gpg`, so the `.docx` report templates in
+  `~/Documents/Speculator/templates` open and fill with the layout fidelity of
+  Word. Tracked as `app:onlyoffice` in the installation summary.
+- `tests/test_manifest.sh`: checks that the installer installs the package and
+  that its repository is `signed-by` a dedicated keyring.
+
+#### Changed
+- README (features, status, other utilities) and `documents/report-writing.md`
+  name the editor that opens the templates.
+
+---
+
 ## [0.11.2] - 2026-10-13
 
 ### Report templates follow the structure of Report Writing

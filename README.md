@@ -1,6 +1,6 @@
 # Speculator Project
 
-![Version](https://img.shields.io/badge/version-0.11.2-blue)
+![Version](https://img.shields.io/badge/version-0.12.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![OS](https://img.shields.io/badge/OS-Debian%2013%20Trixie-red)
 ![Shell](https://img.shields.io/badge/shell-bash-yellow)
@@ -27,7 +27,7 @@ We took our name from the Speculatores, the scouts and spies of the Roman legion
   - **Case graphs**: [Quaesitor](https://github.com/SOsintOps/quaesitor) (people, phones, emails, profiles, companies and documents as a graph, everything kept on the computer) and [Flowsint](https://github.com/reconurge/flowsint) (graph investigation platform with enrichers, in Docker), both under **Frameworks**.
   - **In-browser OSINT dashboard**: installs [Exploratores](https://github.com/SOsintOps/Exploratores) in `~/Documents/Exploratores` and opens it as the Firefox ESR start page (local file, no web server).
   - **Browsers**: Firefox ESR with enterprise policies (privacy settings, OSINT extensions and bookmarks), Brave and Tor Browser.
-  - **Report templates**: case cover sheet, full and executive reports, a plain Markdown report, subject profile, event assessment, threat notice, OSINT policy, research log and case notebook, in `~/Documents/Speculator/templates`. Sources are graded on the [UNODC](https://www.unodc.org/documents/organized-crime/Law-Enforcement/Criminal_Intelligence_for_Analysts.pdf) 4 x 4 scale and the reports keep key judgements apart from findings; see [Writing the report](documents/report-writing.md).
+  - **Report templates**: case cover sheet, full and executive reports, a plain Markdown report, subject profile, event assessment, threat notice, OSINT policy, research log and case notebook, in `~/Documents/Speculator/templates`. Sources are graded on the [UNODC](https://www.unodc.org/documents/organized-crime/Law-Enforcement/Criminal_Intelligence_for_Analysts.pdf) 4 x 4 scale and the reports keep key judgements apart from findings; see [Writing the report](documents/report-writing.md). The `.docx` templates open in [ONLYOFFICE Desktop Editors](https://www.onlyoffice.com/desktop.aspx), installed from its official APT repository.
   - **Resilient installation**: the installer carries on when a single tool fails and lists every failure in a summary at the end.
 
 ## System Requirements
@@ -50,7 +50,7 @@ sudo ./speculator_install.sh
 
 The installer logs everything to `~/Downloads/install_<date>.log` and writes a results file next to it. Reboot when it finishes. To see what it would do without changing anything, run `sudo ./speculator_install.sh --dry-run`.
 
-> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Version 0.11.0 added Quaesitor and Flowsint, still to be tested on a virtual machine. Version 0.11.1 aligned the analysis guidelines and the report templates with the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes) (UNODC 4 x 4 source grading, one [ICD 203](https://www.dni.gov/files/documents/ICD/ICD-203.pdf) likelihood row). Version 0.11.2 adds key judgements, gaps and annexes to the report templates, separate from the findings. The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
+> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Version 0.11.0 added Quaesitor and Flowsint, still to be tested on a virtual machine. Version 0.11.1 aligned the analysis guidelines and the report templates with the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes) (UNODC 4 x 4 source grading, one [ICD 203](https://www.dni.gov/files/documents/ICD/ICD-203.pdf) likelihood row). Version 0.11.2 adds key judgements, gaps and annexes to the report templates, separate from the findings. Version 0.12.0 adds ONLYOFFICE Desktop Editors to open the `.docx` report templates, still to be tested on a virtual machine. The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
 
 ## Usage
 
@@ -166,7 +166,7 @@ Firefox ESR (configured for OSINT, start page [Exploratores](https://github.com/
 
 ### Other utilities
 
-BleachBit - Docker (for Flowsint) - FFmpeg - Google Earth Pro - Kazam - Tesseract OCR (Italian, Chinese, Russian and Arabic language packs, for Quaesitor) - VLC
+BleachBit - Docker (for Flowsint) - FFmpeg - Google Earth Pro - Kazam - ONLYOFFICE Desktop Editors (opens the `.docx` report templates) - Tesseract OCR (Italian, Chinese, Russian and Arabic language packs, for Quaesitor) - VLC
 
 ## Documentation
 
