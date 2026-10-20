@@ -5,6 +5,30 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.12.3] - 2026-10-20
+
+### Consensus added
+
+#### Added
+- [Consensus](https://github.com/OSINT-Experts-Society/Consensus-OSINT)
+  (OSINT Experts Society, GPL-3.0-or-later), installed with pipx as
+  `consensus-osint[modules,pdf]`: one username, email or phone search over the
+  lookup catalogues of 19 projects (Maigret, Sherlock, WhatsMyName, Holehe,
+  Socialscan, Ignorant, User Scanner and others), with the overlapping checks
+  reconciled, a confidence score per result and HTML, JSON, CSV and PDF
+  reports. It complements the single tools, which stay installed: the
+  repository was created on 8 October 2026 and the project still has to earn
+  its place as the first choice. The Person launcher offers it for usernames
+  and emails (`--fast`, up to 300 checks) and for phone numbers
+  (`config/tools.conf`, three entries, HTML report). No telemetry; the
+  start-up version check against PyPI is disabled with `--no-update-check`,
+  and updates follow `pipx upgrade-all` like the other pipx tools. Their own
+  `install.sh` is not used: it downloads uv and a private Python runtime.
+  Checked on Debian 13.7 (WSL): 232 MB, 40 checks in 13 seconds.
+- `tests/test_manifest.sh`: tool count 57 → 60.
+
+---
+
 ## [0.12.2] - 2026-10-17
 
 ### Firefox privacy policy fixed

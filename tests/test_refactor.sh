@@ -84,7 +84,7 @@ _test "email has h8mail" "H8Mail" "${_MF_NAME[h8mail]:-missing}"
 _test "email has eyes" "Eyes" "${_MF_NAME[eyes]:-missing}"
 _test "email has mailcat" "Mailcat" "${_MF_NAME[mailcat]:-missing}"
 email_count=${#_MF_IDS[@]}
-_test "email tool count = 7" "7" "$email_count"
+_test "email tool count = 8" "8" "$email_count"
 
 load_manifest "username"
 _test "username category loads tools" "true" "$([ ${#_MF_IDS[@]} -gt 0 ] && echo true || echo false)"
@@ -94,7 +94,7 @@ _test "username has enola" "Enola" "${_MF_NAME[enola]:-missing}"
 _test "username has stalkie" "Stalkie" "${_MF_NAME[stalkie]:-missing}"
 _test "username has naminter" "Naminter" "${_MF_NAME[naminter]:-missing}"
 username_count=${#_MF_IDS[@]}
-_test "username tool count = 11" "11" "$username_count"
+_test "username tool count = 12" "12" "$username_count"
 
 load_manifest "fullname"
 fullname_count=${#_MF_IDS[@]}
@@ -107,7 +107,7 @@ _test "hash tool count = 2" "2" "$hash_count"
 
 load_manifest "phone"
 phone_count=${#_MF_IDS[@]}
-_test "phone tool count = 2" "2" "$phone_count"
+_test "phone tool count = 3" "3" "$phone_count"
 _test "phone has ignorant" "Ignorant" "${_MF_NAME[ignorant]:-missing}"
 _test "phone has phoneinfoga" "PhoneInfoga" "${_MF_NAME[phoneinfoga]:-missing}"
 

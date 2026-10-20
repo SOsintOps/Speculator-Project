@@ -1,6 +1,6 @@
 # Speculator Project
 
-![Version](https://img.shields.io/badge/version-0.12.2-blue)
+![Version](https://img.shields.io/badge/version-0.12.3-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![OS](https://img.shields.io/badge/OS-Debian%2013%20Trixie-red)
 ![Shell](https://img.shields.io/badge/shell-bash-yellow)
@@ -50,7 +50,7 @@ sudo ./speculator_install.sh
 
 The installer logs everything to `~/Downloads/install_<date>.log` and writes a results file next to it. Reboot when it finishes. To see what it would do without changing anything, run `sudo ./speculator_install.sh --dry-run`.
 
-> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Version 0.11.0 added Quaesitor and Flowsint, still to be tested on a virtual machine. Version 0.11.1 aligned the analysis guidelines and the report templates with the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes) (UNODC 4 x 4 source grading, one [ICD 203](https://www.dni.gov/files/documents/ICD/ICD-203.pdf) likelihood row). Version 0.11.2 adds key judgements, gaps and annexes to the report templates, separate from the findings. Version 0.12.0 adds ONLYOFFICE Desktop Editors to open the `.docx` report templates, still to be tested on a virtual machine. Version 0.12.1 revises the Firefox and Brave extensions and 0.12.2 fixes the Firefox privacy policy. The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
+> **Status:** version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Version 0.11.0 added Quaesitor and Flowsint, still to be tested on a virtual machine. Version 0.11.1 aligned the analysis guidelines and the report templates with the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes) (UNODC 4 x 4 source grading, one [ICD 203](https://www.dni.gov/files/documents/ICD/ICD-203.pdf) likelihood row). Version 0.11.2 adds key judgements, gaps and annexes to the report templates, separate from the findings. Version 0.12.0 adds ONLYOFFICE Desktop Editors to open the `.docx` report templates, still to be tested on a virtual machine. Version 0.12.1 revises the Firefox and Brave extensions and 0.12.2 fixes the Firefox privacy policy. Version 0.12.3 adds Consensus (OSINT Experts Society), one username, email or phone search over the lookup catalogues of 19 projects. The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues.
 
 ## Usage
 
@@ -85,6 +85,7 @@ See the [FAQ](documents/FAQ.md) for common questions.
 [Aliens Eye](https://github.com/arxhr007/Aliens_eye) -
 [BDFR](https://github.com/aliparlakci/bulk-downloader-for-reddit) -
 [Blackbird](https://github.com/p1ngul1n0/blackbird) -
+[Consensus](https://github.com/OSINT-Experts-Society/Consensus-OSINT) -
 [Enola](https://github.com/TheYahya/enola) -
 [Eyes](https://github.com/N0rz3/Eyes) -
 [GHunt](https://github.com/mxrch/GHunt) -

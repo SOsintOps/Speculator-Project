@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 0.12.2
+# # Version: 0.12.3
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -272,7 +272,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
 {
     echo "#################################################################"
-    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.12.2    #"
+    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.12.3    #"
     echo "# Target: Debian 13 Trixie (amd64)                             #"
     echo "#################################################################"
     echo "# Real user : $REAL_USER"
@@ -516,6 +516,11 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         social-analyzer
         # Aliens Eye: 841 sites, confidence scoring; published on PyPI as aliens-eye
         aliens-eye
+        # Consensus (OSINT Experts Society): username, email and phone lookups from
+        # the catalogues of 19 projects (Maigret, Sherlock, WhatsMyName, Holehe...),
+        # deduplicated, with HTML, JSON, CSV and PDF reports. Complements the single
+        # tools above; the start-up version check is disabled in tools.conf.
+        "consensus-osint[modules,pdf]"
     )
     for pkg in "${PIPX_PACKAGES[@]}"; do
         if run_as_user pipx install "$pkg"; then
