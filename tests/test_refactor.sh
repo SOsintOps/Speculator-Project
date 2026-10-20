@@ -83,6 +83,7 @@ _test "email has ghunt" "GHunt" "${_MF_NAME[ghunt]:-missing}"
 _test "email has h8mail" "H8Mail" "${_MF_NAME[h8mail]:-missing}"
 _test "email has eyes" "Eyes" "${_MF_NAME[eyes]:-missing}"
 _test "email has mailcat" "Mailcat" "${_MF_NAME[mailcat]:-missing}"
+_test "email has consensus-email" "Consensus (email)" "${_MF_NAME[consensus-email]:-missing}"
 email_count=${#_MF_IDS[@]}
 _test "email tool count = 8" "8" "$email_count"
 
@@ -93,6 +94,7 @@ _test "username has maigret" "Maigret" "${_MF_NAME[maigret]:-missing}"
 _test "username has enola" "Enola" "${_MF_NAME[enola]:-missing}"
 _test "username has stalkie" "Stalkie" "${_MF_NAME[stalkie]:-missing}"
 _test "username has naminter" "Naminter" "${_MF_NAME[naminter]:-missing}"
+_test "username has consensus-username" "Consensus (username)" "${_MF_NAME[consensus-username]:-missing}"
 username_count=${#_MF_IDS[@]}
 _test "username tool count = 12" "12" "$username_count"
 
@@ -110,6 +112,7 @@ phone_count=${#_MF_IDS[@]}
 _test "phone tool count = 3" "3" "$phone_count"
 _test "phone has ignorant" "Ignorant" "${_MF_NAME[ignorant]:-missing}"
 _test "phone has phoneinfoga" "PhoneInfoga" "${_MF_NAME[phoneinfoga]:-missing}"
+_test "phone has consensus-phone" "Consensus (phone)" "${_MF_NAME[consensus-phone]:-missing}"
 
 load_manifest "domain"
 domain_count=${#_MF_IDS[@]}

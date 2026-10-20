@@ -5,6 +5,24 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.12.4] - 2026-10-20
+
+### Consensus entries completed
+
+#### Changed
+- `config/tools.conf`: the three Consensus entries save every outcome (`-a`),
+  not only the matches, so the HTML report also lists the blocked,
+  rate-limited and inconclusive checks an analyst may want to retry through
+  a proxy.
+- README: the status paragraph no longer retells every version; it keeps
+  what is tested and what is not, and points to this changelog.
+
+#### Added
+- `tests/test_refactor.sh`: the email, username and phone categories must
+  contain their Consensus entry.
+
+---
+
 ## [0.12.3] - 2026-10-20
 
 ### Consensus added
