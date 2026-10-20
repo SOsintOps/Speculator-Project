@@ -1,6 +1,6 @@
 # Speculator Project
 
-![Version](https://img.shields.io/badge/version-0.12.4-blue)
+![Version](https://img.shields.io/badge/version-0.12.5-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![OS](https://img.shields.io/badge/OS-Debian%2013%20Trixie-red)
 ![Shell](https://img.shields.io/badge/shell-bash-yellow)
@@ -50,7 +50,7 @@ sudo ./speculator_install.sh
 
 The installer logs everything to `~/Downloads/install_<date>.log` and writes a results file next to it. Reboot when it finishes. To see what it would do without changing anything, run `sudo ./speculator_install.sh --dry-run`.
 
-> **Status: 0.12.4.** Version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Added since then and still to be tested on a virtual machine: Quaesitor and Flowsint (0.11.0), ONLYOFFICE Desktop Editors for the `.docx` report templates (0.12.0), the revised Firefox and Brave extensions (0.12.1, 0.12.2) and Consensus, one username, email or phone search over the lookup catalogues of 19 projects (0.12.3, checked on Debian 13.7 in WSL). The analysis guidelines and the report templates follow the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes) (UNODC 4 x 4 source grading, one [ICD 203](https://www.dni.gov/files/documents/ICD/ICD-203.pdf) likelihood row, key judgements, gaps and annexes). The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues. Full history in the [changelog](documents/CHANGELOG.md).
+> **Status: 0.12.5.** Version 0.10.0 was installed end to end on a clean Debian 13.5 (55 of 55 components, every tool started and the launchers run real searches). Added since then and still to be tested on a virtual machine: Quaesitor and Flowsint (0.11.0), ONLYOFFICE Desktop Editors for the `.docx` report templates (0.12.0), the revised Firefox and Brave extensions (0.12.1, 0.12.2) and Consensus, one username, email or phone search over the lookup catalogues of 19 projects (0.12.3, checked on Debian 13.7 in WSL). The analysis guidelines and the report templates follow the [Intelligence Field Notes](https://github.com/SOsintOps/intelligence-field-notes) (UNODC 4 x 4 source grading, one [ICD 203](https://www.dni.gov/files/documents/ICD/ICD-203.pdf) likelihood row, key judgements, gaps and annexes). The GNOME desktop settings, the wallpaper and the Firefox interface are only applied in a real desktop session and still need a test on a virtual machine; please report problems in the issues. Full history in the [changelog](documents/CHANGELOG.md).
 
 ## Usage
 

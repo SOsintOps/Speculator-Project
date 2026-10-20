@@ -5,6 +5,22 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.12.5] - 2026-10-20
+
+### Consensus command order fixed
+
+#### Fixed
+- `config/tools.conf`: the three Consensus entries put the subcommand first
+  (`consensus user {target} ...`). Consensus 0.4.11 only strips
+  `--no-update-check` before it looks for the subcommand; any other leading
+  option (`--no-color`, `-q`, `-a`) turns the whole line into a scan and the
+  word `user`, `email` or `phone` was searched as an extra username. Reports
+  carried results for that word, and the phone entry spent about five
+  minutes on a full username scan of "phone" (checked: 328 s before, now
+  seconds plus the phone checks). Reported upstream.
+
+---
+
 ## [0.12.4] - 2026-10-20
 
 ### Consensus entries completed
