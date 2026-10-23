@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 0.12.5
+# # Version: 0.12.6
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -272,7 +272,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
 {
     echo "#################################################################"
-    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.12.5    #"
+    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.12.6    #"
     echo "# Target: Debian 13 Trixie (amd64)                             #"
     echo "#################################################################"
     echo "# Real user : $REAL_USER"
@@ -336,7 +336,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
         default-jre httrack webhttrack libimage-exiftool-perl
         mediainfo mediainfo-gui mat2 subversion
         # Desktop / utilities
-        zenity kazam bleachbit libxcb-cursor0 docker.io docker-compose evince
+        zenity kazam bleachbit libxcb-cursor0 docker.io docker-compose evince cool-retro-term
         # OCR of the document sources in Quaesitor: engine plus the language packs
         # (English is built in; Italian, Chinese, Russian and Arabic read accents and
         # other scripts), and ICU for the transliteration of non-Latin names (the

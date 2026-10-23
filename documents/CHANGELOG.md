@@ -5,6 +5,15 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.12.6] - 2026-10-23
+
+### An easter egg
+
+#### Added
+- `speculator_install.sh`: a small easter egg in the installed desktop. Finding it is part of the fun.
+
+---
+
 ## [0.12.5] - 2026-10-20
 
 ### Consensus command order fixed
