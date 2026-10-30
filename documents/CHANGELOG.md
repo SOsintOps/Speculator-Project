@@ -5,6 +5,32 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [0.13.1] - 2026-10-30
+
+### EditSimple
+
+#### Changed
+- `speculator_install.sh`: EditSimple comes from the SOsintOps fork
+  ([SOsintOps/EditSimple](https://github.com/SOsintOps/EditSimple/tree/linux),
+  branch `linux`), the upstream program with the Linux fixes proposed to its
+  author: mouse wheel, "Open tools folder" and "Open folder" through
+  `xdg-open`, system fonts in the font picker, audio preview through `pw-cat`
+  or `aplay`, window icon, X11 resize cursors, ffmpeg texts and start-up
+  errors for Linux, `avvia.sh` launcher. Tested on Debian 13 in a virtual
+  machine.
+- `install_py_tool_from_git` takes an optional third argument, a branch: a
+  fresh clone checks it out, an existing clone is pointed at the repository
+  URL and moved to that branch, so re-running the installer moves a 0.13.0
+  EditSimple to the fork; without it nothing changes.
+- `tests/test_manifest.sh`: checks the fork with its branch, a single
+  EditSimple source and the branch handling.
+
+#### Fixed
+- The known limits listed for 0.13.0 (silent audio preview, only the DejaVu
+  fonts, "Open tools folder" not working) no longer apply.
+
+---
+
 ## [0.13.0] - 2026-10-30
 
 ### EditSimple

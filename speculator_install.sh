@@ -2,7 +2,7 @@
 
 # ###############################################################
 # # SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT
-# # Version: 0.13.0
+# # Version: 0.13.1
 # # Target:  Debian 13 "Trixie" (amd64)
 # # Language Support: Italian, English, Russian, Chinese
 # ###############################################################
@@ -167,20 +167,37 @@ tracked() {
 # ---------------------------------------------------------------
 # HELPER: Install a Python tool from a Git repository
 # Uses a dedicated venv per tool; does NOT require venv activation
+# Usage: install_py_tool_from_git REPO_URL [REQ_FILE] [BRANCH]
+# With BRANCH, a fresh clone checks out BRANCH and an existing clone, even one
+# made from another repository, is pointed at REPO_URL and moved to BRANCH.
 # ---------------------------------------------------------------
 install_py_tool_from_git() {
     local repo_url="$1"
     local req_filename="${2:-requirements.txt}"
+    local branch="${3:-}"
     local tool_name
     tool_name=$(basename "$repo_url" .git)
     local tool_dir="$PROGRAMS_DIR/$tool_name"
     local venv_dir="$tool_dir/${tool_name}Environment"
+    local clone_opts=()
+    if [ -n "$branch" ]; then
+        clone_opts=(--branch "$branch")
+    fi
 
     echo "--> Installing $tool_name..."
 
     if [ ! -d "$tool_dir" ]; then
-        if ! run_as_user git clone "$repo_url" "$tool_dir"; then
+        if ! run_as_user git clone "${clone_opts[@]}" "$repo_url" "$tool_dir"; then
             echo "WARNING: Failed to clone $tool_name. Skipping."
+            mark_fail "git:$tool_name"
+            return 0
+        fi
+    elif [ -n "$branch" ]; then
+        echo "    $tool_name already cloned, moving it to branch $branch of $repo_url..."
+        if ! { run_as_user git -C "$tool_dir" remote set-url origin "$repo_url" &&
+                run_as_user git -C "$tool_dir" fetch origin "$branch" &&
+                run_as_user git -C "$tool_dir" checkout -B "$branch" "origin/$branch"; }; then
+            echo "WARNING: Failed to move $tool_name to branch $branch. Skipping."
             mark_fail "git:$tool_name"
             return 0
         fi
@@ -272,7 +289,7 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 
 {
     echo "#################################################################"
-    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.13.0    #"
+    echo "# SPECULATOR PROJECT - OSINT VM INSTALLATION SCRIPT v0.13.1    #"
     echo "# Target: Debian 13 Trixie (amd64)                             #"
     echo "#################################################################"
     echo "# Real user : $REAL_USER"
@@ -708,7 +725,9 @@ HOLMES_INI
     # -- 3i-bis. EditSimple (video editor to explain a fact or show evidence: tracking,
     # zoom, pixelation, slides; by the author of OSInt Graph). It keeps config.json
     # and tools/ next to the program. Debian 13 ships ffmpeg 7.1, the release it asks for.
-    install_py_tool_from_git "https://github.com/tingon11/EditSimple"
+    # Installed from the SOsintOps fork, branch linux: the program with the Linux
+    # fixes proposed to its author, until they are merged upstream.
+    install_py_tool_from_git "https://github.com/SOsintOps/EditSimple" requirements.txt linux
     # VitTrack tracking model (opencv_zoo, Apache 2.0) with its licence, checked
     # against the fingerprint the program itself expects.
     _VIT_DIR="$PROGRAMS_DIR/EditSimple/tools/vittrack"
