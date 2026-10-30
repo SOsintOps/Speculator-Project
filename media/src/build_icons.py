@@ -35,6 +35,9 @@ ICONS = {
     "video": (MEDIA, f'<rect x="20" y="32" width="88" height="64" rx="12" {STROKE}/>' + line("M56 50l22 14-22 14z")),
     "archives": (FILES, f'<rect x="22" y="28" width="84" height="20" rx="4" {STROKE}/>'
                         + line("M30 48v50h68V48M54 66h20")),
+    "editsimple": (MEDIA, f'<rect x="18" y="30" width="92" height="68" rx="8" {STROKE}/>' + line("M18 46h92M18 82h92")
+                          + '<rect x="46" y="54" width="36" height="20" rx="3" stroke="#fff" stroke-width="5" '
+                            'stroke-dasharray="7 5" fill="none"/>'),
     "image": (MEDIA, f'<rect x="20" y="26" width="88" height="76" rx="8" {STROKE}/><circle cx="48" cy="52" r="8" {STROKE}/>'
                      + line("M24 94l28-26 18 16 14-12 22 20")),
     "framework": (TOOLS, f'<rect x="20" y="28" width="88" height="72" rx="8" {STROKE}/>' + line("M38 52l14 12-14 12M60 80h28")),

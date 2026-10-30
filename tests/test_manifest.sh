@@ -61,6 +61,8 @@ _test "installed scripts are in .local/share/speculator/scripts" "true"   "$(_tr
 _test "every apt call is non-interactive" "0" "$(grep -c 'sudo apt ' "$INSTALLER")"
 _test "installer installs ONLYOFFICE Desktop Editors" "true" "$(_true grep -q 'apt install -y onlyoffice-desktopeditors' "$INSTALLER")"
 _test "ONLYOFFICE repository is signed-by a dedicated keyring" "true" "$(_true grep -q 'signed-by=/etc/apt/keyrings/onlyoffice.gpg' "$INSTALLER")"
+_test "installer installs EditSimple" "true" "$(_true grep -q 'install_py_tool_from_git "https://github.com/tingon11/EditSimple"' "$INSTALLER")"
+_test "EditSimple VitTrack model is checked by SHA-256" "true" "$(_true grep -q '2990f0b7cd44d92afa48cd97db6de7be113fc1d9594fddb74e2725c10478e91d' "$INSTALLER")"
 _test "Firefox policies install 18 extensions" "18" "$(grep -c '"installation_mode": "normal_installed"' "$ROOT/config/policies.json")"
 _test "installer deploys the Brave extension policy" "true" "$(_true grep -q 'config/brave-policies.json' "$INSTALLER")"
 _test "Brave policy force-installs 3 extensions" "3" "$(grep -c 'clients2.google.com/service/update2/crx' "$ROOT/config/brave-policies.json")"
@@ -82,6 +84,7 @@ for d in "$ROOT"/shortcuts/*.desktop; do
     _test "$n: icon $icon is in media/icons" "true" "$(_true test -f "$ROOT/media/icons/$icon")"
   fi
   script="$(sed -n 's|^Exec=__HOME__/.local/share/speculator/scripts/||p' "$d")"
+  script="${script%% *}"   # drop the field codes (%f)
   if [ -n "$script" ]; then
     _test "$n: script $script exists" "true" "$(_true test -f "$ROOT/scripts/$script")"
   fi
